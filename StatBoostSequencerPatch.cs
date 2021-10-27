@@ -20,7 +20,7 @@ namespace InscryptionModsFramework
 		[HarmonyTargetMethods]
 		static IEnumerable<MethodBase> ReturnMoveNextMethodFromNestedEnumerator(Harmony _)
 		{
-			Type targetType = AccessTools.TypeByName("DiskCardGame.StatBoostSequencerPatch+<StatBoostSequence>d__12");
+			Type targetType = AccessTools.TypeByName("DiskCardGame.CardStatBoostSequencer+<StatBoostSequence>d__12");
 			return AccessTools.GetDeclaredMethods(targetType).Where(m => m.Name.Equals("MoveNext"));
 		}
 
@@ -29,7 +29,6 @@ namespace InscryptionModsFramework
 		{
 			return PPatchTools.ReplaceConstant(instructions, 0.225f, 0f, false);
 		}
-
 
 	}
 
