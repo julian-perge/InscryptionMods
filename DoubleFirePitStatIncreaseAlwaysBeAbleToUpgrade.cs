@@ -5,7 +5,7 @@ using System;
 namespace InscryptionModsFramework
 {
 	[BepInPlugin("com.bongmaster.alwaysAbleToUpgrade", "Always Able To Update Cards", "1.0")]
-	public class FreePelts : BaseUnityPlugin
+	public class DoubleFirePitStatIncreaseAlwaysBeAbleToUpgrade : BaseUnityPlugin
 	{
 		void Awake()
 		{
