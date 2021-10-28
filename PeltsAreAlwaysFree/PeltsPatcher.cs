@@ -29,7 +29,7 @@ namespace PeltsAreAlwaysFree
 		[HarmonyPrefix]
 		static bool Prefix(ref int[] __result)
 		{
-			__result = new int[] {0,0,0};
+			__result = new int[] { 0, 0, 0 };
 			return false;
 		}
 

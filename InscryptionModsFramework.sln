@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirePitIncreaseStatBoost", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirePitAlwaysAbleToUpgrade", "FirePitAlwaysAbleToUpgrade\FirePitAlwaysAbleToUpgrade.csproj", "{22F9CA54-3F5A-4E3F-B890-D56FDF44B013}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DB42608-EE47-4AB5-977B-A7FEC157664C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

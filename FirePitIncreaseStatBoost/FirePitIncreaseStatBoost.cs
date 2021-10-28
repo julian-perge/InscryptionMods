@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using BepInEx;
+﻿using BepInEx;
 using HarmonyLib;
 using PeterHan.PLib.Utils;
+using System.Collections.Generic;
 
 namespace FirePitIncreaseStatBoost
 {
