@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using BepInEx;
 using HarmonyLib;
 using PeterHan.PLib.Utils;
 
-namespace InscryptionModsFramework
+namespace FirePitIncreaseStatBoost
 {
 	[BepInPlugin("com.bongmaster.firePitIncreaseStatBoost", "Increase Stat Boost", "1.0")]
-	[HarmonyPatch(typeof(DiskCardGame.CardStatBoostSequencer), "ApplyModToCard")]
-	class FirePitIncreaseStatBoost
+	public class FirePitIncreaseStatBoost : BaseUnityPlugin
 	{
 		void Awake()
 		{
-			FileLog.Log("=====================================");
-			FileLog.Log($"[{DateTime.Now}] Starting julianperge harmony patch with path {FileLog.logPath}");
+			// FileLog.Log("=====================================");
+			// FileLog.Log($"[{DateTime.Now}] Starting julianperge harmony patch with path {FileLog.logPath}");
 			var harmony = new Harmony("com.julianperge.firePitIncreaseStatBoost");
 			harmony.PatchAll();
 		}
 
+	}
+
+	[HarmonyPatch(typeof(DiskCardGame.CardStatBoostSequencer), "ApplyModToCard")]
+	public class StatPatch
+	{
 		[HarmonyTranspiler]
-		internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
 			// replace the attack modifier first
 			instructions = PPatchTools.ReplaceConstant(instructions, 1, 4, false);

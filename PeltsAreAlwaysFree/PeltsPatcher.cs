@@ -14,13 +14,14 @@ namespace PeltsAreAlwaysFree
 	{
 		void Awake()
 		{
-			FileLog.Log("=====================================");
-			FileLog.Log($"[{DateTime.Now}] Starting harmony patch for PeltsAreAlwaysFree with log path {FileLog.logPath}");
+			// FileLog.Log("=====================================");
+			// FileLog.Log($"[{DateTime.Now}] Starting harmony patch for PeltsAreAlwaysFree with log path {FileLog.logPath}");
 			var harmony = new Harmony("com.julianperge.PeltsAreAlwaysFree");
 			harmony.PatchAll();
 		}
 	}
 
+	// PeltPrices is a Property with a custom getter, which means we have to specify the MethodType in order to access it
 	[HarmonyPatch(typeof(BuyPeltsSequencer), "PeltPrices", MethodType.Getter)]
 	public class PeltsPatcher
 	{
