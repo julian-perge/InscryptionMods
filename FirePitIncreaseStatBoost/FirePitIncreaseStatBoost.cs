@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FirePitIncreaseStatBoost
 {
-	[BepInPlugin("com.bongmaster.firePitIncreaseStatBoost", "Increase Stat Boost", "1.0")]
+	[BepInPlugin("com.bongmaster.firePitIncreaseStatBoost", "Increase Stat Boost", "1.1")]
 	public class FirePitIncreaseStatBoost : BaseUnityPlugin
 	{
 		void Awake()
