@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BepInEx;
+using DiskCardGame;
 using HarmonyLib;
 
 namespace PeltsAreAlwaysFree
@@ -20,15 +21,39 @@ namespace PeltsAreAlwaysFree
 		}
 	}
 
-	[HarmonyPatch(typeof(DiskCardGame.BuyPeltsSequencer), "PeltPrices")]
+	[HarmonyPatch(typeof(BuyPeltsSequencer), "BuyPelts")]
 	public class PeltsPatcher
 	{
 
 		[HarmonyPostfix]
-		static int[] Postfix(ref int[] __result)
+		static void Prefix(ref BuyPeltsSequencer __instance)
 		{
-			FileLog.Log($"Returning all zeroes for pelts");
-			return new int[] { 0, 0, 0 };
+			string prices = "PeltPrices";
+			FileLog.Log($"Returning all zeroes for pelts ");
+			int[] allZeros = new int[] { 0, 0, 0 };
+			// var prices = AccessTools.Method(__instance.GetType(), "PeltPrices").;
+			// prices = allZeros;
+			var trav = Traverse.Create(typeof(BuyPeltsSequencer));
+
+			Console.WriteLine($"Field {trav.Field(prices)} Property {trav.Property(prices)}");
+			// .SetValue(new int[] { 0, 0, 0 });
+			
+			// Console.WriteLine($"PeltPrices {method.GetValue()} {method.GetType()}");
+			// foreach (var field in method.Fields())
+			// {
+			// 	Console.WriteLine($"PeltPrices fields {method.Fields()}");
+			// }
+			// FileLog.Log("" + method.GetValue());
+			// ___PeltPrices = allZeros;
+
+
+
+			// __instance.PeltPrices = allZeros;
+			for (int i = 0; i < __instance.PeltPrices.Length; i++)
+			{
+				Console.WriteLine($"Pelt price idx {i} Price {__instance.PeltPrices[i]} Getter {__instance.PeltPrices.GetValue(i)}");
+				__instance.PeltPrices.SetValue(0, i);
+			}
 		}
 
 	}
