@@ -1,19 +1,11 @@
 ﻿using BepInEx;
-using BepInEx.Logging;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.IO;
-using DiskCardGame;
 using HarmonyLib;
 using PeterHan.PLib.Utils;
-using UnityEngine;
 
 namespace FirePitIncreaseStatBoost
 {
-	[BepInPlugin("com.bongmaster.firePitIncreaseStatBoost", "Increase Stat Boost", "1.1")]
+	[BepInPlugin("com.julianperge.firePitIncreaseStatBoost", "Increase Stat Boost", "1.1")]
 	public class FirePitIncreaseStatBoost : BaseUnityPlugin
 	{
 		void Awake()

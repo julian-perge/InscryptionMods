@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BepInEx;
-using DiskCardGame;
+﻿using BepInEx;
 using HarmonyLib;
 
 namespace PeltsAreAlwaysFree
@@ -22,7 +17,7 @@ namespace PeltsAreAlwaysFree
 	}
 
 	// PeltPrices is a Property with a custom getter, which means we have to specify the MethodType in order to access it
-	[HarmonyPatch(typeof(BuyPeltsSequencer), "PeltPrices", MethodType.Getter)]
+	[HarmonyPatch("BuyPeltsSequencer", "PeltPrices", MethodType.Getter)]
 	public class PeltsPatcher
 	{
 
