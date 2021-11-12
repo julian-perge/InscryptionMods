@@ -33,7 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="StartWithMaxCurrency.cs" />
+    <Compile Include="Act3HoloShop.cs" />
+    <Compile Include="Act2ShopPatcher.cs" />
+    <Compile Include="HarmonyInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

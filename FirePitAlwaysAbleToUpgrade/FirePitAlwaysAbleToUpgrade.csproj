@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="FirePitAlwaysAbleToUpgrade.cs" />
+    <Compile Include="AlwaysAbleToUpgrade.cs" />
+    <Compile Include="HarmonyInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

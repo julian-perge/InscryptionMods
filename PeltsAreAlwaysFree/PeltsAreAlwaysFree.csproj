@@ -33,7 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="PeltsPatcher.cs" />
+    <Compile Include="HarmonyInit.cs" />
+    <Compile Include="AlwaysFreePelts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
