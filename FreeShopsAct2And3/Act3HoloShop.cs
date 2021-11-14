@@ -1,7 +1,7 @@
 using DiskCardGame;
 using HarmonyLib;
 
-namespace StartWithMaxCurrency
+namespace FreeShopsAct2And3
 {
 	/// <summary>
 	/// Set all nodes in Act 3 (Hologram theme) to always be zero dollars

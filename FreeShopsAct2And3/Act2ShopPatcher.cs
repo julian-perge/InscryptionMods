@@ -1,7 +1,7 @@
 using GBC;
 using HarmonyLib;
 
-namespace StartWithMaxCurrency
+namespace FreeShopsAct2And3
 {
 	[HarmonyPatch(typeof(ShopUIPricetag), nameof(ShopUIPricetag.SetPrice))]
 	public class Act2ShopPatcher
