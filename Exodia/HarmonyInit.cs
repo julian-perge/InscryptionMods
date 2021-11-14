@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using APIPlugin;
-using BepInEx;
-using DiskCardGame;
-using UnityEngine;
+﻿using BepInEx;
 
 namespace Exodia
 {

@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using APIPlugin;
+using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
 namespace Exodia
 {
-	public class ExodiaAbility : DiskCardGame.AbilityBehaviour
+	public class ExodiaAbility : AbilityBehaviour
 	{
 		public override Ability Ability
 		{
@@ -55,15 +55,13 @@ namespace Exodia
 			};
 
 			// get Exodia art
-			var imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/exodia.png");
-			Texture2D tex = new Texture2D(2, 2);
-			tex.LoadImage(imgBytes);
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia.png");
 
 			// set ability to behavior class
-			NewAbility ability = new NewAbility(info, typeof(ExodiaAbility), tex);
-			ExodiaAbility.ability = ability.ability;
+			NewAbility exodiaAbility = new NewAbility(info, typeof(ExodiaAbility), tex);
+			ability = exodiaAbility.ability;
 
-			return ability;
+			return exodiaAbility;
 		}
 	}
 }
