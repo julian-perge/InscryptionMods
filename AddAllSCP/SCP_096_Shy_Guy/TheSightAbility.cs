@@ -1,16 +1,15 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
 
-namespace ThePaleManCard
+namespace AddAllSCP.SCP_096_Shy_Guy
 {
 	public class TheSightAbility : AbilityBehaviour
 	{
 		private PlayableCard foeCardThatDealtDamage;
-		private CardModificationInfo mod = new CardModificationInfo() { attackAdjustment = 6 };
+		private readonly CardModificationInfo mod = new CardModificationInfo() { attackAdjustment = 6 };
 
 		public override Ability Ability { get { return ability; } }
 
@@ -56,6 +55,7 @@ namespace ThePaleManCard
 			base.Card.SwitchToDefaultPortrait();
 			base.Card.RemoveTemporaryMod(this.mod, true);
 			yield return base.LearnAbility(0.5f);
+			foeCardThatDealtDamage = null;
 			yield break;
 		}
 
@@ -63,7 +63,7 @@ namespace ThePaleManCard
 
 		public override IEnumerator OnTakeDamage(PlayableCard source)
 		{
-			// if source is null, assign
+			// if foeCardThatDealtDamage is null, assign
 			foeCardThatDealtDamage ??= source;
 			yield return base.PreSuccessfulTriggerSequence();
 			base.Card.Anim.StrongNegationEffect();
@@ -88,7 +88,7 @@ namespace ThePaleManCard
 			};
 
 			// get and load artwork
-			var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/exodia.png");
+			var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/scp_096_ability_small.png");
 			Texture2D tex = new Texture2D(2, 2);
 			tex.LoadImage(imgBytes);
 

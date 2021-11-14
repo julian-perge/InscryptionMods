@@ -14,15 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartWithMaxCurrency", "StartWithMaxCurrency\StartWithMaxCurrency.csproj", "{972A5967-F41F-4CB6-BDEA-85621BFF803E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeShopsAct2And3", "FreeShopsAct2And3\FreeShopsAct2And3.csproj", "{972A5967-F41F-4CB6-BDEA-85621BFF803E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exodia", "Exodia\Exodia.csproj", "{2A6EA6A5-9CF5-45C7-90B7-5B04B993473F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreAnts", "MoreAnts\MoreAnts.csproj", "{4241E77D-09BF-4C12-9527-E7256151C0CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCP096_ShyGuy", "SCP096_ShyGuy\SCP096_ShyGuy.csproj", "{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SCP_Universe", "SCP_Universe", "{0C8A6530-9CFC-48D3-8F7A-74C9E77955E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddAllSCP", "AddAllSCP\AddAllSCP.csproj", "{55E33D72-DC92-4810-8857-0E66F9FDECF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,10 +54,10 @@ Global
 		{4241E77D-09BF-4C12-9527-E7256151C0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4241E77D-09BF-4C12-9527-E7256151C0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4241E77D-09BF-4C12-9527-E7256151C0CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +66,6 @@ Global
 		SolutionGuid = {D038932E-8956-4460-B419-B867B44EFEF7}
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{1CF1AF46-A7B2-40E3-A1E4-8EAF74441493} = {0C8A6530-9CFC-48D3-8F7A-74C9E77955E5}
+		{55E33D72-DC92-4810-8857-0E66F9FDECF0} = {0C8A6530-9CFC-48D3-8F7A-74C9E77955E5}
 	EndGlobalSection
 EndGlobal
