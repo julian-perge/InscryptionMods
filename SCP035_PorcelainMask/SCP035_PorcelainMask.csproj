@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <LangVersion>latestmajor</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="API, Version=1.8.2.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\CardLoaderPlugin\bin\Debug\netstandard2.0\API.dll</HintPath>
+      </Reference>
+      <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\CardLoaderPlugin\lib\Assembly-CSharp.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Inscryption\Inscryption_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Program Files (x86)\Steam\steamapps\common\Inscryption\Inscryption_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
