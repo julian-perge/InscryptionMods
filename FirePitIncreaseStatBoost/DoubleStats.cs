@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using DiskCardGame;
 using HarmonyLib;
 using PeterHan.PLib.Utils;
 
 namespace FirePitIncreaseStatBoost
 {
-	[HarmonyPatch(typeof(DiskCardGame.CardStatBoostSequencer), "ApplyModToCard")]
+	[HarmonyPatch(typeof(CardStatBoostSequencer), "ApplyModToCard")]
 	public class DoubleStats
 	{
 		[HarmonyTranspiler]
