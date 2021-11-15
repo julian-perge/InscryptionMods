@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using APIPlugin;
-using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
@@ -23,7 +22,7 @@ namespace AddAllSCP.SCP_999_Tickle_Monster
 
 			NewCard.AddToPool(name, displayName, 0, 2,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
-				desc, bloodCost: 1, defaultTexture: defaultTexture, abilities: abilities
+				desc, bloodCost: 1, defaultTex: defaultTexture, abilities: abilities
 			);
 		}
 	}
