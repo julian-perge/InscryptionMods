@@ -1,56 +1,117 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using APIPlugin;
 using BepInEx;
+using BepInEx.Logging;
 using DiskCardGame;
 using HarmonyLib;
+using PeterHan.PLib.Utils;
 
 namespace AddAllSCP
 {
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
-	public class HarmonyInitAll
+	public class HarmonyInitAll : BaseUnityPlugin
 	{
-		private const string PluginGuid = "com.julianperge";
-		private const string PluginName = "scp_universe";
-		private const string PluginVersion = "1.0";
+		public const string PluginGuid = "com.julianperge";
+		public const string PluginName = "scp_universe";
+		public const string PluginVersion = "1.0";
+
+		private static bool allowSettingDeck = false;
+		private static bool increaseBonesBoon = false;
+
+		internal static ManualLogSource Log;
 
 		void Awake()
 		{
+			Logger.LogInfo($"Loaded {PluginName}!");
+			Log = base.Logger;
+
+			// TODO: Need to mimic DiskCardGame.Transformer/DiskCardGame.Evolve-like transformations;
+			// SCP_034_Obsidian_Ritual_Knife.Card.InitCard();
+
+			// WORKS
+			// SCP_035_Porcelain_Mask.Card.InitCard();
+
+			// WORKS
+			// SCP_049_Plague_Doctor.Card.InitCard();
+
+			// WORKS
+			// SCP_087_The_Stairwell.Card.InitCard();
+
+			// TODO: Still needs to implement following card if card has strafe
+			// SCP_096_Shy_Guy.Card.InitCard();
+
+			SCP_348_Thinking_Of_You.Card.InitCard();
+
+			// WORKS
+			// SCP_354_Blood_Pond.Card.InitCardsAndAbilities();
+
+			// SCP_999_Tickle_Monster.Card.InitCard();
+
 			var harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
-
-
-			SCP_035_Porcelain_Mask.MaskAbility.InitAbility();
-			SCP_035_Porcelain_Mask.Card.InitCard();
-			
-			SCP_049_Plague_Doctor.Card.InitCard();
-			SCP_049_Plague_Doctor.DoubleDeathTweaked.InitAbility();
-
-			SCP_087_The_Stairwell.Card.InitCard();
-			SCP_087_The_Stairwell.TheStairwellAbility.InitAbility();
-
-			SCP_096_Shy_Guy.TheSightAbility.InitAbility();
-			SCP_096_Shy_Guy.Card.InitCard();
-			
-			SCP_354_Blood_Pond.Card.InitCard();
-			SCP_354_Blood_Pond.BloodPondAbility.InitAbility();
-			
-			SCP_999_Tickle_Monster.Card.InitCard();
 		}
 
 		// add this to your deck by scrolling upwards/pressing w key when at the map
 		[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
-		public class AddPaleManToDeckPatch
+		public class AddSCPCardToDeckPatch
 		{
 			[HarmonyPrefix]
-			public static void AddShyGuy()
+			public static void AddSCP()
 			{
-				CardInfo info = CardLoader.GetCardByName("SCP096_ShyGuy");
-				var currDeck = SaveManager.SaveFile.CurrentDeck;
-				if (!currDeck.Cards.Exists(card => card.displayedName == info.displayedName))
+				if (allowSettingDeck)
 				{
-					SaveManager.SaveFile.CurrentDeck.Cards.RemoveRange(0, 1);
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(info);
+					CardInfo scp = CardLoader.GetCardByName(SCP_034_Obsidian_Ritual_Knife.Card.Name);
+					CardUtils.PrintCardInfo(scp);
+					// CardInfo scp087 = CardLoader.GetCardByName("SCP_087_TheStairwell");
+					SaveManager.SaveFile.CurrentDeck.Cards.Clear();
+
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(scp);
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Goat"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Snapper"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Snapper"));
 				}
+			}
+		}
+
+		[HarmonyPatch]
+		public class ChangeBoonToGiveTwentyBones
+		{
+			[HarmonyTargetMethods]
+			static IEnumerable<MethodBase> ReturnMoveNextMethodFromNestedEnumerator(Harmony _)
+			{
+				// StatBoostSequence is the IEnumerator method, but there's a hidden compiler class, <StatBoostSequence>d__12,
+				//	that actually has all the byte code to look for.
+				Type getEnumeratorType = AccessTools.TypeByName("DiskCardGame.BoonsHandler+<ActivatePreCombatBoons>d__4");
+				return AccessTools.GetDeclaredMethods(getEnumeratorType).Where(m => m.Name.Equals("MoveNext"));
+			}
+
+			[HarmonyTranspiler]
+			internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+			{
+				return increaseBonesBoon
+					? PPatchTools.ReplaceConstant(instructions, 8, 20, false)
+					: instructions;
+			}
+		}
+
+		[HarmonyPatch(typeof(DeckInfo), "Boons", MethodType.Getter)]
+		public class StartWith
+		{
+			[HarmonyPostfix]
+			public static List<BoonData> AddBoons(List<BoonData> __result)
+			{
+				if (increaseBonesBoon)
+				{
+					__result.Add(BoonsUtil.GetData(BoonData.Type.StartingBones));
+				}
+
+				__result.Add(BoonsUtil.GetData(BoonData.Type.StartingGoat));
+				// __result.Add(BoonsUtil.GetData(BoonData.Type.DoubleDraw));
+				return __result;
 			}
 		}
 	}
