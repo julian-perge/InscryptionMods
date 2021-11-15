@@ -1,4 +1,7 @@
-﻿using BepInEx;
+﻿using APIPlugin;
+using BepInEx;
+using DiskCardGame;
+using HarmonyLib;
 
 namespace Exodia
 {
@@ -13,6 +16,32 @@ namespace Exodia
 		private void Awake()
 		{
 			Exodia.Card.InitCards();
+		}
+	}
+
+	// add this to your deck by scrolling upwards/pressing w key when at the map
+	[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
+	public class AddCardsToDeckPatch
+	{
+		private static bool allowSettingDeck = false;
+
+		[HarmonyPrefix]
+		public static void AddCardsToDeck()
+		{
+			if (allowSettingDeck)
+			{
+				CardInfo card = CardLoader.GetCardByName(Exodia.Card.Name);
+				CardInfo cardLeftArm = CardLoader.GetCardByName(Exodia.Card.Name);
+				CardInfo cardRightArm = CardLoader.GetCardByName(Exodia.Card.Name);
+
+				CardUtils.PrintCardInfo(card);
+
+				SaveManager.SaveFile.CurrentDeck.Cards.Clear();
+
+				SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
+				SaveManager.SaveFile.CurrentDeck.Cards.Add(cardLeftArm);
+				SaveManager.SaveFile.CurrentDeck.Cards.Add(cardRightArm);
+			}
 		}
 	}
 }

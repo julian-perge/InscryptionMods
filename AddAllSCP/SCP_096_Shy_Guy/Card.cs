@@ -8,7 +8,7 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 	public static class Card
 	{
 		public const string Name = "SCP_096_ShyGuy";
-		
+
 		public static void InitCard()
 		{
 			NewAbility ability = TheSightAbility.InitAbility();
@@ -26,7 +26,7 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 
 			var abilityIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.AddToPool(Name, displayName, 0, 6,
+			NewCard.Add(Name, displayName, 0, 6,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 2, appearanceBehaviour: appearanceBehaviour,
 				defaultTex: defaultTexture, altTex: altTexture, abilityIdsParam: abilityIds

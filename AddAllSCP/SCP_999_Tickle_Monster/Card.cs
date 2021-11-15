@@ -20,7 +20,7 @@ namespace AddAllSCP.SCP_999_Tickle_Monster
 			var desc =
 				"Simply touching SCP-999’s surface causes an immediate euphoria, which intensifies the longer one is exposed to SCP-999, and lasts long after separation from the creature";
 
-			NewCard.AddToPool(name, displayName, 0, 2,
+			NewCard.Add(name, displayName, 0, 2,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexture, abilities: abilities
 			);

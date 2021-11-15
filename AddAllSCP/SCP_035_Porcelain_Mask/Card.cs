@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using APIPlugin;
 using DiskCardGame;
-using HarmonyLib;
 using UnityEngine;
 
 namespace AddAllSCP.SCP_035_Porcelain_Mask
@@ -25,7 +24,7 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 			string desc = "A highly corrosive and degenerative viscous liquid constantly seeps from the eye and mouth holes.";
 			var abIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.AddToPool(Name, displayName, 0, 1,
+			NewCard.Add(Name, displayName, 0, 1,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexture, abilities: abilities, traits: traits, abilityIdsParam: abIds
 			);

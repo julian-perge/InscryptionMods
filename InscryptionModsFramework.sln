@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SCP_Universe", "SCP_Univers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddAllSCP", "AddAllSCP\AddAllSCP.csproj", "{55E33D72-DC92-4810-8857-0E66F9FDECF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaveStartingBones", "HaveStartingBones\HaveStartingBones.csproj", "{BF8C5953-2C80-460B-A1B8-B8FECA627573}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55E33D72-DC92-4810-8857-0E66F9FDECF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF8C5953-2C80-460B-A1B8-B8FECA627573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF8C5953-2C80-460B-A1B8-B8FECA627573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF8C5953-2C80-460B-A1B8-B8FECA627573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF8C5953-2C80-460B-A1B8-B8FECA627573}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,15 +5,17 @@ using UnityEngine;
 
 namespace Exodia
 {
-	public class Card
+	public static class Card
 	{
+		public const string Name = "Exodia";
+		public const string NameLeftArm = "Left_Arm_Of_Exodia";
+		public const string NameRightArm = "Right_Arm_Of_Exodia";
+
 		public static void InitCards()
 		{
 			InitCardExodia();
 			InitCardArms();
 		}
-
-		public const string Name = "Exodia";
 
 		private static void InitCardExodia()
 		{
@@ -27,7 +29,7 @@ namespace Exodia
 			var desc = "";
 			var abIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.AddToPool(Name, displayName, 1, 1,
+			NewCard.Add(Name, displayName, 1, 1,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexture, abilityIdsParam: abIds, onePerDeck: true
 			);
@@ -43,22 +45,19 @@ namespace Exodia
 			Texture2D defaultTexRightArm =
 				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia_right_arm_small.png");
 
-			var nameLeftArm = "Left_Arm_Of_Exodia";
-			var nameRightArm = "Right_Arm_Of_Exodia";
-
 			var displayNameLeft = "Left Arm Of Exodia";
 			var displayNameRight = "Right Arm Of Exodia";
 
 			var desc = "One of the arms of The Forbidden One";
 
 			// Left Arm
-			NewCard.AddToPool(nameLeftArm, displayNameLeft, 0, 1,
+			NewCard.Add(NameLeftArm, displayNameLeft, 0, 1,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexLeftArm, onePerDeck: true
 			);
 
 			// Right Arm
-			NewCard.AddToPool(nameRightArm, displayNameRight, 0, 1,
+			NewCard.Add(NameRightArm, displayNameRight, 0, 1,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexRightArm, onePerDeck: true
 			);

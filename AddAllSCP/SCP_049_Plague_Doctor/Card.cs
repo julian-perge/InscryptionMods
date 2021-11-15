@@ -19,7 +19,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			var displayName = "Plague Doctor";
 			var abIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.AddToPool(name, displayName, 0, 2,
+			NewCard.Add(name, displayName, 0, 2,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				bonesCost: 6, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);

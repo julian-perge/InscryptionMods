@@ -9,7 +9,7 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 	{
 		public const string Name = "SCP_087_TheStairwell";
 
-		
+
 		public static void InitCard()
 		{
 			NewAbility ability = TheStairwellAbility.InitAbility();
@@ -24,7 +24,7 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 
 			var abIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.AddToPool(Name, displayName, 0, 6,
+			NewCard.Add(Name, displayName, 0, 6,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 2, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);

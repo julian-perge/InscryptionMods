@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using APIPlugin;
+﻿using APIPlugin;
 using BepInEx;
 using BepInEx.Logging;
 using DiskCardGame;
 using HarmonyLib;
-using PeterHan.PLib.Utils;
+using Card = AddAllSCP.SCP_348_Thinking_Of_You.Card;
 
 namespace AddAllSCP
 {
@@ -44,7 +40,7 @@ namespace AddAllSCP
 			// TODO: Still needs to implement following card if card has strafe
 			// SCP_096_Shy_Guy.Card.InitCard();
 
-			SCP_348_Thinking_Of_You.Card.InitCard();
+			Card.InitCard();
 
 			// WORKS
 			// SCP_354_Blood_Pond.Card.InitCardsAndAbilities();
@@ -57,10 +53,10 @@ namespace AddAllSCP
 
 		// add this to your deck by scrolling upwards/pressing w key when at the map
 		[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
-		public class AddSCPCardToDeckPatch
+		public class AddCardsToDeckPatch
 		{
 			[HarmonyPrefix]
-			public static void AddSCP()
+			public static void AddCards()
 			{
 				if (allowSettingDeck)
 				{
@@ -74,44 +70,6 @@ namespace AddAllSCP
 					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Snapper"));
 					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Snapper"));
 				}
-			}
-		}
-
-		[HarmonyPatch]
-		public class ChangeBoonToGiveTwentyBones
-		{
-			[HarmonyTargetMethods]
-			static IEnumerable<MethodBase> ReturnMoveNextMethodFromNestedEnumerator(Harmony _)
-			{
-				// StatBoostSequence is the IEnumerator method, but there's a hidden compiler class, <StatBoostSequence>d__12,
-				//	that actually has all the byte code to look for.
-				Type getEnumeratorType = AccessTools.TypeByName("DiskCardGame.BoonsHandler+<ActivatePreCombatBoons>d__4");
-				return AccessTools.GetDeclaredMethods(getEnumeratorType).Where(m => m.Name.Equals("MoveNext"));
-			}
-
-			[HarmonyTranspiler]
-			internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-			{
-				return increaseBonesBoon
-					? PPatchTools.ReplaceConstant(instructions, 8, 20, false)
-					: instructions;
-			}
-		}
-
-		[HarmonyPatch(typeof(DeckInfo), "Boons", MethodType.Getter)]
-		public class StartWith
-		{
-			[HarmonyPostfix]
-			public static List<BoonData> AddBoons(List<BoonData> __result)
-			{
-				if (increaseBonesBoon)
-				{
-					__result.Add(BoonsUtil.GetData(BoonData.Type.StartingBones));
-				}
-
-				__result.Add(BoonsUtil.GetData(BoonData.Type.StartingGoat));
-				// __result.Add(BoonsUtil.GetData(BoonData.Type.DoubleDraw));
-				return __result;
 			}
 		}
 	}
