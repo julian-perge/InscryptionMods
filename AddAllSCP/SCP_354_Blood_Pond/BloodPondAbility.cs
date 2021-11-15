@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AddAllSCP.SCP_096_Shy_Guy;
 using APIPlugin;
-using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
@@ -18,22 +16,25 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 
 		public override bool RespondsToTurnEnd(bool playerTurnEnd)
 		{
-			return playerTurnEnd; // if it's our turn end
+			HarmonyInitAll.Log.LogDebug($"[RespondsToTurnEnd] Current turns taken [{turnsTaken}]");
+			return playerTurnEnd;
 		}
 
 		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
 			List<CardSlot> slots = Singleton<BoardManager>.Instance.GetSlots(true)
-				.FindAll(slot => slot is not null & slot.Card is null);
+				.FindAll(slot => slot is not null && slot.Card is null);
 			// if no available slots, list will be empty and won't loop
+			HarmonyInitAll.Log.LogDebug($"[BloodPond] Number of slots available [{slots.Count}]");
 			foreach (var slot in slots)
 			{
-				var bloodCardToSpawn 
-					= turnsTaken++ < 3 
-					? CardLoader.GetCardByName("SCP_354_BloodCreature") 
-					: CardLoader.GetCardByName("SCP_354_BloodEntity");
+				var bloodCardToSpawn
+					= turnsTaken++ < 3
+						? CardLoader.GetCardByName("SCP_354_BloodCreature")
+						: CardLoader.GetCardByName("SCP_354_BloodEntity");
 
+				HarmonyInitAll.Log.LogDebug($"-> Spawning a [{bloodCardToSpawn.displayedName}]");
 				yield return Singleton<BoardManager>.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
 				break; // only spawn one, then break out of loop and end resolve.
 			}
@@ -42,32 +43,26 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 			yield return base.LearnAbility(0.5f);
 			yield break;
 		}
-		
-		public static NewAbility InitAbility()
+
+		protected internal static NewAbility InitAbility()
 		{
+			var rulebookName = "Blood Pond";
 			var description =
-				"Spawn a Blood Creature (2/2 w/ Brittle) at the end of your turn in a random slot. After 3 turns, spawn a Blood Entity (3/3 w/ Brittle).";
-			
+				"Spawn a Blood Creature (1/1 w/ Brittle) at the end of your turn in a random slot. After 3 turns, spawn a Blood Entity (1/1 w/ Brittle).";
+
 			// setup ability
-			AbilityInfo info = ScriptableObject.CreateInstance<AbilityInfo>();
-			info.powerLevel = 0;
-			info.rulebookName = "Blood Pond";
-			info.rulebookDescription = description;
-			info.metaCategories = new List<AbilityMetaCategory>()
-			{
-				AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook
-			};
+			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/double_death_tweak.png");
+				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_354_blood_pond_ability_small.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), sigilTex);
-			TheSightAbility.ability = theSightAbility.ability;
+			NewAbility bloodPondAbility = new NewAbility(info, typeof(BloodPondAbility), sigilTex,
+				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			ability = bloodPondAbility.ability;
 
-			return theSightAbility;
+			return bloodPondAbility;
 		}
-		
 	}
 }
