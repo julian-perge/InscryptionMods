@@ -19,7 +19,10 @@
 			<HintPath>..\..\..\Users\Julian\Documents\Inscryption Mods\0Harmony.dll</HintPath>
 		</Reference>
 		<Reference Include="API, Version=1.10.1.0, Culture=neutral, PublicKeyToken=null">
-		  <HintPath>..\..\CardLoaderPlugin\bin\Debug\netstandard2.0\API.dll</HintPath>
+			<HintPath>..\..\CardLoaderPlugin\bin\Debug\netstandard2.0\API.dll</HintPath>
+		</Reference>
+		<Reference Include="API, Version=1.11.0.0, Culture=neutral, PublicKeyToken=null">
+			<HintPath>..\..\CardLoaderPlugin\bin\Debug\netstandard2.0\API.dll</HintPath>
 		</Reference>
 		<Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
 			<HintPath>..\..\CardLoaderPlugin\lib\Assembly-CSharp.dll</HintPath>
