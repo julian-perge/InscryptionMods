@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -54,7 +53,7 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 			// setup ability
 			var rulebookName = "The Stairwell";
 			var description = "At the start of every 3rd turn, automatically kill the card in the opposing slot.";
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =

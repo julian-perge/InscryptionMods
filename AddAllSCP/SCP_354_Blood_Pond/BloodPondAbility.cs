@@ -51,7 +51,7 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 				"Spawn a Blood Creature (1/1 w/ Brittle) at the end of your turn in a random slot. After 3 turns, spawn a Blood Entity (1/1 w/ Brittle).";
 
 			// setup ability
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -44,7 +43,7 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 			var rulebookName = "Porcelain Mask";
 			var description = "CANNOT BE SACRIFICED. Deals 1 damage per turn to the foe in front of it.";
 
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_035_sigil.png");

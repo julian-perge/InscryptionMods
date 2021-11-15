@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -19,12 +18,12 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 		{
 			return !card.Dead && card.Health < card.MaxHealth;
 		}
-		
+
 		private static bool CardCannotBeHealed(PlayableCard card)
 		{
 			return !CardCanBeHealed(card);
 		}
-		
+
 		public override bool RespondsToTurnEnd(bool playerTurnEnd)
 		{
 			return playerTurnEnd;
@@ -55,13 +54,13 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
-			
+
 			CardSlot toLeft = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
 			CardSlot toRight = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
-			
+
 			doLogicOnCardSlot(toLeft);
 			doLogicOnCardSlot(toRight);
-			
+
 			yield return new WaitForSeconds(0.1f);
 			yield return base.LearnAbility(0.5f);
 			yield break;
@@ -74,7 +73,7 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 				"Heal neighbor cards by 1 each turn up to 3 times while neighbor card is not at max health. Does not increase health more than the total of the card.";
 
 			// setup ability
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AddAllSCP.SCP_035_Porcelain_Mask;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -98,14 +97,14 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 			CardModificationInfo statsMod = GetTransformStatInfo(cardByName);
 			statsMod.nameReplacement = base.Card.Info.DisplayedNameEnglish;
 			cardByName.Mods.Add(statsMod);
-			
+
 			CardModificationInfo cardModificationInfo2 = new CardModificationInfo(Ability.Transformer);
 			cardModificationInfo2.nonCopyable = true;
 			cardByName.Mods.Add(cardModificationInfo2);
 			cardByName.evolveParams = new EvolveParams();
 			cardByName.evolveParams.evolution = base.Card.Info;
 			cardByName.evolveParams.turnsToEvolve = 1;
-			
+
 			yield return base.Card.TransformIntoCard(cardByName, null);
 		}
 
@@ -113,9 +112,7 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 		{
 			return new CardModificationInfo
 			{
-				attackAdjustment = card.Attack,
-				healthAdjustment = card.Health,
-				nonCopyable = true
+				attackAdjustment = card.Attack, healthAdjustment = card.Health, nonCopyable = true
 			};
 		}
 
@@ -123,8 +120,9 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 		{
 			// setup ability
 			var rulebookName = "Physical Copy";
-			var description = "For the amount of damage done to a card, transform into the card attacked for that amount of turns. Revert if original card dies.";
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			var description =
+				"For the amount of damage done to a card, transform into the card attacked for that amount of turns. Revert if original card dies.";
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_034_sigil_small.png");

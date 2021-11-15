@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using APIPlugin;
-using BepInEx;
 using DiskCardGame;
 using UnityEngine;
 
@@ -24,6 +21,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			{
 				return false;
 			}
+
 			// base.Card.OpponentCard is called in BoardManager.AssignCardToSlot
 			bool isBaseCardValid = base.Card.OnBoard && deathSlot.Card != base.Card;
 			bool isValidCardDeath = deathSlot.Card is not null && deathSlot.Card == card;
@@ -89,8 +87,9 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 		{
 			// setup ability
 			var rulebookName = "The Cure";
-			var description = "Any card that dies from combat, spawn a 1/1 \"Cured\" version of the card in an open slot on your side.";
-			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
+			var description =
+				"Any card that dies from combat, spawn a 1/1 \"Cured\" version of the card in an open slot on your side.";
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =
