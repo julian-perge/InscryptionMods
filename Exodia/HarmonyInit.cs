@@ -1,4 +1,5 @@
-﻿using APIPlugin;
+﻿using System;
+using APIPlugin;
 using BepInEx;
 using DiskCardGame;
 using HarmonyLib;
@@ -9,12 +10,15 @@ namespace Exodia
 	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
 	public class HarmonyInit : BaseUnityPlugin
 	{
-		public const string PluginGuid = "com.julianperge";
+		public const string PluginGuid = "inscryption.julianperge";
 		private const string PluginName = "exodia";
 		private const string PluginVersion = "1.2";
 
 		private void Awake()
 		{
+			var harmony = new Harmony(PluginGuid);
+			harmony.PatchAll();
+
 			Exodia.Card.InitCards();
 		}
 	}
@@ -30,9 +34,10 @@ namespace Exodia
 		{
 			if (allowSettingDeck)
 			{
+				Console.WriteLine($"Starting to load Exodia cards into deck");
 				CardInfo card = CardLoader.GetCardByName(Exodia.Card.Name);
-				CardInfo cardLeftArm = CardLoader.GetCardByName(Exodia.Card.Name);
-				CardInfo cardRightArm = CardLoader.GetCardByName(Exodia.Card.Name);
+				CardInfo cardLeftArm = CardLoader.GetCardByName(Exodia.Card.NameLeftArm);
+				CardInfo cardRightArm = CardLoader.GetCardByName(Exodia.Card.NameRightArm);
 
 				CardUtils.PrintCardInfo(card);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Exodia
 
 		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
 		{
-			return !otherCard.Dead && otherCard.Slot.IsPlayerSlot;
+			return base.Card.Slot != otherCard.Slot && !otherCard.Dead && otherCard.Slot.IsPlayerSlot;
 		}
 
 		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
@@ -28,8 +29,9 @@ namespace Exodia
 
 			if (this.DoAdjacentSlotsHaveArms(otherCard))
 			{
+				Console.WriteLine($"EXODIA IS GOING TO OBLITERATE");
 				Singleton<TextDisplayer>.Instance.StartCoroutine(
-					Singleton<TextDisplayer>.Instance.ShowThenClear("EXODIA, OBLITERATE!", -0.65f, 0.4f,
+					Singleton<TextDisplayer>.Instance.ShowUntilInput("EXODIA, OBLITERATE!", -0.65f, 0.4f,
 						Emotion.Laughter, TextDisplayer.LetterAnimation.WavyJitter, DialogueEvent.Speaker.Bonelord)
 				);
 				yield return new WaitForSeconds(1f);
@@ -51,12 +53,17 @@ namespace Exodia
 		{
 			CardSlot toLeft = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
 			CardSlot toRight = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
-			if (otherCard.name.Contains("Right Arm") && otherCard.Slot == toRight)
+			// the slots to check are switched since facing Exodia, his right arm will be on th left side
+			// RIGHT ARM, EXODIA, LEFT ARM
+			if (otherCard.name.Contains("Right Arm") && otherCard.Slot == toLeft)
 			{
+				Console.WriteLine($"Setting right arm slot to true");
 				rightArmInCorrectSlot = true;
 			}
-			else if (otherCard.name.Contains("Left Arm") && otherCard.Slot == toLeft)
+
+			if (otherCard.name.Contains("Left Arm") && otherCard.Slot == toRight)
 			{
+				Console.WriteLine($"Setting left arm slot to true");
 				leftArmInCorrectSlot = true;
 			}
 
