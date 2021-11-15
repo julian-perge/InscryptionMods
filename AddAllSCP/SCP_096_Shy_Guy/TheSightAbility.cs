@@ -1,19 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using APIPlugin;
 using DiskCardGame;
+using HarmonyLib;
 using UnityEngine;
 
 namespace AddAllSCP.SCP_096_Shy_Guy
 {
 	public class TheSightAbility : AbilityBehaviour
 	{
-		private PlayableCard foeCardThatDealtDamage;
-		private readonly CardModificationInfo mod = new CardModificationInfo() { attackAdjustment = 6 };
+		private List<PlayableCard> cardsThatDealtDamage = new();
+		private readonly CardModificationInfo mod = new() { attackAdjustment = 6 };
+		private readonly List<int> indexesToRunOver = new List<int>();
 
 		public override Ability Ability { get { return ability; } }
 
 		public static Ability ability;
+
+		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
+		{
+			HarmonyInitAll.Log.LogInfo($"Will respond to assigned slot? [{otherCard is not null && cardsThatDealtDamage.Contains(otherCard)}]");
+			return otherCard is not null && cardsThatDealtDamage.Contains(otherCard);
+		}
+
+		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
+		{
+			CardSlot toLeft = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
+			CardSlot toRight = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
+			Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
+			yield return new WaitForSeconds(0.25f);
+			
+			var pSlots = Singleton<BoardManager>.Instance.GetSlots(true);
+			
+			for (var i = 0; i < pSlots.Count; i++)
+			{
+				// turn 2
+				// O O X O O 
+				// s 1 2 3 4, turns
+				
+				// turn 3
+				
+				indexesToRunOver.Add(i);
+				if (otherCard.Slot.opposingSlot == pSlots[i])
+				{
+					foreach (var index in indexesToRunOver)
+					{
+						
+					}
+
+					// yield return base.StartCoroutine(this.DoStrafe(toLeft, toRight));
+				}
+			}
+			
+			
+			
+			yield return base.OnOtherCardAssignedToSlot(otherCard);
+		}
 
 		public override bool RespondsToOtherCardDie(
 			PlayableCard card,
@@ -22,17 +65,15 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 			PlayableCard killer
 		)
 		{
-			bool bothCardsAreNotNull = foeCardThatDealtDamage is not null && card is not null;
-			bool isEnemySlot = !deathSlot.IsPlayerSlot;
-			
-			if (isEnemySlot && bothCardsAreNotNull)
+			if (cardsThatDealtDamage.Contains(card))
 			{
-				bool isDeathOfCardValid = deathSlot.Card == null || deathSlot.Card.Dead;
-				bool isCardThatDiedSameAsFoe = foeCardThatDealtDamage.name.Equals(card.name); 
-				return isDeathOfCardValid && isCardThatDiedSameAsFoe;
+				cardsThatDealtDamage.Remove(card);
 			}
+			
+			if (cardsThatDealtDamage.Count > 0 || deathSlot.IsPlayerSlot ) { return false; }
 
-			return false;
+			bool isDeathOfCardValid = deathSlot.Card == null || deathSlot.Card.Dead;
+			return isDeathOfCardValid;
 		}
 
 		/// <summary>
@@ -50,12 +91,12 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 			PlayableCard killer
 		)
 		{
+			HarmonyInitAll.Log.LogInfo($"-> Switching back to default portrait");
 			yield return new WaitForSeconds(0.5f);
 			yield return base.PreSuccessfulTriggerSequence();
 			base.Card.SwitchToDefaultPortrait();
 			base.Card.RemoveTemporaryMod(this.mod, true);
 			yield return base.LearnAbility(0.5f);
-			foeCardThatDealtDamage = null;
 			yield break;
 		}
 
@@ -63,8 +104,7 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 
 		public override IEnumerator OnTakeDamage(PlayableCard source)
 		{
-			// if foeCardThatDealtDamage is null, assign
-			foeCardThatDealtDamage ??= source;
+			cardsThatDealtDamage.Add(source);
 			yield return base.PreSuccessfulTriggerSequence();
 			base.Card.Anim.StrongNegationEffect();
 			base.Card.SwitchToAlternatePortrait();
@@ -88,13 +128,13 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 			};
 
 			// get and load artwork
-			var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/scp_096_ability_small.png");
-			Texture2D tex = new Texture2D(2, 2);
-			tex.LoadImage(imgBytes);
+			var defaultTex =
+				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_096_ability_small.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), tex);
-			TheSightAbility.ability = theSightAbility.ability;
+			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), defaultTex,
+				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			ability = theSightAbility.ability;
 
 			return theSightAbility;
 		}

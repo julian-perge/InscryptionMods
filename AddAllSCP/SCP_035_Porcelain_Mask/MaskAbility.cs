@@ -9,14 +9,14 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 	public class MaskAbility : AbilityBehaviour
 	{
 		public static Ability ability;
-		
+
 		public override Ability Ability { get { return ability; } }
 
 		private PlayableCard foeInOpposingSlot;
 
 		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
 		{
-			return !base.Card.Dead && !otherCard.Dead && otherCard.Slot == base.Card.Slot.opposingSlot;;
+			return !base.Card.Dead && !otherCard.Dead && otherCard.Slot == base.Card.Slot.opposingSlot;
 		}
 
 		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
@@ -27,39 +27,35 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 
 		public override bool RespondsToTurnEnd(bool playerTurnEnd)
 		{
+			HarmonyInitAll.Log.LogDebug($"Will respond to turn end? [{playerTurnEnd && foeInOpposingSlot is not null}]");
 			return playerTurnEnd && foeInOpposingSlot is not null;
 		}
 
 		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
-			// no null check as this only occurs if RespondsToTurnEnd returns true
+			HarmonyInitAll.Log.LogDebug($"Is player end of turn? [{playerTurnEnd}] Foe is [{foeInOpposingSlot.name}]");
 			yield return foeInOpposingSlot.TakeDamage(1, base.Card);
 			yield break;
 		}
 
-		public static NewAbility InitAbility()
+		protected internal static NewAbility InitAbility()
 		{
 			// setup ability
-			AbilityInfo info = ScriptableObject.CreateInstance<AbilityInfo>();
-			info.powerLevel = 0;
-			info.rulebookName = "Porcelain Mask";
-			info.rulebookDescription =
-				"Once you put it on, you can't get it off. Deals 1 damage per turn to the foe in front of it.";
-			info.metaCategories = new List<AbilityMetaCategory>()
-			{
-				AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook
-			};
+			var rulebookName = "Porcelain Mask";
+			var description = "CANNOT BE SACRIFICED. Deals 1 damage per turn to the foe in front of it.";
+
+			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
 
 			// get and load artwork
-			var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/scp_035_sigil.png");
-			Texture2D tex = new Texture2D(2, 2);
-			tex.LoadImage(imgBytes);
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_035_sigil.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(MaskAbility), tex);
-			MaskAbility.ability = theSightAbility.ability;
+			NewAbility maskAbility = new NewAbility(info, typeof(MaskAbility), tex,
+				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
+			);
+			MaskAbility.ability = maskAbility.ability;
 
-			return theSightAbility;
+			return maskAbility;
 		}
 	}
 }

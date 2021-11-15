@@ -1,32 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using AddAllSCP.SCP_096_Shy_Guy;
 using APIPlugin;
-using CardLoaderPlugin.lib;
+using BepInEx;
 using DiskCardGame;
 using UnityEngine;
 
 namespace AddAllSCP.SCP_049_Plague_Doctor
 {
-	public class DoubleDeathTweaked : AbilityBehaviour
+	public class TheCureAbility : AbilityBehaviour
 	{
-		public override Ability Ability { get { return Ability.DoubleDeath; } }
+		public override Ability Ability { get { return ability; } }
 
 		public static Ability ability;
 
 		public override bool RespondsToOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
 			PlayableCard killer)
 		{
+			// can't rez non-living things. Moon causes bugs.
+			if (card.Info.traits.Exists(t => t is Trait.Terrain or Trait.Pelt or Trait.Giant))
+			{
+				return false;
+			}
 			// base.Card.OpponentCard is called in BoardManager.AssignCardToSlot
 			bool isBaseCardValid = base.Card.OnBoard && deathSlot.Card != base.Card;
 			bool isValidCardDeath = deathSlot.Card is not null && deathSlot.Card == card;
-			return (isBaseCardValid && isValidCardDeath) || IsPlagueDoctorDeath(card);
+			return (fromCombat && isBaseCardValid && isValidCardDeath) || IsPlagueDoctorDeath(card);
 		}
 
 		private bool IsPlagueDoctorDeath(PlayableCard card)
 		{
-			return card is not null && card.name.Equals("SCP_049_PlagueDoctor");
+			return card is not null && card.name.Contains("SCP_049_PlagueDoctor");
 		}
 
 		private bool IsPlagueDoctorCuredCard(PlayableCard card)
@@ -39,8 +45,11 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 		{
 			yield return base.PreSuccessfulTriggerSequence();
 			List<CardSlot> slots = Singleton<BoardManager>.Instance.GetSlots(true);
+			HarmonyInitAll.Log.LogDebug(
+				$"[TheCure] Card is null {card is null} deathslot card is null {deathSlot is null} Killer {killer.name}");
 			if (IsPlagueDoctorDeath(card))
 			{
+				HarmonyInitAll.Log.LogDebug("-> Is Plague Doctor death card is true");
 				// loop through player slots and only check for cards with "Cured" in the name
 				foreach (var slot in slots.Where(slot => slot is not null && IsPlagueDoctorCuredCard(slot.Card)))
 				{
@@ -49,10 +58,14 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			}
 			else
 			{
+				string nameOfCard = CardUtils.cleanCardName(card.name);
+				HarmonyInitAll.Log.LogDebug($"-> Is Plague Doctor death card was false, checking card name is {nameOfCard}");
 				// if not Plague Doctor death, set to 1/1 and spawn on an open slot on your side of the field
+				var filteredSlots = slots.Where(slot => slot is not null && slot.Card is null);
+				HarmonyInitAll.Log.LogDebug($"-> Number of filtered slots [{filteredSlots.Count()}]");
 				foreach (var slot in slots.Where(slot => slot is not null && slot.Card is null))
 				{
-					CardInfo cardByName = CardLoader.GetCardByName(deathSlot.Card.name);
+					CardInfo cardByName = CardLoader.GetCardByName(nameOfCard);
 					CardModificationInfo cardModificationInfo = new CardModificationInfo();
 					cardModificationInfo.attackAdjustment = -cardByName.Attack + 1;
 					cardModificationInfo.healthAdjustment = -cardByName.Health + 1;
@@ -60,7 +73,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 					cardModificationInfo.bonesCostAdjustment = -cardByName.BonesCost;
 					cardModificationInfo.energyCostAdjustment = -cardByName.EnergyCost;
 					cardModificationInfo.nullifyGemsCost = true;
-					cardModificationInfo.nameReplacement = deathSlot.Card.name + " \"Cured\"";
+					cardModificationInfo.nameReplacement = nameOfCard + " \"Cured\"";
 					cardByName.Mods.Add(cardModificationInfo);
 					yield return Singleton<BoardManager>.Instance.CreateCardInSlot(cardByName, slot, 0.1f, true);
 					break;
@@ -71,29 +84,24 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			yield return base.LearnAbility(0.5f);
 			yield break;
 		}
-		
+
 		public static NewAbility InitAbility()
 		{
 			// setup ability
-			AbilityInfo info = ScriptableObject.CreateInstance<AbilityInfo>();
-			info.powerLevel = 0;
-			info.rulebookName = "The Cure";
-			info.rulebookDescription =
-				"Any card that dies, spawn a 1/1 \"Cured\" in an open slot on your side.";
-			info.metaCategories = new List<AbilityMetaCategory>()
-			{
-				AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook
-			};
+			var rulebookName = "The Cure";
+			var description = "Any card that dies from combat, spawn a 1/1 \"Cured\" version of the card in an open slot on your side.";
+			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =
 				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/double_death_tweak.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), sigilTex);
-			TheSightAbility.ability = theSightAbility.ability;
+			NewAbility theCureAbility = new NewAbility(info, typeof(TheCureAbility), sigilTex,
+				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			ability = theCureAbility.ability;
 
-			return theSightAbility;
+			return theCureAbility;
 		}
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using AddAllSCP.SCP_096_Shy_Guy;
 using APIPlugin;
-using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
@@ -10,78 +8,64 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 {
 	public class TheStairwellAbility : AbilityBehaviour
 	{
-
 		public static Ability ability;
-		
-		public override Ability Ability { get { return ability;  } }
-		
-		private PlayableCard foeInOpposingSlot;
+
+		public override Ability Ability { get { return ability; } }
+
 		private int turnsTaken = 1;
-		
-		private bool RespondsToOpposingCard(PlayableCard otherCard)
+
+		public override bool RespondsToUpkeep(bool playerUpkeep)
 		{
-			return !base.Card.Dead && !otherCard.Dead && otherCard.Slot == base.Card.Slot.opposingSlot;
+			return playerUpkeep && (base.Card is not null && !base.Card.Dead);
 		}
 
-		public override IEnumerator OnOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat, PlayableCard killer)
+		public override IEnumerator OnUpkeep(bool playerUpkeep)
 		{
-			if (card.Slot == base.Card.Slot.opposingSlot)
+			var opposingSlotCard = base.Card.Slot.opposingSlot.Card;
+			HarmonyInitAll.Log.LogDebug($"[StairwellAbility] Current turns {turnsTaken}, plus 1 [{turnsTaken + 1}]");
+
+			// if it's not the 3rd turn, we don't care to check the opposing slot card
+			if (turnsTaken++ != 3)
 			{
-				foeInOpposingSlot = null;
+				yield break;
 			}
 
-			yield break;
-		}
+			// now reset regardless if opposing slot card is null 
+			turnsTaken = 0;
 
-		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
-		{
-			return this.RespondsToOpposingCard(otherCard);
-		}
-
-		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
-		{
-			foeInOpposingSlot = otherCard;
-			yield break;
-		}
-
-		public override bool RespondsToTurnEnd(bool playerTurnEnd)
-		{
-			return playerTurnEnd;
-		}
-		
-		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
-		{
-			if (turnsTaken++ == 3 && foeInOpposingSlot is not null)
+			if (opposingSlotCard is null)
 			{
-				turnsTaken = 0;
-				yield return foeInOpposingSlot.Die(false, base.Card);
+				yield break;
 			}
+
+			HarmonyInitAll.Log.LogDebug($"[StairwellAbility] Killing card {opposingSlotCard.name}");
+
+			Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
+
+			yield return new WaitForSeconds(0.1f);
+			yield return opposingSlotCard.Die(false, base.Card);
+			yield return base.LearnAbility(0.25f);
+			yield return new WaitForSeconds(0.1f);
 			yield break;
 		}
-		
+
 		public static NewAbility InitAbility()
 		{
 			// setup ability
-			AbilityInfo info = ScriptableObject.CreateInstance<AbilityInfo>();
-			info.powerLevel = 0;
-			info.rulebookName = "The Stairwell";
-			info.rulebookDescription =
-				"Any card that dies, spawn a 1/1 \"Cured\" in an open slot on your side.";
-			info.metaCategories = new List<AbilityMetaCategory>()
-			{
-				AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook
-			};
+			var rulebookName = "The Stairwell";
+			var description = "At the start of every 3rd turn, automatically kill the card in the opposing slot.";
+			AbilityInfo info = AbilityInfoUtils.CreateAbilityInfo(rulebookName, description);
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/double_death_tweak.png");
+				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_087_ability.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), sigilTex);
-			TheSightAbility.ability = theSightAbility.ability;
+			NewAbility theStairwellAbility = new NewAbility(info, typeof(TheStairwellAbility), sigilTex,
+				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			ability = theStairwellAbility.ability;
 
-			return theSightAbility;
+			return theStairwellAbility;
 		}
-		
 	}
 }
