@@ -7,6 +7,8 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 {
 	public class Card
 	{
+		public const string Name = "SCP_049_PlagueDoctor";
+
 		public static void InitCard()
 		{
 			NewAbility ability = TheCureAbility.InitAbility();
@@ -15,11 +17,10 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			Texture2D defaultTexture =
 				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_049_small.png");
 
-			var name = "SCP_049_PlagueDoctor";
 			var displayName = "Plague Doctor";
 			var abIds = new List<AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(name, displayName, 0, 2,
+			NewCard.Add(Name, displayName, 0, 2,
 				metaCategories, CardComplexity.Simple, CardTemple.Nature,
 				bonesCost: 6, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);
