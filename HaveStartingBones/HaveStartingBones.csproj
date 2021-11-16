@@ -6,6 +6,11 @@
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Inscryption\BepInEx\plugins\</OutputPath>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>
