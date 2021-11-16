@@ -10,7 +10,7 @@ namespace NestCard
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 	public class HarmonyInit : BaseUnityPlugin
 	{
-		public const string PluginGuid = "julian.inscryption.customAbilities.nest";
+		public const string PluginGuid = "julian.inscryption.abilities.nest";
 		private const string PluginName = "Custom Nest Ability";
 		private const string PluginVersion = "1.1";
 

@@ -10,16 +10,16 @@ namespace Exodia
 	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
 	public class HarmonyInit : BaseUnityPlugin
 	{
-		public const string PluginGuid = "inscryption.julianperge";
-		private const string PluginName = "exodia";
+		public const string PluginGuid = "julianperge.inscryption.cards.exodia";
+		private const string PluginName = "Exodia and the left and right arms to card pool";
 		private const string PluginVersion = "1.2";
 
 		private void Awake()
 		{
+			Exodia.Card.InitCards();
+
 			var harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
-
-			Exodia.Card.InitCards();
 		}
 	}
 

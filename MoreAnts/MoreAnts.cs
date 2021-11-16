@@ -1,17 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using APIPlugin;
 using BepInEx;
-using BepInEx.Logging;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.IO;
 using DiskCardGame;
 using HarmonyLib;
-using UnityEngine;
-using APIPlugin;
-using CardLoaderPlugin.lib;
-using PluginInfo = API.PluginInfo;
 
 namespace MoreAnts
 {
@@ -19,9 +10,9 @@ namespace MoreAnts
 	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
 	public class MoreAnts : BaseUnityPlugin
 	{
-		private const string PluginGuid = "com.julianperge.moreAnts";
+		private const string PluginGuid = "julianperge.inscryption.cards.moreAnts";
 		private const string PluginName = "MoreAnts";
-		private const string PluginVersion = "1.0.0.0";
+		private const string PluginVersion = "1.0";
 
 		private void Awake()
 		{
@@ -44,64 +35,17 @@ namespace MoreAnts
 			harmony.PatchAll();
 		}
 
-		[HarmonyPatch(typeof(DeckInfo), "InitializeAsPlayerDeck")]
-		public class RandomizeBullfrogPatch : DeckInfo
-		{
-			// Token: 0x06000003 RID: 3 RVA: 0x00002098 File Offset: 0x00000298
-			[HarmonyPrefix]
-			public static bool Prefix(ref DeckInfo __instance)
-			{
-				bool flag = StoryEventsData.EventCompleted(StoryEvent.CageCardDiscovered) &&
-				            !StoryEventsData.EventCompleted(StoryEvent.WolfCageBroken);
-				if (flag)
-				{
-					__instance.AddCard(CardLoader.GetCardByName("CagedWolf"));
-				}
-				else
-				{
-					bool flag2 = StoryEventsData.EventCompleted(StoryEvent.TalkingWolfCardDiscovered);
-					if (flag2)
-					{
-						__instance.AddCard(CardLoader.GetCardByName("Wolf_Talking"));
-					}
-					else
-					{
-						__instance.AddCard(CardLoader.GetCardByName("Wolf"));
-					}
-				}
-
-				bool flag3 = StoryEventsData.EventCompleted(StoryEvent.StinkbugCardDiscovered);
-				if (flag3)
-				{
-					__instance.AddCard(CardLoader.GetCardByName("Stinkbug_Talking"));
-				}
-				else
-				{
-					__instance.AddCard(CardLoader.GetCardByName("Opossum"));
-				}
-
-				__instance.AddCard(CardLoader.GetCardByName("Stoat_Talking"));
-				__instance.AddCard(CardLoader.GetCardByName("DomeAnt"));
-				return false;
-			}
-		}
-
-
 		public static void addDomeAnt()
 		{
-			var imgBytesAnts = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
-			Texture2D texAnts = new Texture2D(2, 2);
-			texAnts.LoadImage(imgBytesAnts);
+			var imgBytesAnts = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
 
 			StatIconInfo info2 = StatIconInfo.GetIconInfo(SpecialStatIcon.Ants);
 			info2.rulebookName = "Ant Guardian";
 			info2.rulebookDescription = "Defense is equal to number of ants on field";
 			info2.metaCategories = new List<AbilityMetaCategory>() { AbilityMetaCategory.Part1Rulebook };
-			// new NewAbility(info2, typeof(DomeAnt), texAnts);
 
-			List<CardMetaCategory> metaCategories =
-				new List<CardMetaCategory>() { CardMetaCategory.ChoiceNode, CardMetaCategory.TraderOffer };
-			// metaCategories.Add(CardMetaCategory.Rare);
+			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
+
 			string name = "DomeAnt";
 			string displayedName = "Dome Ant";
 			string descryption = "Loves to guard his friends";
@@ -110,30 +54,18 @@ namespace MoreAnts
 			List<Tribe> tribes = new List<Tribe>() { Tribe.Insect };
 			List<Trait> traits = new List<Trait>() { Trait.Ant };
 
-			// var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
-			// Texture2D tex = new Texture2D(2, 2);
-			// tex.LoadImage(imgBytes);
-
 			List<SpecialTriggeredAbility> abilities = new List<SpecialTriggeredAbility>() { SpecialTriggeredAbility.Ant };
 			NewCard.Add(
-				name,
-				metaCategories,
-				CardComplexity.Advanced,
-				CardTemple.Nature,
-				displayedName,
-				0, 2, description: descryption,
-				evolveParams: evolveParams,
-				cost: 1,
-				tex: texAnts,
-				specialStatIcon: SpecialStatIcon.Ants,
-				specialAbilities: abilities,
-				tribes: tribes,
-				traits: traits
+				name, displayedName, 0, 2,
+				metaCategories, CardComplexity.Advanced, CardTemple.Nature, descryption,
+				evolveParams: evolveParams, bloodCost: 1, defaultTex: imgBytesAnts,
+				specialStatIcon: SpecialStatIcon.Ants, specialAbilities: abilities,
+				tribes: tribes, traits: traits
 			);
 		}
 	}
 
-	[HarmonyPatch(typeof(DiskCardGame.Ant))]
+	[HarmonyPatch(typeof(Ant))]
 	public class VarStatPatch
 	{
 		[HarmonyPatch(nameof(Ant.GetStatValues))]
@@ -357,7 +289,7 @@ namespace MoreAnts
 	// 	}
 	// }
 
-	[HarmonyPatch(typeof(DiskCardGame.CardStatIcons))]
+	[HarmonyPatch(typeof(CardStatIcons))]
 	public class CardStatIconPatch
 	{
 		[HarmonyPatch(nameof(CardStatIcons.AssignStatIcon))]
@@ -366,11 +298,10 @@ namespace MoreAnts
 		{
 			if (playableCard is not null && (playableCard.name.Contains("Ant") || playableCard.name.Contains("ant")))
 			{
-				
 				FileLog.Log($"AssignStatIcon called for card [{playableCard.name}]." +
 				            $"\n-->Attack icon {__instance.attackIconRenderer.material.mainTexture} " +
 				            $"Health icon {__instance.healthIconRenderer.material.mainTexture}");
-				
+
 				StatIconInteractable component = __instance.attackIconRenderer.GetComponent<StatIconInteractable>();
 				StatIconInteractable component2 = __instance.healthIconRenderer.GetComponent<StatIconInteractable>();
 				__instance.attackIconRenderer.material.mainTexture = null;
@@ -388,6 +319,7 @@ namespace MoreAnts
 						__instance.attackIconRenderer.material.mainTexture = iconInfo.iconGraphic;
 						component.AssignStat(icon, playableCard);
 					}
+
 					if (!iconInfo.appliesToHealth)
 					{
 						FileLog.Log($"--> Applies to health [{iconInfo.appliesToHealth}]");
@@ -395,6 +327,7 @@ namespace MoreAnts
 						component2.AssignStat(icon, playableCard);
 					}
 				}
+
 				FileLog.Log("-> Finished assigning new vars\n");
 				return false;
 			}
