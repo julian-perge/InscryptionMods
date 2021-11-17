@@ -1,80 +1,53 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
+﻿using System;
 using BepInEx;
+using BepInEx.Logging;
 using DiskCardGame;
 using HarmonyLib;
 
 namespace MoreAnts
 {
-	[BepInPlugin("com.julianperge.moreAnts", "Dome Ant", "1.0")]
-	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
+	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+	[BepInDependency("cyantist.inscryption.api")]
 	public class MoreAnts : BaseUnityPlugin
 	{
-		private const string PluginGuid = "julianperge.inscryption.cards.moreAnts";
+		public const string PluginGuid = "julianperge.inscryption.cards.moreAnts";
 		private const string PluginName = "MoreAnts";
 		private const string PluginVersion = "1.0";
+		internal static ManualLogSource Log;
 
-		private void Awake()
+		void Awake()
 		{
-			// var imgBytes = System.IO.File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/skele2.png");
-			// Texture2D tex = new Texture2D(2, 2);
-			// tex.LoadImage(imgBytes);
+			Log = base.Logger;
 
-			// new CustomCard("Bullfrog") { tex: tex };
-
-			// CardUtils.PrintAllCardInfo();
-
-			// addDomeAnt();
-
-			// var ants = StatIconInfo.AllIconInfo.Find((StatIconInfo x) => x.iconType == SpecialStatIcon.Ants);
-			// ants.appliesToAttack = false;
-			// ants.appliesToHealth = true;
-			// StatIconInfo.AllIconInfo.Add(ants);
+			DomeAnt.InitCard();
 
 			Harmony harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
 		}
-
-		public static void addDomeAnt()
-		{
-			var imgBytesAnts = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
-
-			StatIconInfo info2 = StatIconInfo.GetIconInfo(SpecialStatIcon.Ants);
-			info2.rulebookName = "Ant Guardian";
-			info2.rulebookDescription = "Defense is equal to number of ants on field";
-			info2.metaCategories = new List<AbilityMetaCategory>() { AbilityMetaCategory.Part1Rulebook };
-
-			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
-
-			string name = "DomeAnt";
-			string displayedName = "Dome Ant";
-			string descryption = "Loves to guard his friends";
-			EvolveParams evolveParams =
-				new EvolveParams() { turnsToEvolve = 1, evolution = CardLoader.GetCardByName("AntQueen") };
-			List<Tribe> tribes = new List<Tribe>() { Tribe.Insect };
-			List<Trait> traits = new List<Trait>() { Trait.Ant };
-
-			List<SpecialTriggeredAbility> abilities = new List<SpecialTriggeredAbility>() { SpecialTriggeredAbility.Ant };
-			NewCard.Add(
-				name, displayedName, 0, 2,
-				metaCategories, CardComplexity.Advanced, CardTemple.Nature, descryption,
-				evolveParams: evolveParams, bloodCost: 1, defaultTex: imgBytesAnts,
-				specialStatIcon: SpecialStatIcon.Ants, specialAbilities: abilities,
-				tribes: tribes, traits: traits
-			);
-		}
 	}
 
-	[HarmonyPatch(typeof(Ant))]
-	public class VarStatPatch
+	// add this to your deck by scrolling upwards/pressing w key when at the map
+	[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
+	public class AddCardsToDeckPatch
 	{
-		[HarmonyPatch(nameof(Ant.GetStatValues))]
-		[HarmonyPostfix]
-		public static int[] ChangeStatValues(int[] __result)
+		private static bool allowSettingDeck = true;
+
+		[HarmonyPrefix]
+		public static void AddCardsToDeck()
 		{
-			var attack = __result[0];
-			var health = __result[1];
-			return new int[] { health, attack };
+			if (allowSettingDeck)
+			{
+				Console.WriteLine("Starting to load Exodia cards into deck");
+				CardInfo card = CardLoader.GetCardByName("DomeAnt");
+
+				// CardUtils.PrintCardInfo(card);
+
+				// SaveManager.SaveFile.CurrentDeck.Cards.Clear();
+
+				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
+				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
+				SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
+			}
 		}
 	}
 
@@ -289,112 +262,55 @@ namespace MoreAnts
 	// 	}
 	// }
 
-	[HarmonyPatch(typeof(CardStatIcons))]
-	public class CardStatIconPatch
+
+	// [HarmonyPatch(nameof(CardStatIcons.UpdateIconsActive))]
+	// [HarmonyPostfix]
+	// public static void ChangeIcon(ref CardStatIcons __instance, bool attackActive, bool healthActive)
+	// {
+	// 	FileLog.Log($"UpdateIconsActive called. Attack active [{attackActive}] Health active [{healthActive}]\n");
+	// }
+
+	[HarmonyPatch(typeof(CustomType))]
+	public class CardPatch
 	{
-		[HarmonyPatch(nameof(CardStatIcons.AssignStatIcon))]
+		[HarmonyPatch(nameof(CustomType.GetType), typeof(string), typeof(string))]
 		[HarmonyPrefix]
-		public static bool ChangeIcon(CardStatIcons __instance, SpecialStatIcon icon, PlayableCard playableCard)
+		public static void ChangeAfterMethodRan(string nameSpace, string typeName)
 		{
-			if (playableCard is not null && (playableCard.name.Contains("Ant") || playableCard.name.Contains("ant")))
-			{
-				FileLog.Log($"AssignStatIcon called for card [{playableCard.name}]." +
-				            $"\n-->Attack icon {__instance.attackIconRenderer.material.mainTexture} " +
-				            $"Health icon {__instance.healthIconRenderer.material.mainTexture}");
-
-				StatIconInteractable component = __instance.attackIconRenderer.GetComponent<StatIconInteractable>();
-				StatIconInteractable component2 = __instance.healthIconRenderer.GetComponent<StatIconInteractable>();
-				__instance.attackIconRenderer.material.mainTexture = null;
-				component.AssignStat(SpecialStatIcon.None, playableCard);
-				__instance.healthIconRenderer.material.mainTexture = null;
-				component2.AssignStat(SpecialStatIcon.None, playableCard);
-				if (icon != SpecialStatIcon.None)
-				{
-					StatIconInfo iconInfo = StatIconInfo.GetIconInfo(icon);
-					FileLog.Log($"-> Applies to attack [{iconInfo.appliesToAttack}]");
-					FileLog.Log($"-> Applies to health [{iconInfo.appliesToHealth}]");
-					if (!iconInfo.appliesToAttack)
-					{
-						FileLog.Log($"--> Applies to attack [{iconInfo.appliesToAttack}]");
-						__instance.attackIconRenderer.material.mainTexture = iconInfo.iconGraphic;
-						component.AssignStat(icon, playableCard);
-					}
-
-					if (!iconInfo.appliesToHealth)
-					{
-						FileLog.Log($"--> Applies to health [{iconInfo.appliesToHealth}]");
-						__instance.healthIconRenderer.material.mainTexture = iconInfo.iconGraphic;
-						component2.AssignStat(icon, playableCard);
-					}
-				}
-
-				FileLog.Log("-> Finished assigning new vars\n");
-				return false;
-			}
-
-			return true;
+			MoreAnts.Log.LogInfo($"Called CustomType.GetType with nameSpace [{nameSpace}] typeName [{typeName}]");
 		}
 
-		// [HarmonyPatch(nameof(CardStatIcons.UpdateIconsActive))]
-		// [HarmonyPostfix]
-		// public static void ChangeIcon(ref CardStatIcons __instance, bool attackActive, bool healthActive)
+		//
+		// [HarmonyPatch(nameof(Card.AttachAbilities))]
+		// [HarmonyPrefix]
+		// public static void PrefixAttach(ref Card __instance, CardInfo info)
 		// {
-		// 	FileLog.Log($"UpdateIconsActive called. Attack active [{attackActive}] Health active [{healthActive}]\n");
+		// 	if (info.HasTrait(Trait.Ant))
+		// 	{
+		// 		MoreAnts.Log.LogInfo($"Card AttachAbilities was called with {info.name}");
+		// 		// foreach (var a in info.SpecialAbilities)
+		// 		// {
+		// 		// 	// MoreAnts.Log.LogInfo($"-> SpecAbility {a.ToString()} Base GO {__instance.gameObject}");
+		// 		// 	foreach (var value in Enum.GetValues(typeof(SpecialTriggeredAbility)))
+		// 		// 	{
+		// 		// 		MoreAnts.Log.LogInfo($"--> spectrigabil [{(int)value}] {value}");
+		// 		// 	}
+		// 		// }
+		//
+		// 		// FileLog.Log("\n");
+		// 	}
 		// }
 	}
 
-	// [HarmonyPatch(typeof(DiskCardGame.Card))]
-	// public class CardPatch
-	// {
-	// 	[HarmonyPatch(nameof(Card.UpdateInteractableIcons))]
-	// 	[HarmonyPostfix]
-	// 	public static void ChangeAfterMethodRan(ref Card __instance)
-	// 	{
-	// 		if (__instance != null)
-	// 		{
-	// 			var pCard = (__instance as PlayableCard);
-	// 			if (__instance is PlayableCard && (pCard.name.Contains("Ant") || pCard.name.Contains("ant")))
-	// 			{
-	// 				// FileLog.Log($"-> [UpdateInteractableIcons] Setting icons back to false, true");
-	// 				// __instance.statIcons.UpdateIconsActive(false, true);
-	// 				// FileLog.Log($"UpdateInteractableIcons was called");
-	// 				// FileLog.Log($"-> pCard {pCard.name}");
-	// 				// foreach (var hiddenAbility in pCard.Status.hiddenAbilities)
-	// 				// {
-	// 				// 	FileLog.Log($"-> hAbility {hiddenAbility}");
-	// 				// }
-	//
-	// 				// FileLog.Log("\n");
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	[HarmonyPatch(nameof(Card.AttachAbilities))]
-	// 	[HarmonyPrefix]
-	// 	public static void PrefixAttach(ref Card __instance, CardInfo info)
-	// 	{
-	// 		if (info.name.Equals("Ant"))
-	// 		{
-	// 			FileLog.Log($"Card AttachAbilities was called with {info.name}");
-	// 			foreach (var a in info.SpecialAbilities)
-	// 			{
-	// 				FileLog.Log($"-> SpecAbility {a.ToString()} Base GO {__instance.gameObject}");
-	// 			}
-	//
-	// 			FileLog.Log("\n");
-	// 		}
-	// 	}
-	// }
 
-
-	// [HarmonyPatch(typeof(DiskCardGame.PlayableCard))]
+	// [HarmonyPatch(typeof(PlayableCard))]
 	// public class SelectCardInitPatch
 	// {
 	// 	[HarmonyPatch(nameof(PlayableCard.AttachAbilities))]
 	// 	[HarmonyPrefix]
 	// 	public static void Prefix(ref PlayableCard __instance, CardInfo info)
 	// 	{
-	// 		if (info.name.Equals("Ant"))
+	// 		if (info.HasTrait(Trait.Ant))
 	// 		{
 	// 			FileLog.Log(
 	// 				$"PlayableCard AttachAbilities was called with {info.name} Temp mods {__instance.TemporaryMods.Count}");
@@ -407,14 +323,14 @@ namespace MoreAnts
 	// }
 
 
-	// [HarmonyPatch(typeof(DiskCardGame.CardTriggerHandler))]
+	// [HarmonyPatch(typeof(CardTriggerHandler))]
 	// public class CardTriggerHandlerPatch
 	// {
-	// 	[HarmonyPatch(nameof(DiskCardGame.CardTriggerHandler.AddAbility), new[] { typeof(SpecialTriggeredAbility) })]
+	// 	[HarmonyPatch("GetType", typeof(string))]
 	// 	[HarmonyPrefix]
-	// 	public static void PrefixTest(ref CardTriggerHandler __instance, SpecialTriggeredAbility ability)
+	// 	public static void PrefixTest2(string typeName)
 	// 	{
-	// 		FileLog.Log($"CardTriggerHandler addability was called [{ability}]\n");
+	// 		MoreAnts.Log.LogInfo($"Called CardTriggerHandler.GetType with typeName {typeName}");
 	// 	}
 	// }
 
