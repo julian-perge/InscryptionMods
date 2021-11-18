@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using DiskCardGame;
 using HarmonyLib;
 
 namespace MoreAnts
@@ -9,8 +8,8 @@ namespace MoreAnts
 	[BepInDependency("cyantist.inscryption.api")]
 	public class MoreAnts : BaseUnityPlugin
 	{
-		public const string PluginGuid = "julianperge.inscryption.cards.moreAnts";
-		private const string PluginName = "MoreAnts";
+		public const string PluginGuid = "julianperge.inscryption.cards.healthForAnts";
+		private const string PluginName = "HealthForAnts";
 		private const string PluginVersion = "1.0";
 		internal static ManualLogSource Log;
 
@@ -18,39 +17,10 @@ namespace MoreAnts
 		{
 			Log = base.Logger;
 
-			DomeAnt.InitCard();
+			HealthForAnts.InitStatIconAndAbility();
 
 			Harmony harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
-		}
-	}
-
-	// add this to your deck by scrolling upwards/pressing w key when at the map
-	[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
-	public class AddCardsToDeckPatch
-	{
-		private static bool allowSettingDeck = true;
-
-		[HarmonyPrefix]
-		public static void AddCardsToDeck()
-		{
-			if (allowSettingDeck)
-			{
-				CardInfo card = CardLoader.GetCardByName("DomeAnt");
-				// foreach (var specialTriggeredAbility in card.SpecialAbilities)
-				// {
-				// 	MoreAnts.Log.LogInfo($"-> special ability for [{card.name}] => [{specialTriggeredAbility}]");
-				// }
-
-				SaveManager.SaveFile.CurrentDeck.Cards.Clear();
-
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-			}
 		}
 	}
 }
