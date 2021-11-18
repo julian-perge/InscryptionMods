@@ -2,10 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNamespace>MoreAnts</RootNamespace>
-		<AssemblyName>MoreAnts</AssemblyName>
 		<LangVersion>9</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<PackageId>HealthForAnts</PackageId>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

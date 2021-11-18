@@ -5,7 +5,7 @@ using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
-namespace MoreAnts
+namespace HealthForAnts
 {
 	public class CardExample
 	{

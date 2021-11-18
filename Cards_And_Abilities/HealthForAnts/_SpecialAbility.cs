@@ -3,9 +3,9 @@ using System.Linq;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
-using static MoreAnts.MoreAnts;
+using static HealthForAnts.HarmonyInit;
 
-namespace MoreAnts
+namespace HealthForAnts
 {
 	public class HealthForAnts : VariableStatBehaviour
 	{

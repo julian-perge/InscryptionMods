@@ -2,11 +2,11 @@
 using BepInEx.Logging;
 using HarmonyLib;
 
-namespace MoreAnts
+namespace HealthForAnts
 {
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
 	[BepInDependency("cyantist.inscryption.api")]
-	public class MoreAnts : BaseUnityPlugin
+	public class HarmonyInit : BaseUnityPlugin
 	{
 		public const string PluginGuid = "julianperge.inscryption.cards.healthForAnts";
 		private const string PluginName = "HealthForAnts";
