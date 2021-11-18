@@ -33,25 +33,23 @@ namespace MoreAnts
 			return array;
 		}
 
-		public static NewSpecialAbility InitIconAndAbility()
+		public static NewSpecialAbility InitStatIconAndAbility()
 		{
 			StatIconInfo info = ScriptableObject.CreateInstance<StatIconInfo>();
-			info.iconType = (SpecialStatIcon)8;
 			info.appliesToAttack = false;
 			info.appliesToHealth = true;
 			info.rulebookName = "Ants (Health)";
 			info.rulebookDescription =
 				"The value represented with this sigil will be equal to the number of Ants that the owner has on their side of the table.";
-			info.metaCategories = new() { AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook };
 			var sId = SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			var defaultTex = new Texture2D(2, 2);
-			byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/ability_drawant.png");
+			byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/ants_stat_icon.png");
 			bool isLoaded = defaultTex.LoadImage(imgBytes);
 			defaultTex.LoadImage(imgBytes);
 			info.iconGraphic = defaultTex;
 
-			var domeAntSpecAbility = new NewSpecialAbility(info, typeof(DomeAnt), defaultTex, sId);
+			var domeAntSpecAbility = new NewSpecialAbility(typeof(DomeAnt), sId, info);
 			specialStatIcon = domeAntSpecAbility.statIconInfo.iconType;
 
 			return domeAntSpecAbility;
@@ -59,7 +57,7 @@ namespace MoreAnts
 
 		public static void InitCard()
 		{
-			var newAbility = InitIconAndAbility();
+			var newAbility = InitStatIconAndAbility();
 
 			var defaultTex = new Texture2D(2, 2);
 			byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
