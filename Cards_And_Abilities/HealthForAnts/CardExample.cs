@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using APIPlugin;
-using CardLoaderPlugin.lib;
 using DiskCardGame;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ namespace HealthForAnts
 	{
 		public static void InitCard()
 		{
-			var newAbility = HealthForAnts.InitStatIconAndAbility();
+			var newAbility = HarmonyInit.antHealthSpecialAbility;
 
 			var defaultTex = new Texture2D(2, 2);
 			byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
