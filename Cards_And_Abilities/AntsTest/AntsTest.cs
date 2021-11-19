@@ -3,7 +3,7 @@ using System.IO;
 using APIPlugin;
 using BepInEx;
 using DiskCardGame;
-using HarmonyLib;
+using HealthForAnts;
 using UnityEngine;
 
 namespace AntsTest
@@ -34,7 +34,7 @@ namespace AntsTest
 			List<Tribe> tribes = new() { Tribe.Insect };
 			List<Trait> traits = new() { Trait.Ant };
 
-			var antHealthAbility = HealthForAnts.HarmonyInit.antHealthSpecialAbility;
+			var antHealthAbility = HarmonyInit.antHealthSpecialAbility;
 			var sAbIds = new List<SpecialAbilityIdentifier>() { antHealthAbility.id };
 
 			NewCard.Add(
@@ -44,40 +44,6 @@ namespace AntsTest
 				specialStatIcon: antHealthAbility.statIconInfo.iconType, specialAbilitiesIdsParam: sAbIds,
 				tribes: tribes, traits: traits
 			);
-
-			Harmony harmony = new Harmony(PluginGuid);
-			harmony.PatchAll();
-		}
-	}
-
-	// add this to your deck by scrolling upwards/pressing w key when at the map
-	[HarmonyPatch(typeof(DeckReviewSequencer), nameof(DeckReviewSequencer.OnEnterDeckView))]
-	public class AddCardsToDeckPatch
-	{
-		private static bool allowSettingDeck = true;
-
-		[HarmonyPrefix]
-		public static void AddCardsToDeck()
-		{
-			if (allowSettingDeck)
-			{
-				CardInfo card = CardLoader.GetCardByName("DomeAnt");
-				// foreach (var specialTriggeredAbility in card.SpecialAbilities)
-				// {
-				// 	MoreAnts.Log.LogInfo($"-> special ability for [{card.name}] => [{specialTriggeredAbility}]");
-				// }
-
-				SaveManager.SaveFile.CurrentDeck.Cards.Clear();
-
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(card);
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-				SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Ant"));
-			}
 		}
 	}
 }
