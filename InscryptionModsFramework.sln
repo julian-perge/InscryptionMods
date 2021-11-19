@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{64FF84
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntsTest", "Cards_And_Abilities\AntsTest\AntsTest.csproj", "{863C3598-8FE0-4851-94B3-F79265993E9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excavator", "Cards_And_Abilities\Excavator\Excavator.csproj", "{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,6 +88,10 @@ Global
 		{863C3598-8FE0-4851-94B3-F79265993E9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{863C3598-8FE0-4851-94B3-F79265993E9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{863C3598-8FE0-4851-94B3-F79265993E9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,5 +112,6 @@ Global
 		{4241E77D-09BF-4C12-9527-E7256151C0CD} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 		{0C8A6530-9CFC-48D3-8F7A-74C9E77955E5} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 		{863C3598-8FE0-4851-94B3-F79265993E9F} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
+		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 	EndGlobalSection
 EndGlobal
