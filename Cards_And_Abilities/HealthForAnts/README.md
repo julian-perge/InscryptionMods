@@ -7,11 +7,13 @@ found [here](https://docs.bepinex.dev/articles/user_guide/installation/index.htm
 
 You will also need version 1.11+ of the [InscryptionAPI](https://github.com/ScottWilson0903/InscryptionAPI) plugin.
 
-To install this mod, you simply need to put the **AntsForHealth** folder in **BepInEx/plugins**.
+To install this mod, you simply need to put the **HealthForAnts.dll** file in the same folder that the **InscryptionAPI
+plugin** exists.
 
 ## Using HealthForAnts for your cards
 
-In your project, you must add a reference to the HealthForAnts.dll.
+In your project, you must add a reference to the
+HealthForAnts.dll. [Example here](https://github.com/julian-perge/InscryptionMods/blob/main/Cards_And_Abilities/AntsTest/AntsTest.cs)
 
 Once you've done that, create a class file and add these lines of code at the top. This will load the HealthForAnts
 ability and all the necessary abilities before your card gets loaded:
