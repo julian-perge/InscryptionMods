@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntsTest", "Cards_And_Abili
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Excavator", "Cards_And_Abilities\Excavator\Excavator.csproj", "{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WheelOfFortune", "Cards_And_Abilities\WheelOfFortune\WheelOfFortune.csproj", "{F2A633B0-A3A0-476E-B267-58FE7E9F083E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2A633B0-A3A0-476E-B267-58FE7E9F083E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A633B0-A3A0-476E-B267-58FE7E9F083E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A633B0-A3A0-476E-B267-58FE7E9F083E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A633B0-A3A0-476E-B267-58FE7E9F083E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,5 +119,6 @@ Global
 		{0C8A6530-9CFC-48D3-8F7A-74C9E77955E5} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 		{863C3598-8FE0-4851-94B3-F79265993E9F} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 		{CF0EEC1B-4E8D-4D76-8A66-16ED45E25824} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
+		{F2A633B0-A3A0-476E-B267-58FE7E9F083E} = {01573B43-6D5B-4507-A451-9FECDFECBE1F}
 	EndGlobalSection
 EndGlobal

@@ -1,9 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNamespace>FirePitIncreaseStatBoost</RootNamespace>
-		<AssemblyName>FirePitIncreaseStatBoost</AssemblyName>
 		<LangVersion>9</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
@@ -30,6 +28,10 @@
 		</Reference>
 		<Reference Include="Assembly-CSharp">
 			<HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>..\..\lib\Sirenix.Serialization.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
