@@ -7,10 +7,11 @@ namespace PeltsAreAlwaysFree
 	public class AlwaysFreePelts
 	{
 		[HarmonyPrefix]
+		// ref int[] __result means the result that is returned from the call.
 		static bool Prefix(ref int[] __result)
 		{
 			__result = new int[] { 0, 0, 0 };
-			return false;
+			return false; // skips the rest of the real code
 		}
 	}
 }
