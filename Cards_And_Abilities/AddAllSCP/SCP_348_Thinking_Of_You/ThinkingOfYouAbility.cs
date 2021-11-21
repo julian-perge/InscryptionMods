@@ -77,7 +77,7 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_348_sigil_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_348_sigil_small.png");
 
 			// set ability to behavior class
 			NewAbility newAbility = new NewAbility(

@@ -13,7 +13,7 @@ namespace HealthForAnts
 			var newAbility = HarmonyInit.antHealthSpecialAbility;
 
 			var defaultTex = new Texture2D(2, 2);
-			byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
+			byte[] imgBytes = File.ReadAllBytes("dome_ant.png");
 			bool isLoaded = defaultTex.LoadImage(imgBytes);
 			defaultTex.LoadImage(imgBytes);
 
@@ -30,9 +30,8 @@ namespace HealthForAnts
 			var sAbIds = new List<SpecialAbilityIdentifier>() { newAbility.id };
 
 			NewCard.Add(
-				name, metaCategories, CardComplexity.Advanced, CardTemple.Nature,
-				displayedName, 0, 1, descryption,
-				evolveParams: evolveParams, cost: 1, tex: defaultTex,
+				name, displayedName, 0, 1, metaCategories, CardComplexity.Advanced, CardTemple.Nature,
+				descryption, evolveParams: evolveParams, bloodCost: 1, defaultTex: defaultTex,
 				specialStatIcon: newAbility.statIconInfo.iconType, specialAbilitiesIdsParam: sAbIds,
 				tribes: tribes, traits: traits
 			);

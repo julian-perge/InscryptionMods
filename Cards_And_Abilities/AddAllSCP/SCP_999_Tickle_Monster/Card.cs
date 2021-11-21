@@ -15,7 +15,7 @@ namespace AddAllSCP.SCP_999_Tickle_Monster
 			List<Ability> abilities = new List<Ability> { Ability.DebuffEnemy, Ability.BuffNeighbours };
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_999_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_999_small.png");
 
 			var displayName = "Tickle Monster";
 			var desc =

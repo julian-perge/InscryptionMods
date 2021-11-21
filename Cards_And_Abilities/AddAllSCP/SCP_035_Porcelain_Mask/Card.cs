@@ -18,7 +18,7 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 			List<Trait> traits = new List<Trait>() { Trait.Terrain }; // this makes it not sacrificable
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_035_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_035_small.png");
 
 			string displayName = "Porcelain Mask";
 			string desc = "A highly corrosive and degenerative viscous liquid constantly seeps from the eye and mouth holes.";

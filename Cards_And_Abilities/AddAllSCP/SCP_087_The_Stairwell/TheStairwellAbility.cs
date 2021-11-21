@@ -57,7 +57,7 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_087_ability.png");
+				CardUtils.getAndloadImageAsTexture("scp_087_ability.png");
 
 			// set ability to behavior class
 			NewAbility theStairwellAbility = new NewAbility(info, typeof(TheStairwellAbility), sigilTex,

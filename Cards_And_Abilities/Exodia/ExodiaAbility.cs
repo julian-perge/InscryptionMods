@@ -79,7 +79,7 @@ namespace Exodia
 			var abIds = AbilityIdentifier.GetAbilityIdentifier(HarmonyInit.PluginGuid, info.rulebookName);
 
 			// get Exodia art
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia_sigil_small.png");
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("exodia_sigil_small.png");
 
 			// set ability to behavior class
 			NewAbility exodiaAbility = new NewAbility(info, typeof(ExodiaAbility), tex, abIds);

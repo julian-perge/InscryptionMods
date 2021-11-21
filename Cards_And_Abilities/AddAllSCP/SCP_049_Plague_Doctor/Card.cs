@@ -15,7 +15,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_049_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_049_small.png");
 
 			var displayName = "Plague Doctor";
 			var abIds = new List<AbilityIdentifier>() { ability.id };

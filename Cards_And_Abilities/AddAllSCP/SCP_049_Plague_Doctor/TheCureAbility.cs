@@ -56,7 +56,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			}
 			else
 			{
-				string nameOfCard = CardUtils.cleanCardName(card.name);
+				string nameOfCard = card.Info.name;
 				HarmonyInitAll.Log.LogDebug($"-> Is Plague Doctor death card was false, checking card name is {nameOfCard}");
 				// if not Plague Doctor death, set to 1/1 and spawn on an open slot on your side of the field
 				var filteredSlots = slots.Where(slot => slot is not null && slot.Card is null);
@@ -93,7 +93,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/double_death_tweak.png");
+				CardUtils.getAndloadImageAsTexture("double_death_tweak.png");
 
 			// set ability to behavior class
 			NewAbility theCureAbility = new NewAbility(info, typeof(TheCureAbility), sigilTex,

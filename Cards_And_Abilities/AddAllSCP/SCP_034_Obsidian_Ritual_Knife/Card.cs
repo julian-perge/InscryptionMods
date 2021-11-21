@@ -16,7 +16,7 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_034_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_034_small.png");
 
 			string displayName = "Ritual Knife";
 			string desc =

@@ -24,7 +24,7 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_354_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_354_small.png");
 
 			var displayName = "Blood Pond";
 			var abIds = new List<AbilityIdentifier>() { ability.id };
@@ -41,9 +41,9 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 			List<Ability> abilities = new List<Ability> { Ability.Brittle };
 
 			Texture2D defaultTextureCreature =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_354_blood_creature_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_354_blood_creature_small.png");
 			Texture2D defaultTextureEntity =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_354_blood_entity_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_354_blood_entity_small.png");
 
 			var displayNameCreature = "Blood Creature";
 			var desc = "Spawned from the Blood Pond.";

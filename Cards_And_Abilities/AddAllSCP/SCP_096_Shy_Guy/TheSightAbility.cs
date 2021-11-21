@@ -126,7 +126,7 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 
 			// get and load artwork
 			var defaultTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_096_ability_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
 
 			// set ability to behavior class
 			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), defaultTex,

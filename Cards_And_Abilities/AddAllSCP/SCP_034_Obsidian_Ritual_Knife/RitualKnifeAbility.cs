@@ -92,7 +92,7 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 		public IEnumerator TransformToCard(string cardToTransformTo)
 		{
 			HarmonyInitAll.Log.LogInfo($"Transforming into [{cardToTransformTo}]");
-			CardInfo cardByName = CardLoader.GetCardByName(CardUtils.cleanCardName(cardToTransformTo));
+			CardInfo cardByName = CardLoader.GetCardByName(cardToTransformTo);
 
 			CardModificationInfo statsMod = GetTransformStatInfo(cardByName);
 			statsMod.nameReplacement = base.Card.Info.DisplayedNameEnglish;
@@ -125,7 +125,7 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_034_sigil_small.png");
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("scp_034_sigil_small.png");
 
 			// set ability to behavior class
 			NewAbility knifeAbility = new NewAbility(info, typeof(RitualKnifeAbility), tex,

@@ -46,7 +46,7 @@ namespace AddAllSCP.SCP_035_Porcelain_Mask
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_035_sigil.png");
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("scp_035_sigil.png");
 
 			// set ability to behavior class
 			NewAbility maskAbility = new NewAbility(info, typeof(MaskAbility), tex,

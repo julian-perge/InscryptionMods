@@ -55,7 +55,7 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 
 			// get and load artwork
 			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_354_blood_pond_ability_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_354_blood_pond_ability_small.png");
 
 			// set ability to behavior class
 			NewAbility bloodPondAbility = new NewAbility(info, typeof(BloodPondAbility), sigilTex,

@@ -15,7 +15,7 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_348_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_348_small.png");
 
 			var displayName = "Thinking Of You";
 			var desc =

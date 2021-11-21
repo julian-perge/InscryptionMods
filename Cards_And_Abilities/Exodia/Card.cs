@@ -23,7 +23,7 @@ namespace Exodia
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia_card_small.png");
+				CardUtils.getAndloadImageAsTexture("exodia_card_small.png");
 
 			var displayName = "The Forbidden One";
 			var desc = "";
@@ -40,10 +40,10 @@ namespace Exodia
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexLeftArm =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia_left_arm_small.png");
+				CardUtils.getAndloadImageAsTexture("exodia_left_arm_small.png");
 
 			Texture2D defaultTexRightArm =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/exodia_right_arm_small.png");
+				CardUtils.getAndloadImageAsTexture("exodia_right_arm_small.png");
 
 			var displayNameLeft = "Left Arm Of Exodia";
 			var displayNameRight = "Right Arm Of Exodia";

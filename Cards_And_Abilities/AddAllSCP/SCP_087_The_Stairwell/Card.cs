@@ -16,7 +16,7 @@ namespace AddAllSCP.SCP_087_The_Stairwell
 			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
 			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("BepInEx/plugins/CardLoader/Artwork/scp_087_small.png");
+				CardUtils.getAndloadImageAsTexture("scp_087_small.png");
 
 			string displayName = "The Stairwell";
 			string desc =

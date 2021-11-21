@@ -67,7 +67,7 @@ namespace NestCard
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D sigilTex = CardUtils.getAndloadImageAsTexture("./Artwork/nest_ability_small.png");
+			Texture2D sigilTex = CardUtils.getAndloadImageAsTexture("nest_ability_small.png");
 
 			// set ability to behavior class
 			NewAbility newAbility = new NewAbility(info, typeof(NestAbility), sigilTex,
