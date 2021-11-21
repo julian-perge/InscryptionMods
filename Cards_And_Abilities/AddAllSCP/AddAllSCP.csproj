@@ -30,6 +30,10 @@
 			<HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="Sirenix.Serialization, Version=2.1.8.0">
+			<HintPath>..\..\lib\Sirenix.Serialization.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 </Project>

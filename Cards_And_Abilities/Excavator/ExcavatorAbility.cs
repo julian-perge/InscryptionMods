@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
+using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
 
@@ -45,6 +46,24 @@ namespace Excavator
 
 			yield return base.LearnAbility(0.25f);
 			yield break;
+		}
+
+		public static NewAbility InitAbility()
+		{
+			// setup ability
+			string name = "Excavator";
+			string desc =
+				"When placed on the board, remove all Terrain cards and for each card removed, place a Squirrel in your hand. ";
+			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
+			var abIds = AbilityIdentifier.GetAbilityIdentifier(HarmonyInit.PluginGuid, info.rulebookName);
+
+			Texture2D tex = CardUtils.getAndloadImageAsTexture("ability_excavator.png");
+
+			// set ability to behavior class
+			NewAbility newAbility = new NewAbility(info, typeof(ExcavatorAbility), tex, abIds);
+			ability = newAbility.ability;
+
+			return newAbility;
 		}
 	}
 }

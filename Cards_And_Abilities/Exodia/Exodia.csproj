@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<AssemblyName>Exodia</AssemblyName>
+		<RootNamespace>Exodia</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>9</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -28,6 +30,10 @@
 		</Reference>
 		<Reference Include="Assembly-CSharp">
 			<HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>..\..\lib\Sirenix.Serialization.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>

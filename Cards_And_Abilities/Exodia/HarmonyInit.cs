@@ -1,5 +1,4 @@
 ﻿using System;
-using APIPlugin;
 using BepInEx;
 using DiskCardGame;
 using HarmonyLib;
@@ -39,7 +38,7 @@ namespace Exodia
 				CardInfo cardLeftArm = CardLoader.GetCardByName(Exodia.Card.NameLeftArm);
 				CardInfo cardRightArm = CardLoader.GetCardByName(Exodia.Card.NameRightArm);
 
-				CardUtils.PrintCardInfo(card);
+				// CardUtils.PrintCardInfo(card);
 
 				SaveManager.SaveFile.CurrentDeck.Cards.Clear();
 

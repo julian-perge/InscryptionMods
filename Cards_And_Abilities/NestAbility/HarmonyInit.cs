@@ -8,6 +8,7 @@ using HarmonyLib;
 namespace NestCard
 {
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
 	public class HarmonyInit : BaseUnityPlugin
 	{
 		public const string PluginGuid = "julian.inscryption.abilities.nest";
