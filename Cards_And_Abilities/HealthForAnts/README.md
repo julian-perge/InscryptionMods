@@ -35,10 +35,8 @@ public class AntsTest : BaseUnityPlugin
 {
     void Awake()
     {
-        Texture2D defaultTex = new Texture2D(2, 2);
-        byte[] imgBytes = File.ReadAllBytes("BepInEx/plugins/CardLoader/Artwork/dome_ant.png");
-        bool isLoaded = defaultTex.LoadImage(imgBytes);
-        defaultTex.LoadImage(imgBytes);
+    		// this will load the file into the texture for you
+        Texture2D defaultTex = CardUtils.getAndloadImageAsTexture("dome_ant.png");
 
         List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 
