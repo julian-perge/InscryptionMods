@@ -82,10 +82,10 @@ namespace Exodia
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("exodia_sigil_small.png");
 
 			// set ability to behavior class
-			NewAbility exodiaAbility = new NewAbility(info, typeof(ExodiaAbility), tex, abIds);
-			ability = exodiaAbility.ability;
+			NewAbility newAbility = new NewAbility(info, typeof(ExodiaAbility), tex, abIds);
+			ability = newAbility.ability;
 
-			return exodiaAbility;
+			return newAbility;
 		}
 	}
 }
