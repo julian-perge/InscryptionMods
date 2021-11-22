@@ -3,15 +3,15 @@ using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
 
-namespace WheelOfFortune
+namespace AddAllTarotCards.Wheel_Of_Fortune
 {
 	public static class Card_WOF
 	{
-		public const string Name = "WheelOfFortune";
+		public const string Name = "Tarot_WheelOfFortune";
 
 		public static CardInfo InitCard()
 		{
-			NewSpecialAbility ability = SpecialAbility.InitAbility();
+			NewSpecialAbility ability = SpecialAbility_WheelOfFortune.InitAbility();
 
 			Texture2D defaultTexture =
 				CardUtils.getAndloadImageAsTexture("card_wof.png");
@@ -22,9 +22,9 @@ namespace WheelOfFortune
 
 			NewCard.Add(Name, displayName, 0, 0,
 				CardUtils.getRareCardMetadata, CardComplexity.Simple, CardTemple.Nature,
-				desc, bloodCost: 0, defaultTex: defaultTexture,
+				desc, bloodCost: 2, defaultTex: defaultTexture,
 				appearanceBehaviour: CardUtils.getRareAppearance,
-				specialStatIcon: SpecialAbility._iconType,
+				specialStatIcon: SpecialAbility_WheelOfFortune._iconType,
 				specialAbilitiesIdsParam: sId, onePerDeck: true
 			);
 

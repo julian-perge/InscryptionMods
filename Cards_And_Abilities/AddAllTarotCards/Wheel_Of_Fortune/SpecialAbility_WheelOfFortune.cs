@@ -2,11 +2,11 @@
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
-using static WheelOfFortune.HarmonyInit;
+using static AddAllTarotCards.HarmonyInit;
 
-namespace WheelOfFortune
+namespace AddAllTarotCards.Wheel_Of_Fortune
 {
-	public class SpecialAbility : VariableStatBehaviour
+	public class SpecialAbility_WheelOfFortune : VariableStatBehaviour
 	{
 		public static NewSpecialAbility _SpecialAbility;
 		public static SpecialStatIcon _iconType;
@@ -28,7 +28,7 @@ namespace WheelOfFortune
 			// this will generate a number that is >=1 and <= 6
 			attack = UnityEngine.Random.RandomRangeInt(1, 7);
 			health = MAX_TOTAL_STATS - attack; // 7 minus whatever attack is. Lowest value possible is 1.
-			Log.LogDebug($"-> Attack [{attack}] Health [{health}]");
+			Log.LogDebug($"-> Wheel of Fortune - Attack [{attack}] Health [{health}]");
 			return base.OnDrawn();
 		}
 
@@ -65,7 +65,7 @@ namespace WheelOfFortune
 			var sId = SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// set ability to behavior class
-			var newAbility = new NewSpecialAbility(typeof(SpecialAbility), sId, info);
+			var newAbility = new NewSpecialAbility(typeof(SpecialAbility_WheelOfFortune), sId, info);
 			_iconType = newAbility.statIconInfo.iconType;
 			_SpecialAbility = newAbility; // this is so we can use it in the HarmonyInit class
 
