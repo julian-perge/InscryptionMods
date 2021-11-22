@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
@@ -12,14 +11,8 @@ namespace TheEmperorAndEmpress
 	{
 		public static NewSpecialAbility _SpecialAbility;
 
-		private bool isBaseCardEmperor;
 		private bool modsHaveBeenApplied;
-		private CardSlot slotWithPartner;
-
-		private void Start()
-		{
-			isBaseCardEmperor = base.Card.Info.name.Equals("ThEmperor");
-		}
+		private CardSlot slotWithEmperor;
 
 		private CardModificationInfo ReignOfPowerMods
 		{
@@ -27,16 +20,11 @@ namespace TheEmperorAndEmpress
 			{
 				return new()
 				{
-					abilities = new List<Ability>() { Ability.BuffNeighbours, Ability.PreventAttack },
+					abilities = new List<Ability>() { Ability.BuffNeighbours, Ability.DebuffEnemy },
 					attackAdjustment = 1,
 					healthAdjustment = 2
 				};
 			}
-		}
-
-		private bool IsCardEmpress(PlayableCard playableCard)
-		{
-			return playableCard.Info.name.Equals("TheEmpress");
 		}
 
 		private bool IsCardEmperor(PlayableCard playableCard)
@@ -44,20 +32,12 @@ namespace TheEmperorAndEmpress
 			return playableCard.Info.name.Equals("TheEmperor");
 		}
 
-		private bool IsBaseEmperorAndOtherEmpress(PlayableCard otherCard)
+		private CardSlot GetEmperorCardSlotIfExists()
 		{
-			return isBaseCardEmperor && IsCardEmpress(otherCard);
-		}
-
-		private bool IsBaseEmpressAndOtherEmperor(PlayableCard otherCard)
-		{
-			return !isBaseCardEmperor && IsCardEmperor(otherCard);
-		}
-
-		private bool isBothCardsOnField(PlayableCard otherCard)
-		{
-			// one or the other but not both
-			return IsBaseEmperorAndOtherEmpress(otherCard) ^ IsBaseEmpressAndOtherEmperor(otherCard);
+			return Singleton<BoardManager>
+				.Instance
+				.GetSlots(true)
+				.Find(slot => slot && slot.Card && slot != base.PlayableCard.Slot && IsCardEmperor(slot.Card));
 		}
 
 		public override bool RespondsToDie(bool wasSacrifice, PlayableCard killer)
@@ -67,10 +47,10 @@ namespace TheEmperorAndEmpress
 
 		public override IEnumerator OnDie(bool wasSacrifice, PlayableCard killer)
 		{
-			if (slotWithPartner)
+			if (slotWithEmperor)
 			{
-				Log.LogDebug($"[OnDie] Removing [Reign of Power] mods from [{slotWithPartner.Card.name}]");
-				slotWithPartner.Card.RemoveTemporaryMod(ReignOfPowerMods, true);
+				Log.LogDebug($"[OnDie] Removing [Reign of Power] mods from [{slotWithEmperor.Card.name}]");
+				slotWithEmperor.Card.RemoveTemporaryMod(ReignOfPowerMods, true);
 			}
 
 			yield break;
@@ -80,7 +60,7 @@ namespace TheEmperorAndEmpress
 			PlayableCard killer)
 		{
 			// only respond to another card dying if mods have been applied because that means the duo is on the board
-			return modsHaveBeenApplied && deathSlot == slotWithPartner;
+			return modsHaveBeenApplied && deathSlot == slotWithEmperor;
 		}
 
 		public override IEnumerator OnOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
@@ -88,6 +68,23 @@ namespace TheEmperorAndEmpress
 		{
 			Log.LogDebug($"[OnOtherCardDie] Removing [Reign of Power] mods from [{base.PlayableCard.name}]");
 			base.PlayableCard.RemoveTemporaryMod(ReignOfPowerMods, true);
+			yield break;
+		}
+
+		public override bool RespondsToPlayFromHand()
+		{
+			return true;
+		}
+
+		public override IEnumerator OnPlayFromHand()
+		{
+			var _slotWithEmperor = GetEmperorCardSlotIfExists();
+			if (_slotWithEmperor)
+			{
+				Log.LogDebug("-> Both cards exist on field, adding [Reign of Power] mods to both cards");
+				MakeReignOfPowerActive(_slotWithEmperor.Card);
+			}
+
 			yield break;
 		}
 
@@ -99,25 +96,21 @@ namespace TheEmperorAndEmpress
 
 		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
 		{
-			var playerSlots = Singleton<BoardManager>.Instance
-				.GetSlots(true)
-				.Where(slot => slot && slot.Card);
-
-			Log.LogDebug($"Found [{playerSlots.Count()}] slots that are valid");
-
-			foreach (var playerSlot in playerSlots)
+			if (IsCardEmperor(otherCard))
 			{
-				if (isBothCardsOnField(playerSlot.Card))
-				{
-					Log.LogDebug("-> Both cards exist on field, adding [Reign of Power] mods to both cards");
-					slotWithPartner = playerSlot;
-					base.PlayableCard.AddTemporaryMod(ReignOfPowerMods);
-					playerSlot.Card.AddTemporaryMod(ReignOfPowerMods);
-					modsHaveBeenApplied = true;
-				}
+				Log.LogDebug("-> Both cards exist on field, adding [Reign of Power] mods to both cards");
+				MakeReignOfPowerActive(otherCard);
 			}
 
 			yield break;
+		}
+
+		private void MakeReignOfPowerActive(PlayableCard otherCard)
+		{
+			slotWithEmperor = otherCard.Slot;
+			base.PlayableCard.AddTemporaryMod(ReignOfPowerMods);
+			otherCard.AddTemporaryMod(ReignOfPowerMods);
+			modsHaveBeenApplied = true;
 		}
 
 		public static NewSpecialAbility InitAbility()
