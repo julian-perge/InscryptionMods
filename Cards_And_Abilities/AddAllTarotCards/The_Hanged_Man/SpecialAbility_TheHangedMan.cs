@@ -39,6 +39,7 @@ namespace AddAllTarotCards.The_Hanged_Man
 				);
 				yield return new WaitForSeconds(0.75f);
 				// using example above, friendly card won't die
+				// 2 minus 1 == 1
 				willFriendlyCardDie = slot.Card.Health - overkillDmg <= 0;
 				Log.LogDebug($"Friendly card [{slot.Card.Info.name}] will die? [{willFriendlyCardDie}]");
 			}
@@ -66,20 +67,21 @@ namespace AddAllTarotCards.The_Hanged_Man
 			yield return new WaitForSeconds(0.1f);
 			yield return base.PreSuccessfulTriggerSequence();
 
+			// 3 minus 1 == 2
 			int dmgToTake = amount - overkillDmg;
 			Log.LogDebug($"-> The Hanged Man card should take [{dmgToTake}] damage");
-			yield return new WaitForSeconds(5.0f);
+			yield return new WaitForSeconds(0.2f);
 			base.Card.Anim.StrongNegationEffect();
+			// does from taking 2 damage
 			yield return base.Card.TakeDamage(dmgToTake, attacker);
 
+			// friendly card won't die in example above
 			if (!willFriendlyCardDie)
 			{
 				Log.LogDebug($"-> [{target.Info.name}] being healed for [{dmgToTake}]");
-				yield return new WaitForSeconds(5.0f);
 				target.HealDamage(dmgToTake);
 
 				Log.LogDebug($"-> [{target.Info.name}] removing temporary mods");
-				yield return new WaitForSeconds(5.0f);
 				target.RemoveTemporaryMod(modsFromAttackedCard);
 			}
 
