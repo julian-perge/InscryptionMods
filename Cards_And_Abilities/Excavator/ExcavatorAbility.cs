@@ -27,19 +27,28 @@ namespace Excavator
 				.Where(slot => slot && slot.Card);
 
 			Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
+			// all the boulders need to die before we switch to our hand view to spawn the Squirrels
+			int numberOfCardsToSpawn = 0;
+
 			// now only check those filtered cards that have terrain traits
 			foreach (var slot in slotsWithCards.Where(slot => slot.Card.Info.HasTrait(Trait.Terrain)))
 			{
+				numberOfCardsToSpawn++;
 				yield return new WaitForSeconds(0.1f);
 				yield return slot.Card.Die(false, base.Card);
-				// this is copied from BeesOnHit Ability
-				if (Singleton<ViewManager>.Instance.CurrentView != View.Default)
-				{
-					yield return new WaitForSeconds(0.2f);
-					Singleton<ViewManager>.Instance.SwitchToView(View.Default, false, false);
-					yield return new WaitForSeconds(0.2f);
-				}
+			}
 
+			// this is copied from BeesOnHit Ability
+			// switch to hand view
+			if (Singleton<ViewManager>.Instance.CurrentView != View.Default)
+			{
+				yield return new WaitForSeconds(0.2f);
+				Singleton<ViewManager>.Instance.SwitchToView(View.Default, false, false);
+				yield return new WaitForSeconds(0.2f);
+			}
+
+			for (int i = 0; i < numberOfCardsToSpawn; i++)
+			{
 				// Spawn squirrel in your hand
 				yield return Singleton<CardSpawner>.Instance.SpawnCardToHand(CardLoader.GetCardByName("Squirrel"), null);
 			}
