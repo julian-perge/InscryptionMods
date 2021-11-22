@@ -81,7 +81,7 @@ namespace TheEmperorAndEmpress
 			var _slotWithEmperor = GetEmperorCardSlotIfExists();
 			if (_slotWithEmperor)
 			{
-				Log.LogDebug("-> Both cards exist on field, adding [Reign of Power] mods to both cards");
+				Log.LogDebug("-> [OnPlayFromHand] Both cards exist on field, adding [Reign of Power] mods to both cards");
 				MakeReignOfPowerActive(_slotWithEmperor.Card);
 			}
 
@@ -98,7 +98,8 @@ namespace TheEmperorAndEmpress
 		{
 			if (IsCardEmperor(otherCard))
 			{
-				Log.LogDebug("-> Both cards exist on field, adding [Reign of Power] mods to both cards");
+				Log.LogDebug(
+					"-> [OnOtherCardAssignedToSlot] Both cards exist on field, adding [Reign of Power] mods to both cards");
 				MakeReignOfPowerActive(otherCard);
 			}
 
@@ -117,7 +118,7 @@ namespace TheEmperorAndEmpress
 		{
 			string name = "ReignOfPower";
 			string desc =
-				"When both the Empress and the Emperor are on the board, they become 3/4 cards with Unkillable and Leader";
+				"When both the Empress and the Emperor exist on the board, they become 3/4 cards with Unkillable and Leader";
 
 			// setup ability
 			StatIconInfo info = ScriptableObject.CreateInstance<StatIconInfo>();
