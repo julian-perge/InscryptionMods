@@ -10,4 +10,19 @@
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="API, Version=1.12.1.0">
+			<HintPath>..\..\lib\netstandard2.0\API.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>..\..\lib\Assembly-CSharp.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="Sirenix.Serialization">
+			<HintPath>..\..\lib\Sirenix.Serialization.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
 </Project>
