@@ -37,7 +37,7 @@ namespace Exodia
 				yield return new WaitForSeconds(1f);
 
 				int dmgToWin = Singleton<LifeManager>.Instance.DamageUntilPlayerWin;
-				// show damage on scale, taken from Pliers and modified the dmg done
+				// show damage on scale. Code taken from Pliers and modified the dmg done
 				yield return Singleton<LifeManager>.Instance.ShowDamageSequence(
 					dmgToWin,
 					1, false, 0.25f,
