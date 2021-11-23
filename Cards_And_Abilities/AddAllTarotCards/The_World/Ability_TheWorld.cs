@@ -6,7 +6,7 @@ using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.The_World
 {
-	public class SpecialAbility_TheWorld : AbilityBehaviour
+	public class Ability_TheWorld : AbilityBehaviour
 	{
 		public static Ability ability;
 		public override Ability Ability { get { return ability; } }
@@ -33,11 +33,11 @@ namespace AddAllTarotCards.The_World
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
 			var abIds = AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
 
-			// get Exodia art
+			// get art
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("ability_yield.png");
 
 			// set ability to behavior class
-			NewAbility newAbility = new NewAbility(info, typeof(SpecialAbility_TheWorld), tex, abIds);
+			NewAbility newAbility = new NewAbility(info, typeof(Ability_TheWorld), tex, abIds);
 			ability = newAbility.ability;
 
 			return newAbility;

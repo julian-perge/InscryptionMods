@@ -78,7 +78,7 @@ namespace Exodia
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
 			var abIds = AbilityIdentifier.GetAbilityIdentifier(HarmonyInit.PluginGuid, info.rulebookName);
 
-			// get Exodia art
+			// get art
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("exodia_sigil_small.png");
 
 			// set ability to behavior class

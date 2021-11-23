@@ -6,7 +6,7 @@ using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.The_Hanged_Man
 {
-	public class SpecialAbility_TheHangedMan : AbilityBehaviour
+	public class Ability_TheHangedMan : AbilityBehaviour
 	{
 		public static Ability ability;
 		public override Ability Ability { get { return ability; } }
@@ -97,11 +97,11 @@ namespace AddAllTarotCards.The_Hanged_Man
 			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
 			var abIds = AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
 
-			// get Exodia art
+			// get art
 			Texture2D tex = CardUtils.getAndloadImageAsTexture("ability_martyr.png");
 
 			// set ability to behavior class
-			NewAbility newAbility = new NewAbility(info, typeof(SpecialAbility_TheHangedMan), tex, abIds);
+			NewAbility newAbility = new NewAbility(info, typeof(Ability_TheHangedMan), tex, abIds);
 			ability = newAbility.ability;
 
 			return newAbility;

@@ -6,10 +6,6 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
-	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-		<OutputPath>C:\Program Files (x86)\Steam\steamapps\common\Inscryption\BepInEx\plugins</OutputPath>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="BepInEx.Analyzers" Version="1.0.7" PrivateAssets="all"/>
 		<PackageReference Include="BepInEx.Core" Version="5.*"/>
@@ -35,5 +31,14 @@
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
+
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High"/>
+
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"
+					DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Inscryption\BepInEx\plugins\"/>
+
+		<Message Text="Copied build files" Importance="High"/>
+	</Target>
 
 </Project>

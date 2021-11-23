@@ -3,7 +3,7 @@ using APIPlugin;
 using DiskCardGame;
 using UnityEngine;
 
-namespace TheEmperorAndEmpress
+namespace AddAllTarotCards.The_Emperor_And_Empress
 {
 	public static class Cards_Emperor_Empress
 	{

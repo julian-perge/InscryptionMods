@@ -5,7 +5,7 @@ using DiskCardGame;
 using UnityEngine;
 using static AddAllTarotCards.HarmonyInit;
 
-namespace TheEmperorAndEmpress
+namespace AddAllTarotCards.The_Emperor_And_Empress
 {
 	public class SpecialAbility_Emperor_Empress : SpecialCardBehaviour
 	{

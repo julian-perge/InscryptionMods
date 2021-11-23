@@ -12,7 +12,7 @@ namespace TheWorld
 
 		public static CardInfo InitCard()
 		{
-			NewAbility ability = SpecialAbility_TheHangedMan.InitAbility();
+			NewAbility ability = Ability_TheHangedMan.InitAbility();
 
 			Texture2D defaultTexture =
 				CardUtils.getAndloadImageAsTexture("card_the_world.png");
