@@ -23,7 +23,11 @@
 
 	<ItemGroup>
 		<Reference Include="API, Version=1.12.1.0">
-			<HintPath>..\..\lib\netstandard2.0\API.dll</HintPath>
+			<HintPath>..\..\lib\API.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="SigilADay_julianperge">
+			<HintPath>..\..\lib\SigilADay_julianperge.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Assembly-CSharp">
