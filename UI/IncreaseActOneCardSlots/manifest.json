@@ -1,0 +1,9 @@
+{
+  "name": "IncreaseActOneCardSlots",
+  "version_number": "1.0.0",
+  "website_url": "",
+  "description": "Increases Act 1 card slots from 4 to 5. Also moves items around to avoid overlapping",
+  "dependencies": [
+    "BepInEx-BepInExPack_Inscryption-5.4.1701"
+  ]
+}
