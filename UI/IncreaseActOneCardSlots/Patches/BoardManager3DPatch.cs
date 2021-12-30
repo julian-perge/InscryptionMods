@@ -1,12 +1,9 @@
 ﻿using DiskCardGame;
 using HarmonyLib;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using UnityEngine;
 
 namespace IncreaseActOneCardSlots
 {
-
 	//[HarmonyPatch(typeof(Part1BossOpponent), nameof(Part1BossOpponent.SpawnScenery))]
 	//public class ModifyTreePositionsForProspector
 	//{
@@ -35,8 +32,10 @@ namespace IncreaseActOneCardSlots
 	{
 		// KnivesTableEffects(Clone)/RightSide/RepeatingConveyorKnives, change z-axis to 4.5
 
-		private static CardSlot cardSlotPrefab = ResourceBank.Get<CardSlot>("Prefabs/Cards/CardSlot");
-		private static HighlightedInteractable opponentQueueSlotPrefab = ResourceBank.Get<HighlightedInteractable>("Prefabs/Cards/QueueSlot");
+		private static readonly CardSlot CardSlotPrefab = ResourceBank.Get<CardSlot>("Prefabs/Cards/CardSlot");
+
+		private static readonly HighlightedInteractable OpponentQueueSlotPrefab =
+			ResourceBank.Get<HighlightedInteractable>("Prefabs/Cards/QueueSlot");
 
 		[HarmonyPostfix]
 		public static void ChangePrefabAfter(BoardManager3D __instance)
@@ -65,17 +64,20 @@ namespace IncreaseActOneCardSlots
 
 				/// creating new slots
 				// player
-				CardSlot playerSlot5 = CreateSlot<CardSlot>("PlayerCardSlot5", playerSlots.transform, new Vector3(3.4f, 0f, 0f), cardSlotPrefab);
+				CardSlot playerSlot5 = CreateSlot<CardSlot>("PlayerCardSlot5", playerSlots.transform, new Vector3(3.4f, 0f, 0f),
+					CardSlotPrefab);
 
 				// opponent
 				Transform oppSlots = boardObj.Find("OpponentSlots");
-				CardSlot opponentSlot5 = CreateSlot<CardSlot>("OpponentCardSlot5", oppSlots.transform, new Vector3(3.4f, 0f, 0f), cardSlotPrefab);
+				CardSlot opponentSlot5 = CreateSlot<CardSlot>("OpponentCardSlot5", oppSlots.transform,
+					new Vector3(3.4f, 0f, 0f), CardSlotPrefab);
 				Transform oppCardSlot5Quad = opponentSlot5.transform.Find("Quad");
 				// rotate slot on y-axis so that the paw image faces the Player like the other slots
 				oppCardSlot5Quad.rotation = Quaternion.Euler(90f, 180f, 0f);
 
 				// opponent queue
-				HighlightedInteractable opponentQueueSlot5 = CreateSlot<HighlightedInteractable>("OpponentQueueSlot5", oppSlots.transform, new Vector3(3.4f, 0f, 2.01f), opponentQueueSlotPrefab);
+				HighlightedInteractable opponentQueueSlot5 = CreateSlot<HighlightedInteractable>("OpponentQueueSlot5",
+					oppSlots.transform, new Vector3(3.4f, 0f, 2.01f), OpponentQueueSlotPrefab);
 
 				/// opposing slots
 				playerSlot5.opposingSlot = opponentSlot5;
@@ -93,7 +95,9 @@ namespace IncreaseActOneCardSlots
 			}
 		}
 
-		static T CreateSlot<T>(string name, Transform parent, Vector3 newPosition, HighlightedInteractable prefab) where T : HighlightedInteractable
+		static T CreateSlot<T>(
+			string name, Transform parent, Vector3 newPosition, HighlightedInteractable prefab)
+			where T : HighlightedInteractable
 		{
 			Plugin.Log.LogInfo($"Creating slot {name}");
 			T slot = (T)UnityEngine.Object.Instantiate(prefab, parent);
