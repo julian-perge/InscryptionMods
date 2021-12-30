@@ -9,7 +9,7 @@ namespace AddAllTarotCards.The_Hanged_Man
 	public class Ability_TheHangedMan : AbilityBehaviour
 	{
 		public static Ability ability;
-		public override Ability Ability { get { return ability; } }
+		public override Ability Ability { get => ability; }
 
 		private int overkillDmg = 0;
 		private bool willHangedManDie;
@@ -28,10 +28,10 @@ namespace AddAllTarotCards.The_Hanged_Man
 			// base.Card.Health == 2
 			// attacker.lastFrameAttack == 3
 			// slot.Card.Health == 2
-			if (attacker.lastFrameAttack > base.Card.Health)
+			if (attacker.Attack > base.Card.Health)
 			{
 				// overkillDmg == 1;
-				overkillDmg = attacker.lastFrameAttack - base.Card.Health;
+				overkillDmg = attacker.Attack - base.Card.Health;
 				willHangedManDie = true;
 				base.StartCoroutine(Singleton<TextDisplayer>
 					.Instance
@@ -45,8 +45,8 @@ namespace AddAllTarotCards.The_Hanged_Man
 			}
 			else
 			{
-				Log.LogDebug($"HangedMan won't die, add [{attacker.lastFrameAttack}] temp health to [{slot.Card.Info.name}]");
-				modsFromAttackedCard.healthAdjustment = attacker.lastFrameAttack;
+				Log.LogDebug($"HangedMan won't die, add [{attacker.Attack}] temp health to [{slot.Card.Info.name}]");
+				modsFromAttackedCard.healthAdjustment = attacker.Attack;
 				slot.Card.AddTemporaryMod(modsFromAttackedCard);
 			}
 

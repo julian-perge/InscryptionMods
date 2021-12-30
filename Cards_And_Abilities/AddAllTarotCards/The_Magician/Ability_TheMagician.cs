@@ -32,7 +32,7 @@ namespace AddAllTarotCards.The_Magician
 		{
 			base.StartCoroutine(Singleton<TextDisplayer>
 				.Instance
-				.ShowThenClear(listMagicianTerms[UnityEngine.Random.RandomRangeInt(1, listMagicianTerms.Count)], 3f)
+				.ShowThenClear(listMagicianTerms[UnityEngine.Random.Range(1, listMagicianTerms.Count)], 3f)
 			);
 		}
 
@@ -64,7 +64,7 @@ namespace AddAllTarotCards.The_Magician
 			{
 				Log.LogDebug($"Assigning [{copy.Info.name}] to originalOpposingSlotPlayableCard");
 				originalOpposingSlotPlayableCard = copy;
-				return copy.Info.abilities.Count > 0;
+				return copy.Info.Abilities.Count > 0;
 			}
 
 			return false;
@@ -132,7 +132,7 @@ namespace AddAllTarotCards.The_Magician
 		private IEnumerator ActivateAbility(PlayableCard otherCard)
 		{
 			CardInfo copyInfo = CardLoader.GetCardByName(otherCard.Info.name);
-			copyInfo.abilities = new List<Ability>();
+			// copyInfo.Abilities = new List<Ability>();
 
 			Singleton<ViewManager>.Instance.SwitchToView(View.Board);
 			base.Card.Anim.StrongNegationEffect();

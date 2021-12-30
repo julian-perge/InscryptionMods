@@ -9,12 +9,16 @@ using TheWorld;
 namespace AddAllTarotCards
 {
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
+	[BepInDependency(CyantistInscryptionAPI, BepInDependency.DependencyFlags.HardDependency)]
+	[BepInDependency(SigilADay_julianPerge, BepInDependency.DependencyFlags.HardDependency)]
 	public class HarmonyInit : BaseUnityPlugin
 	{
+		public const string CyantistInscryptionAPI = "cyantist.inscryption.api";
+		public const string SigilADay_julianPerge = "julianperge.inscryption.sigiladay";
+
 		public const string PluginGuid = "julian.inscryption.cards.tarot";
 		private const string PluginName = "TarotCardMod";
-		private const string PluginVersion = "1.0.7";
+		private const string PluginVersion = "0.1.0";
 
 		internal static ManualLogSource Log;
 

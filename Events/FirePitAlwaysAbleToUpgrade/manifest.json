@@ -1,0 +1,9 @@
+{
+	"name": "FirePitAlwaysAbleToUpgrade",
+	"version_number": "1.2.0",
+	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/Events/FirePitAlwaysAbleToUpgrade",
+	"description": "Always able to upgrade at Fire Pit event. Cards will never die.",
+	"dependencies": [
+		"BepInEx-BepInExPack_Inscryption-5.4.1701"
+	]
+}

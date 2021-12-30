@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using APIPlugin;
 using DiskCardGame;
+using SigilADay_julianperge;
 using UnityEngine;
 
 namespace AddAllSCP.SCP_096_Shy_Guy
@@ -114,19 +115,13 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 		public static NewAbility InitAbility()
 		{
 			// setup ability
-			AbilityInfo info = ScriptableObject.CreateInstance<AbilityInfo>();
-			info.powerLevel = 0;
-			info.rulebookName = "The Sight";
-			info.rulebookDescription =
+			const string rulebookName = "The Sight";
+			string rulebookDescription =
 				"It will not stop until all that have seen its face perish. And that includes anything that gets in the way.";
-			info.metaCategories = new List<AbilityMetaCategory>()
-			{
-				AbilityMetaCategory.Part1Modular, AbilityMetaCategory.Part1Rulebook
-			};
+			AbilityInfo info = SigilUtils.CreateInfoWithDefaultSettings(rulebookName, rulebookDescription);
 
 			// get and load artwork
-			var defaultTex =
-				CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
+			var defaultTex = CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
 
 			// set ability to behavior class
 			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), defaultTex,

@@ -7,8 +7,8 @@ namespace FirePitAlwaysAbleToUpgrade
 	public class HarmonyInit : BaseUnityPlugin
 	{
 		private const string PluginGuid = "julianperge.inscryption.act1.firePitAlwaysAbleToUpgrade";
-		private const string PluginName = "Always able to upgrade stats without your card dying from the Fire Pit event";
-		private const string PluginVersion = "1.2";
+		private const string PluginName = "FirePitAlwaysAbleToUpgrade";
+		private const string PluginVersion = "1.2.0";
 
 		void Awake()
 		{

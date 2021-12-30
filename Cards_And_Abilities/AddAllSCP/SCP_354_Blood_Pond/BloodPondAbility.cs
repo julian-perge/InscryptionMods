@@ -34,7 +34,7 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 						? CardLoader.GetCardByName("SCP_354_BloodCreature")
 						: CardLoader.GetCardByName("SCP_354_BloodEntity");
 
-				HarmonyInitAll.Log.LogDebug($"-> Spawning a [{bloodCardToSpawn.displayedName}]");
+				HarmonyInitAll.Log.LogDebug($"-> Spawning a [{bloodCardToSpawn.name}]");
 				yield return Singleton<BoardManager>.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
 				break; // only spawn one, then break out of loop and end resolve.
 			}

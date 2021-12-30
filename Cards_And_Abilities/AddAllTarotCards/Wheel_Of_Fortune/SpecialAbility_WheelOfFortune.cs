@@ -11,7 +11,7 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 		public static NewSpecialAbility _SpecialAbility;
 		public static SpecialStatIcon _iconType;
 
-		public override SpecialStatIcon IconType { get { return _iconType; } }
+		protected override SpecialStatIcon IconType { get => _iconType; }
 
 		private const int MAX_TOTAL_STATS = 7;
 		private int attack = -1;
@@ -26,13 +26,13 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 		{
 			Log.LogDebug("Called OnDrawn for WheelOfFortune");
 			// this will generate a number that is >=1 and <= 6
-			attack = UnityEngine.Random.RandomRangeInt(1, 7);
+			attack = UnityEngine.Random.Range(1, 7);
 			health = MAX_TOTAL_STATS - attack; // 7 minus whatever attack is. Lowest value possible is 1.
 			Log.LogDebug($"-> Wheel of Fortune - Attack [{attack}] Health [{health}]");
 			return base.OnDrawn();
 		}
 
-		public override int[] GetStatValues()
+		protected override int[] GetStatValues()
 		{
 			int[] array = new int[2];
 			if (attack == -1 || health == -1)

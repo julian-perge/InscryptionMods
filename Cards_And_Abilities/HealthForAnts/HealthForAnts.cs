@@ -11,9 +11,9 @@ namespace HealthForAnts
 	{
 		private static SpecialStatIcon specialStatIcon;
 
-		public override SpecialStatIcon IconType { get { return specialStatIcon; } }
+		protected override SpecialStatIcon IconType => specialStatIcon;
 
-		public override int[] GetStatValues()
+		protected override int[] GetStatValues()
 		{
 			List<CardSlot> list = base.PlayableCard.Slot.IsPlayerSlot
 				? Singleton<BoardManager>.Instance.PlayerSlotsCopy
