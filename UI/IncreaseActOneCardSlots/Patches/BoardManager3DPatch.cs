@@ -33,6 +33,7 @@ namespace IncreaseActOneCardSlots
 	[HarmonyPatch(typeof(DiskCardGame.BoardManager3D), nameof(DiskCardGame.BoardManager3D.Initialize))]
 	public class BoardManager3DPatch
 	{
+		// KnivesTableEffects(Clone)/RightSide/RepeatingConveyorKnives, change z-axis to 4.5
 
 		private static CardSlot cardSlotPrefab = ResourceBank.Get<CardSlot>("Prefabs/Cards/CardSlot");
 		private static HighlightedInteractable opponentQueueSlotPrefab = ResourceBank.Get<HighlightedInteractable>("Prefabs/Cards/QueueSlot");
@@ -51,7 +52,6 @@ namespace IncreaseActOneCardSlots
 				objectsOnTable.Find("TableRuleBook").transform.localPosition = new Vector3(-4.69f, 0f, -4f);
 
 				/// moving items so that they don't overlap on the board
-				Plugin.Log.LogInfo("Setting items position farther to the right");
 				UnityEngine.GameObject.Find("Items").transform.localPosition = new Vector3(5.35f, 5.01f, 0f);
 
 				// board
@@ -60,6 +60,8 @@ namespace IncreaseActOneCardSlots
 				// card draw piles
 				boardObj.Find("CardDrawPiles").transform.localPosition = new Vector3(0.75f, 0f, 0f);
 
+				// sacrifice tokens
+				boardObj.Find("SacrificeTokens").transform.localPosition = new Vector3(4.2f, 0.03f, -0.4f);
 
 				/// creating new slots
 				// player
