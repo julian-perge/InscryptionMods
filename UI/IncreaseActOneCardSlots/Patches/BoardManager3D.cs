@@ -1,4 +1,4 @@
-﻿namespace IncreaseActOneCardSlots
+﻿namespace IncreaseActOneCardSlots.Patches
 {
 	[HarmonyLib.HarmonyPatch(typeof(DiskCardGame.BoardManager3D))]
 	public class BoardManager3DPatch
