@@ -11,12 +11,12 @@
 			private static readonly System.Collections.Generic.List<int> TreesToModifyPositiveZedPosition =
 				new() { 2, 3, 4, 5 };
 
-			static void SetNewPosForTree(UnityEngine.Transform transform, UnityEngine.Vector3 newPosition)
+			private static readonly System.Collections.Generic.List<int> KnivesEachSideIndex =
+				new() { 0, 1 };
+
+			static void SetNewPositionForGameObject(UnityEngine.Transform transform, UnityEngine.Vector3 newPosition)
 			{
-				// group47
-				transform.GetChild(0).localPosition = newPosition;
-				// tree
-				transform.GetChild(1).localPosition = newPosition;
+				transform.localPosition = newPosition;
 			}
 
 			[HarmonyLib.HarmonyPostfix]
@@ -29,35 +29,38 @@
 					Plugin.Log.LogDebug(
 						$"[{__instance.GetType()}] ForestTableEffects has been spawned, scene object is [{sceneryObj}]");
 
-					TreesToModifyPositiveZedPosition.ForEach(treeIndex =>
+					foreach (var pineTree in TreesToModifyPositiveZedPosition)
 					{
 						// ForestTableEffects -> GetChild(1) == SurroundingTrees
-						UnityEngine.Vector3 newPos = new UnityEngine.Vector3(0f, 0f, treeIndex == 4 ? -2f : 2f);
-						SetNewPosForTree(sceneryObj.transform.GetChild(1).GetChild(treeIndex), newPos);
+						UnityEngine.Transform pineTreeObj = sceneryObj.transform.GetChild(1).GetChild(pineTree);
+						UnityEngine.Vector3 newPos = new UnityEngine.Vector3(0f, 0f, pineTree == 4 ? -2f : 2f);
+						SetNewPositionForGameObject(pineTreeObj.GetChild(0), newPos);
+						SetNewPositionForGameObject(pineTreeObj.GetChild(1), newPos);
 
-						Plugin.Log.LogDebug($"moving tree {treeIndex} to new position [{newPos.ToString()}]");
-					});
+						Plugin.Log.LogDebug($"moving tree {pineTree} to new position [{newPos.ToString()}]");
+					}
 				}
 				else if (__instance is DiskCardGame.TrapperTraderBossOpponent)
 				{
 					Plugin.Log.LogDebug(
 						$"[{__instance.GetType()}] KnivesTableEffects has been spawned, scene object is [{sceneryObj}]");
 
-					// KnivesTableEffects -> GetChild(0) == LeftSide
-					UnityEngine.Transform knivesLeftSideTransform = sceneryObj.transform.GetChild(0);
-					UnityEngine.Vector3 knivesLeftSideLocalPos = knivesLeftSideTransform.transform.localPosition;
-					Plugin.Log.LogDebug($"moving left side knives back a little...");
-					knivesLeftSideTransform.localPosition = new UnityEngine.Vector3(
-						-1f, knivesLeftSideLocalPos.y, knivesLeftSideLocalPos.z
-					);
+					foreach (var knifeSide in KnivesEachSideIndex)
+					{
+						// KnivesTableEffects -> GetChild(0) == LeftSide
+						// KnivesTableEffects -> GetChild(1) == RightSide
 
-					// KnivesTableEffects -> GetChild(1) == RightSide
-					UnityEngine.Transform knivesRightSideTransform = sceneryObj.transform.GetChild(1);
-					UnityEngine.Vector3 knivesRightSideLocalPos = knivesRightSideTransform.transform.localPosition;
-					Plugin.Log.LogDebug($"moving right side knives back a little...");
-					knivesRightSideTransform.localPosition = new UnityEngine.Vector3(
-						1, knivesRightSideLocalPos.y, knivesRightSideLocalPos.z
-					);
+						UnityEngine.Transform knifeSideObj = sceneryObj.transform.GetChild(knifeSide);
+						for (int i = 0; i < knifeSideObj.childCount; i++)
+						{
+							Plugin.Log.LogDebug($"moving Side [{knifeSide}] repeatingConveyorKnife [{i}] back a little...");
+							UnityEngine.Transform repeatingConveyorKnife = knifeSideObj.GetChild(i);
+							UnityEngine.Vector3 localPosition = repeatingConveyorKnife.localPosition;
+							UnityEngine.Vector3 newPosition = new UnityEngine.Vector3(
+								localPosition.x - 1f, localPosition.y, localPosition.z);
+							SetNewPositionForGameObject(repeatingConveyorKnife, newPosition);
+						}
+					}
 				}
 			}
 		}
@@ -72,12 +75,12 @@
 			{
 				Plugin.Log.LogDebug($"Setting new scaling and position of the moon");
 				// Card -> Quad -> CardBase
-				var cardBase = card.transform.GetChild(0).GetChild(0);
+				UnityEngine.Transform cardBase = card.transform.GetChild(0).GetChild(0);
 
-				var localScale = cardBase.localScale;
+				UnityEngine.Vector3 localScale = cardBase.localScale;
 				cardBase.localScale = new UnityEngine.Vector3(5.75f, localScale.y, localScale.z);
 
-				var localPosition = cardBase.localPosition;
+				UnityEngine.Vector3 localPosition = cardBase.localPosition;
 				cardBase.localPosition = new UnityEngine.Vector3(-2.25f, localPosition.y, localPosition.z);
 			}
 		}
