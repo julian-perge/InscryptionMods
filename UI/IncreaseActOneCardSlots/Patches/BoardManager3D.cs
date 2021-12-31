@@ -54,9 +54,12 @@
 			}
 		}
 
-		private static void AddSlotsToBoardInstance(DiskCardGame.BoardManager3D __instance,
-			DiskCardGame.CardSlot playerSlot5, DiskCardGame.CardSlot opponentSlot5,
-			DiskCardGame.HighlightedInteractable opponentQueueSlot5)
+		private static void AddSlotsToBoardInstance(
+			DiskCardGame.BoardManager3D __instance,
+			DiskCardGame.CardSlot playerSlot5,
+			DiskCardGame.CardSlot opponentSlot5,
+			DiskCardGame.HighlightedInteractable opponentQueueSlot5
+		)
 		{
 			Plugin.Log.LogDebug($"Adding player slot 5 to BoardManager3D field");
 			__instance.playerSlots.Add(playerSlot5);
