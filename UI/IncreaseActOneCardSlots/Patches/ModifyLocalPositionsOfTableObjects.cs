@@ -89,8 +89,12 @@
 			 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.TableRuleBook), nameof(DiskCardGame.TableRuleBook.Awake))]
 			public static void ChangeTableRuleBookDefaultPosition(DiskCardGame.TableRuleBook __instance)
 			{
-				Plugin.Log.LogDebug($"Setting new position for TableRuleBook");
-				__instance.transform.localPosition = new UnityEngine.Vector3(-4.69f, 0f, -4f);
+				// check for this specific name as we don't want to do anything to the Part 3 Rulebook
+				if (__instance.name == "TableRuleBook")
+				{
+					Plugin.Log.LogDebug($"Setting new position for TableRuleBook");
+					__instance.transform.localPosition = new UnityEngine.Vector3(-4.69f, 0f, -4f);
+				}
 			}
 
 			[HarmonyLib.HarmonyPrefix,
