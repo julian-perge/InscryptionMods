@@ -1,11 +1,15 @@
 ﻿namespace IncreaseActOneCardSlots.Patches
 {
+	[HarmonyLib.HarmonyPatch]
 	public class ModifyLocalPositionsOfTableObjects
 	{
 		// KnivesTableEffects(Clone)/RightSide/RepeatingConveyorKnives, change z-axis to 4.5
 
-		[HarmonyLib.HarmonyPatch(typeof(DiskCardGame.Part1BossOpponent),
-			nameof(DiskCardGame.Part1BossOpponent.SpawnScenery))]
+		[HarmonyLib.HarmonyPatch(
+				typeof(DiskCardGame.Part1BossOpponent),
+				nameof(DiskCardGame.Part1BossOpponent.SpawnScenery)
+			)
+		]
 		public class ModifyTreePositionsForProspector
 		{
 			private static readonly System.Collections.Generic.List<int> TreesToModifyPositiveZedPosition =
@@ -66,7 +70,11 @@
 		}
 
 		[HarmonyLib.HarmonyPostfix,
-		 HarmonyLib.HarmonyPatch(nameof(DiskCardGame.BoardManager3D.TransitionAndResolveCreatedCard))]
+		 HarmonyLib.HarmonyPatch(
+			 typeof(DiskCardGame.BoardManager3D),
+			 nameof(DiskCardGame.BoardManager3D.TransitionAndResolveCreatedCard)
+		 )
+		]
 		public static void ChangeScaleOfMoonCardToFitAcrossAllSlots(
 			DiskCardGame.PlayableCard card, DiskCardGame.CardSlot slot, float transitionLength, bool resolveTriggers = true
 		)
@@ -85,28 +93,24 @@
 			}
 		}
 
-		[HarmonyLib.HarmonyPatch]
-		public class SetCandleAndRuleBookPositionsPatch
+		[HarmonyLib.HarmonyPrefix,
+		 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.TableRuleBook), nameof(DiskCardGame.TableRuleBook.Awake))]
+		public static void ChangeTableRuleBookDefaultPosition(DiskCardGame.TableRuleBook __instance)
 		{
-			[HarmonyLib.HarmonyPrefix,
-			 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.TableRuleBook), nameof(DiskCardGame.TableRuleBook.Awake))]
-			public static void ChangeTableRuleBookDefaultPosition(DiskCardGame.TableRuleBook __instance)
+			// check for this specific name as we don't want to do anything to the Part 3 Rulebook
+			if (__instance.name == "TableRuleBook" && __instance.isActiveAndEnabled)
 			{
-				// check for this specific name as we don't want to do anything to the Part 3 Rulebook
-				if (__instance.name == "TableRuleBook")
-				{
-					Plugin.Log.LogDebug($"Setting new position for TableRuleBook");
-					__instance.transform.localPosition = new UnityEngine.Vector3(-4.69f, 0f, -4f);
-				}
+				Plugin.Log.LogDebug($"Setting new position for TableRuleBook");
+				__instance.transform.localPosition = new UnityEngine.Vector3(-4.69f, 0f, -4f);
 			}
+		}
 
-			[HarmonyLib.HarmonyPrefix,
-			 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.CandleHolder), nameof(DiskCardGame.CandleHolder.Awake))]
-			public static void ChangeCandleHolderLocalPosition(DiskCardGame.CandleHolder __instance)
-			{
-				Plugin.Log.LogDebug($"Setting new position for CandleHolder");
-				__instance.transform.localPosition = new UnityEngine.Vector3(6f, -0.006000042f, 1.1f);
-			}
+		[HarmonyLib.HarmonyPrefix,
+		 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.CandleHolder), nameof(DiskCardGame.CandleHolder.Awake))]
+		public static void ChangeCandleHolderLocalPosition(DiskCardGame.CandleHolder __instance)
+		{
+			Plugin.Log.LogDebug($"Setting new position for CandleHolder");
+			__instance.transform.localPosition = new UnityEngine.Vector3(6f, -0.006000042f, 1.1f);
 		}
 	}
 }
