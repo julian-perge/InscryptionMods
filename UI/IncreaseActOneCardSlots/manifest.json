@@ -1,6 +1,6 @@
 {
 	"name": "IncreaseActOneCardSlots",
-	"version_number": "1.1.0",
+	"version_number": "1.1.1",
 	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/UI/IncreaseActOneCardSlots",
 	"description": "Increases Act 1 card slots from 4 to 5. Corrects size of moon in Part 1 finale. Moves items around to avoid overlapping.",
 	"dependencies": [
