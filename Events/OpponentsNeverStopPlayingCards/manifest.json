@@ -1,0 +1,9 @@
+{
+	"name": "OpponentsNeverStopPlayingCards",
+	"version_number": "1.0.0",
+	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/Events/OpponentsNeverStopPlayingCards",
+	"description": "Enemies have a certain set of cards to play, and after so many turns they stop playing cards. This resets that counter once that condition has been met.",
+	"dependencies": [
+		"BepInEx-BepInExPack_Inscryption-5.4.1701"
+	]
+}

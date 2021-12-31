@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)/Dependencies.props"/>
+
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High"/>
+
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll;" DestinationFolder="C:\r2modman\Inscryption\profiles\Default\BepInEx\plugins\"/>
+
+		<Message Text="Copied build files" Importance="High"/>
+	</Target>
+
+	<Target Name="ZipFiles" AfterTargets="Build">
+		<Exec Command="7z a -tzip $(MSBuildProjectName).zip .\README.md .\manifest.json .\icon.png $(TargetDir)$(ProjectName).dll"/>
+	</Target>
+
+</Project>
