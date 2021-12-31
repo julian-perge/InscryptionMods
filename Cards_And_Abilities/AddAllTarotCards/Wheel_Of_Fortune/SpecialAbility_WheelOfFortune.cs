@@ -1,17 +1,13 @@
-﻿using System.Collections;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-using static AddAllTarotCards.HarmonyInit;
+﻿using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.Wheel_Of_Fortune
 {
-	public class SpecialAbility_WheelOfFortune : VariableStatBehaviour
+	public class SpecialAbility_WheelOfFortune : DiskCardGame.VariableStatBehaviour
 	{
-		public static NewSpecialAbility _SpecialAbility;
-		public static SpecialStatIcon _iconType;
+		public static APIPlugin.NewSpecialAbility _SpecialAbility;
+		public static DiskCardGame.SpecialStatIcon _iconType;
 
-		protected override SpecialStatIcon IconType { get => _iconType; }
+		public override DiskCardGame.SpecialStatIcon IconType => _iconType;
 
 		private const int MAX_TOTAL_STATS = 7;
 		private int attack = -1;
@@ -22,7 +18,7 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 			return true;
 		}
 
-		public override IEnumerator OnDrawn()
+		public override System.Collections.IEnumerator OnDrawn()
 		{
 			Log.LogDebug("Called OnDrawn for WheelOfFortune");
 			// this will generate a number that is >=1 and <= 6
@@ -32,7 +28,7 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 			return base.OnDrawn();
 		}
 
-		protected override int[] GetStatValues()
+		public override int[] GetStatValues()
 		{
 			int[] array = new int[2];
 			if (attack == -1 || health == -1)
@@ -47,25 +43,25 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 			return array;
 		}
 
-		public static NewSpecialAbility InitAbility()
+		public static APIPlugin.NewSpecialAbility InitAbility()
 		{
 			string name = "Wheel of Fortune";
 			string desc =
 				"When this card enters your hand, its power and health become two random non-zero numbers that add up to 7.";
 
 			// setup ability
-			StatIconInfo info = ScriptableObject.CreateInstance<StatIconInfo>();
+			DiskCardGame.StatIconInfo info = UnityEngine.ScriptableObject.CreateInstance<DiskCardGame.StatIconInfo>();
 			// icon will replace both attack and health numbers until played?
 			info.appliesToAttack = true; // icon will replace both attack and health numbers until played
 			info.appliesToHealth = true;
 			info.rulebookName = name;
 			info.rulebookDescription = desc;
 
-			info.iconGraphic = CardUtils.getAndloadImageAsTexture("ability_wof_atk.png");
-			var sId = SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
+			info.iconGraphic = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_wof_atk.png");
+			var sId = APIPlugin.SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// set ability to behavior class
-			var newAbility = new NewSpecialAbility(typeof(SpecialAbility_WheelOfFortune), sId, info);
+			var newAbility = new APIPlugin.NewSpecialAbility(typeof(SpecialAbility_WheelOfFortune), sId, info);
 			_iconType = newAbility.statIconInfo.iconType;
 			_SpecialAbility = newAbility; // this is so we can use it in the HarmonyInit class
 
