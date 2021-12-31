@@ -1,33 +1,28 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllTarotCards.The_Hanged_Man
+﻿namespace AddAllTarotCards.The_Hanged_Man
 {
 	public class Card_TheHangedMan
 	{
 		public const string Name = "Tarot_TheHangedMan";
 
-		public static CardInfo InitCard()
+		public static DiskCardGame.CardInfo InitCard()
 		{
-			NewAbility ability = Ability_TheHangedMan.InitAbility();
+			APIPlugin.NewAbility ability = Ability_TheHangedMan.InitAbility();
 
-			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("card_the_hanged_man.png");
+			UnityEngine.Texture2D defaultTexture =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("card_the_hanged_man.png");
 
 			var displayName = "The Hanged Man";
 			var desc = "The Hanged Man. Its dead weight will provide cover for other creatures.";
-			var abIds = new List<AbilityIdentifier>() { ability.id };
+			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(Name, displayName, 0, 6,
-				CardUtils.getRareCardMetadata, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name, displayName, 0, 6,
+				APIPlugin.CardUtils.getRareCardMetadata, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bonesCost: 6, defaultTex: defaultTexture,
-				appearanceBehaviour: CardUtils.getRareAppearance,
+				appearanceBehaviour: APIPlugin.CardUtils.getRareAppearance,
 				abilityIdsParam: abIds, onePerDeck: true
 			);
 
-			return NewCard.cards.Find(i => i.name == Name);
+			return APIPlugin.NewCard.cards.Find(i => i.name == Name);
 		}
 	}
 }

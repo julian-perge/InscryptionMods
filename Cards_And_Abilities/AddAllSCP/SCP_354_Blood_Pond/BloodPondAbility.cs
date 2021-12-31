@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllSCP.SCP_354_Blood_Pond
+﻿namespace AddAllSCP.SCP_354_Blood_Pond
 {
-	public class BloodPondAbility : AbilityBehaviour
+	public class BloodPondAbility : DiskCardGame.AbilityBehaviour
 	{
-		public static Ability ability;
+		public static DiskCardGame.Ability ability;
 
-		public override Ability Ability { get { return ability; } }
+		public override DiskCardGame.Ability Ability { get { return ability; } }
 
 		private int turnsTaken = 1;
 
@@ -20,10 +14,11 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 			return playerTurnEnd;
 		}
 
-		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
+		public override System.Collections.IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
-			List<CardSlot> slots = Singleton<BoardManager>.Instance.GetSlots(true)
+			System.Collections.Generic.List<DiskCardGame.CardSlot> slots = Singleton<DiskCardGame.BoardManager>.Instance
+				.GetSlots(true)
 				.FindAll(slot => slot is not null && slot.Card is null);
 			// if no available slots, list will be empty and won't loop
 			HarmonyInitAll.Log.LogDebug($"[BloodPond] Number of slots available [{slots.Count}]");
@@ -31,35 +26,37 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 			{
 				var bloodCardToSpawn
 					= turnsTaken++ < 3
-						? CardLoader.GetCardByName("SCP_354_BloodCreature")
-						: CardLoader.GetCardByName("SCP_354_BloodEntity");
+						? DiskCardGame.CardLoader.GetCardByName("SCP_354_BloodCreature")
+						: DiskCardGame.CardLoader.GetCardByName("SCP_354_BloodEntity");
 
 				HarmonyInitAll.Log.LogDebug($"-> Spawning a [{bloodCardToSpawn.name}]");
-				yield return Singleton<BoardManager>.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
+				yield return Singleton<DiskCardGame.BoardManager>.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
 				break; // only spawn one, then break out of loop and end resolve.
 			}
 
-			yield return new WaitForSeconds(0.1f);
+			yield return new UnityEngine.WaitForSeconds(0.1f);
 			yield return base.LearnAbility(0.5f);
 			yield break;
 		}
 
-		protected internal static NewAbility InitAbility()
+		protected internal static APIPlugin.NewAbility InitAbility()
 		{
-			var rulebookName = "Blood Pond";
-			var description =
-				"Spawn a Blood Creature (1/1 w/ Brittle) at the end of your turn in a random slot. After 3 turns, spawn a Blood Entity (1/1 w/ Brittle).";
+			const string rulebookName = "Blood Pond";
+			const string description =
+				"Spawn a Blood Creature (1/1 w/ Brittle) at the end of your turn in a random slot. " +
+				"After 3 turns, spawn a Blood Entity (1/1 w/ Brittle).";
 
 			// setup ability
-			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
+			DiskCardGame.AbilityInfo info =
+				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("scp_354_blood_pond_ability_small.png");
+			UnityEngine.Texture2D sigilTex =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_pond_ability_small.png");
 
 			// set ability to behavior class
-			NewAbility bloodPondAbility = new NewAbility(info, typeof(BloodPondAbility), sigilTex,
-				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			APIPlugin.NewAbility bloodPondAbility = new APIPlugin.NewAbility(info, typeof(BloodPondAbility), sigilTex,
+				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = bloodPondAbility.ability;
 
 			return bloodPondAbility;

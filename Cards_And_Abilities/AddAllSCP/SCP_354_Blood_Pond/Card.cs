@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllSCP.SCP_354_Blood_Pond
+﻿namespace AddAllSCP.SCP_354_Blood_Pond
 {
 	public static class Card
 	{
@@ -20,43 +15,46 @@ namespace AddAllSCP.SCP_354_Blood_Pond
 
 		private static void InitCard()
 		{
-			NewAbility ability = BloodPondAbility.InitAbility();
-			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
+			APIPlugin.NewAbility ability = BloodPondAbility.InitAbility();
+			System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
+				APIPlugin.CardUtils.getNormalCardMetadata;
 
-			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("scp_354_small.png");
+			UnityEngine.Texture2D defaultTexture =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_small.png");
 
-			var displayName = "Blood Pond";
-			var abIds = new List<AbilityIdentifier>() { ability.id };
+			const string displayName = "Blood Pond";
+			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(Name, displayName, 0, 4,
-				metaCategories, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name, displayName, 0, 4,
+				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				bloodCost: 2, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);
 		}
 
 		private static void InitCardsSpawnedFromBloodPond()
 		{
-			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
-			List<Ability> abilities = new List<Ability> { Ability.Brittle };
+			System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
+				APIPlugin.CardUtils.getNormalCardMetadata;
+			System.Collections.Generic.List<DiskCardGame.Ability> abilities =
+				new System.Collections.Generic.List<DiskCardGame.Ability> { DiskCardGame.Ability.Brittle };
 
-			Texture2D defaultTextureCreature =
-				CardUtils.getAndloadImageAsTexture("scp_354_blood_creature_small.png");
-			Texture2D defaultTextureEntity =
-				CardUtils.getAndloadImageAsTexture("scp_354_blood_entity_small.png");
+			UnityEngine.Texture2D defaultTextureCreature =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_creature_small.png");
+			UnityEngine.Texture2D defaultTextureEntity =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_entity_small.png");
 
-			var displayNameCreature = "Blood Creature";
-			var desc = "Spawned from the Blood Pond.";
+			const string displayNameCreature = "Blood Creature";
+			const string desc = "Spawned from the Blood Pond.";
 
-			NewCard.Add(NameBloodCreature, displayNameCreature, 1, 1,
-				metaCategories, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(NameBloodCreature, displayNameCreature, 1, 1,
+				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, defaultTex: defaultTextureCreature, abilities: abilities
 			);
 
-			var displayNameEntity = "Blood Entity";
+			const string displayNameEntity = "Blood Entity";
 
-			NewCard.Add(NameBloodEntity, displayNameEntity, 1, 1,
-				metaCategories, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(NameBloodEntity, displayNameEntity, 1, 1,
+				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, defaultTex: defaultTextureEntity, abilities: abilities
 			);
 		}

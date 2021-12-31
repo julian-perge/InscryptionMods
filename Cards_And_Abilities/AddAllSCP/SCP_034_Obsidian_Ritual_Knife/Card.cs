@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
+﻿namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 {
 	public static class Card
 	{
@@ -11,20 +6,22 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 
 		public static void InitCard()
 		{
-			NewAbility ability = RitualKnifeAbility.InitAbility();
+			APIPlugin.NewAbility ability = RitualKnifeAbility.InitAbility();
 
-			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
+			System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
+				APIPlugin.CardUtils.getNormalCardMetadata;
 
-			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("scp_034_small.png");
+			UnityEngine.Texture2D defaultTexture =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_034_small.png");
 
-			string displayName = "Ritual Knife";
-			string desc =
-				"SCP-034 is a primitive knife constructed out of pure obsidian. Tests reveal that SCP-034 is approximately 1000 years old.";
-			var abIds = new List<AbilityIdentifier>() { ability.id };
+			const string displayName = "Ritual Knife";
+			const string desc =
+				"SCP-034 is a primitive knife constructed out of pure obsidian. " +
+				"Tests reveal that SCP-034 is approximately 1000 years old.";
+			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(Name, displayName, 1, 1,
-				metaCategories, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name, displayName, 1, 1,
+				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);
 		}

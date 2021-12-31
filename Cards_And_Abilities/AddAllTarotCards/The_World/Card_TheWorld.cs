@@ -1,34 +1,28 @@
-﻿using System.Collections.Generic;
-using AddAllTarotCards.The_Hanged_Man;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace TheWorld
+﻿namespace TheWorld
 {
 	public class Card_TheWorld
 	{
 		public const string Name = "Tarot_TheWorld";
 
-		public static CardInfo InitCard()
+		public static DiskCardGame.CardInfo InitCard()
 		{
-			NewAbility ability = Ability_TheHangedMan.InitAbility();
+			APIPlugin.NewAbility ability = AddAllTarotCards.The_Hanged_Man.Ability_TheHangedMan.InitAbility();
 
-			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("card_the_world.png");
+			UnityEngine.Texture2D defaultTexture =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("card_the_world.png");
 
 			var displayName = "The World";
 			var desc = "The World. Other beings yield before it.";
-			var abIds = new List<AbilityIdentifier>() { ability.id };
+			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(Name, displayName, 7, 5,
-				CardUtils.getRareCardMetadata, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name, displayName, 7, 5,
+				APIPlugin.CardUtils.getRareCardMetadata, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 4, defaultTex: defaultTexture,
-				appearanceBehaviour: CardUtils.getRareAppearance,
+				appearanceBehaviour: APIPlugin.CardUtils.getRareAppearance,
 				abilityIdsParam: abIds, onePerDeck: true
 			);
 
-			return NewCard.cards.Find(i => i.name == Name);
+			return APIPlugin.NewCard.cards.Find(i => i.name == Name);
 		}
 	}
 }

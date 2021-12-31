@@ -1,21 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-using static AddAllTarotCards.HarmonyInit;
+﻿using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.The_Magician
 {
-	public class Ability_TheMagician : AbilityBehaviour
+	public class Ability_TheMagician : DiskCardGame.AbilityBehaviour
 	{
-		public static Ability ability;
+		public static DiskCardGame.Ability ability;
 
-		public override Ability Ability { get { return ability; } }
+		public override DiskCardGame.Ability Ability { get { return ability; } }
 
-		private PlayableCard originalOpposingSlotPlayableCard;
+		private DiskCardGame.PlayableCard originalOpposingSlotPlayableCard;
 
-		private List<string> listMagicianTerms = new List<string>()
+		private System.Collections.Generic.List<string> listMagicianTerms = new System.Collections.Generic.List<string>()
 		{
 			"Abracadabra!",
 			"Acetabularii!",
@@ -30,13 +25,13 @@ namespace AddAllTarotCards.The_Magician
 
 		private void displayRandomMagicianTerm()
 		{
-			base.StartCoroutine(Singleton<TextDisplayer>
+			base.StartCoroutine(Singleton<DiskCardGame.TextDisplayer>
 				.Instance
 				.ShowThenClear(listMagicianTerms[UnityEngine.Random.Range(1, listMagicianTerms.Count)], 3f)
 			);
 		}
 
-		private bool WillTriggerAbility(PlayableCard card)
+		private bool WillTriggerAbility(DiskCardGame.PlayableCard card)
 		{
 			Log.LogDebug($"[Ability_TheMagician::WillTriggerAbility] card is null? [{card is null}]");
 			if (base.Card.Slot)
@@ -75,33 +70,35 @@ namespace AddAllTarotCards.The_Magician
 			return WillTriggerAbility(null);
 		}
 
-		public override IEnumerator OnPlayFromHand()
+		public override System.Collections.IEnumerator OnPlayFromHand()
 		{
 			yield return ActivateAbility(originalOpposingSlotPlayableCard);
 			yield break;
 		}
 
-		public override bool RespondsToOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override bool RespondsToOtherCardDie(DiskCardGame.PlayableCard card, DiskCardGame.CardSlot deathSlot,
+			bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			return originalOpposingSlotPlayableCard
 			       && deathSlot == originalOpposingSlotPlayableCard.Slot
 			       && card.Slot == originalOpposingSlotPlayableCard.Slot;
 		}
 
-		public override IEnumerator OnOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override System.Collections.IEnumerator OnOtherCardDie(DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot, bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			originalOpposingSlotPlayableCard = null;
 			yield break;
 		}
 
-		public override bool RespondsToDie(bool wasSacrifice, PlayableCard killer)
+		public override bool RespondsToDie(bool wasSacrifice, DiskCardGame.PlayableCard killer)
 		{
 			return true;
 		}
 
-		public override IEnumerator OnDie(bool wasSacrifice, PlayableCard killer)
+		public override System.Collections.IEnumerator OnDie(bool wasSacrifice, DiskCardGame.PlayableCard killer)
 		{
 			if (originalOpposingSlotPlayableCard && !originalOpposingSlotPlayableCard.Dead)
 			{
@@ -112,13 +109,13 @@ namespace AddAllTarotCards.The_Magician
 			yield break;
 		}
 
-		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override bool RespondsToOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
 			// we only card to responds to the opposing slot AND if the card has sigils
 			return otherCard.Slot != base.Card.Slot && WillTriggerAbility(otherCard);
 		}
 
-		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override System.Collections.IEnumerator OnOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
 
@@ -129,34 +126,34 @@ namespace AddAllTarotCards.The_Magician
 			yield break;
 		}
 
-		private IEnumerator ActivateAbility(PlayableCard otherCard)
+		private System.Collections.IEnumerator ActivateAbility(DiskCardGame.PlayableCard otherCard)
 		{
-			CardInfo copyInfo = CardLoader.GetCardByName(otherCard.Info.name);
+			DiskCardGame.CardInfo copyInfo = DiskCardGame.CardLoader.GetCardByName(otherCard.Info.name);
 			// copyInfo.Abilities = new List<Ability>();
 
-			Singleton<ViewManager>.Instance.SwitchToView(View.Board);
+			Singleton<DiskCardGame.ViewManager>.Instance.SwitchToView(DiskCardGame.View.Board);
 			base.Card.Anim.StrongNegationEffect();
 			displayRandomMagicianTerm();
-			yield return new WaitForSeconds(2.5f);
+			yield return new UnityEngine.WaitForSeconds(2.5f);
 			yield return otherCard.TransformIntoCard(copyInfo);
 
 			originalOpposingSlotPlayableCard = otherCard;
 		}
 
 
-		public static NewAbility InitAbility()
+		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
 			string name = "Silence";
 			string desc = "A card bearing this sigil removes the sigils of the card in front of it";
-			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
-			var abIds = AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
+			DiskCardGame.AbilityInfo info = APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
+			var abIds = APIPlugin.AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
 
 			// get art
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("ability_silence.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_silence.png");
 
 			// set ability to behavior class
-			NewAbility newAbility = new NewAbility(info, typeof(Ability_TheMagician), tex, abIds);
+			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(Ability_TheMagician), tex, abIds);
 			ability = newAbility.ability;
 
 			return newAbility;

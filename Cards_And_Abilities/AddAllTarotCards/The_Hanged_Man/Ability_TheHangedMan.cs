@@ -1,29 +1,26 @@
-﻿using System.Collections;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-using static AddAllTarotCards.HarmonyInit;
+﻿using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.The_Hanged_Man
 {
-	public class Ability_TheHangedMan : AbilityBehaviour
+	public class Ability_TheHangedMan : DiskCardGame.AbilityBehaviour
 	{
-		public static Ability ability;
-		public override Ability Ability { get => ability; }
+		public static DiskCardGame.Ability ability;
+		public override DiskCardGame.Ability Ability { get => ability; }
 
 		private int overkillDmg = 0;
 		private bool willHangedManDie;
 		private bool willFriendlyCardDie;
-		private CardModificationInfo modsFromAttackedCard = new();
+		private DiskCardGame.CardModificationInfo modsFromAttackedCard = new();
 
-		public override bool RespondsToSlotTargetedForAttack(CardSlot slot, PlayableCard attacker)
+		public override bool RespondsToSlotTargetedForAttack(DiskCardGame.CardSlot slot, DiskCardGame.PlayableCard attacker)
 		{
 			return attacker
 			       && base.Card.Slot.IsPlayerSlot == slot.IsPlayerSlot
 			       && base.Card.Slot != slot;
 		}
 
-		public override IEnumerator OnSlotTargetedForAttack(CardSlot slot, PlayableCard attacker)
+		public override System.Collections.IEnumerator OnSlotTargetedForAttack(DiskCardGame.CardSlot slot,
+			DiskCardGame.PlayableCard attacker)
 		{
 			// base.Card.Health == 2
 			// attacker.lastFrameAttack == 3
@@ -33,11 +30,11 @@ namespace AddAllTarotCards.The_Hanged_Man
 				// overkillDmg == 1;
 				overkillDmg = attacker.Attack - base.Card.Health;
 				willHangedManDie = true;
-				base.StartCoroutine(Singleton<TextDisplayer>
+				base.StartCoroutine(Singleton<DiskCardGame.TextDisplayer>
 					.Instance
 					.ShowThenClear("The Hanged Man has taken their last breath", 3f)
 				);
-				yield return new WaitForSeconds(0.75f);
+				yield return new UnityEngine.WaitForSeconds(0.75f);
 				// using example above, friendly card won't die
 				// 2 minus 1 == 1
 				willFriendlyCardDie = slot.Card.Health - overkillDmg <= 0;
@@ -53,7 +50,8 @@ namespace AddAllTarotCards.The_Hanged_Man
 			yield break;
 		}
 
-		public override bool RespondsToOtherCardDealtDamage(PlayableCard attacker, int amount, PlayableCard target)
+		public override bool RespondsToOtherCardDealtDamage(DiskCardGame.PlayableCard attacker, int amount,
+			DiskCardGame.PlayableCard target)
 		{
 			// Log.LogDebug($"Card [{target.Info.name}] is being attacked by [{attacker.Info.name}]");
 			return attacker
@@ -61,16 +59,17 @@ namespace AddAllTarotCards.The_Hanged_Man
 			       && base.Card.Slot != target.Slot;
 		}
 
-		public override IEnumerator OnOtherCardDealtDamage(PlayableCard attacker, int amount, PlayableCard target)
+		public override System.Collections.IEnumerator OnOtherCardDealtDamage(DiskCardGame.PlayableCard attacker,
+			int amount, DiskCardGame.PlayableCard target)
 		{
-			Singleton<ViewManager>.Instance.SwitchToView(View.Board);
-			yield return new WaitForSeconds(0.1f);
+			Singleton<DiskCardGame.ViewManager>.Instance.SwitchToView(DiskCardGame.View.Board);
+			yield return new UnityEngine.WaitForSeconds(0.1f);
 			yield return base.PreSuccessfulTriggerSequence();
 
 			// 3 minus 1 == 2
 			int dmgToTake = amount - overkillDmg;
 			Log.LogDebug($"-> The Hanged Man card should take [{dmgToTake}] damage");
-			yield return new WaitForSeconds(0.2f);
+			yield return new UnityEngine.WaitForSeconds(0.2f);
 			base.Card.Anim.StrongNegationEffect();
 			// does from taking 2 damage
 			yield return base.Card.TakeDamage(dmgToTake, attacker);
@@ -89,19 +88,19 @@ namespace AddAllTarotCards.The_Hanged_Man
 			yield break;
 		}
 
-		public static NewAbility InitAbility()
+		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
 			string name = "Martyr";
 			string desc = "When another friendly card would take damage, a card with this sigil receives it instead";
-			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
-			var abIds = AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
+			DiskCardGame.AbilityInfo info = APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
+			var abIds = APIPlugin.AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
 
 			// get art
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("ability_martyr.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_martyr.png");
 
 			// set ability to behavior class
-			NewAbility newAbility = new NewAbility(info, typeof(Ability_TheHangedMan), tex, abIds);
+			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(Ability_TheHangedMan), tex, abIds);
 			ability = newAbility.ability;
 
 			return newAbility;

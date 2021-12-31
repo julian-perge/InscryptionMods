@@ -1,42 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using SigilADay_julianperge;
-using UnityEngine;
-
 namespace AddAllSCP.SCP_096_Shy_Guy
 {
-	public class TheSightAbility : AbilityBehaviour
+	public class TheSightAbility : DiskCardGame.AbilityBehaviour
 	{
-		private List<PlayableCard> cardsThatDealtDamage = new();
-		private readonly CardModificationInfo mod = new() { attackAdjustment = 6 };
-		private readonly List<int> indexesToRunOver = new List<int>();
+		private readonly System.Collections.Generic.List<DiskCardGame.PlayableCard> cardsThatDealtDamage = new();
+		private readonly DiskCardGame.CardModificationInfo mod = new() { attackAdjustment = 6 };
+		private readonly System.Collections.Generic.List<int> indexesToRunOver = new System.Collections.Generic.List<int>();
 
-		public override Ability Ability { get { return ability; } }
+		public override DiskCardGame.Ability Ability { get { return ability; } }
 
-		public static Ability ability;
+		public static DiskCardGame.Ability ability;
 
-		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override bool RespondsToOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
 			HarmonyInitAll.Log.LogInfo(
 				$"Will respond to assigned slot? [{otherCard is not null && cardsThatDealtDamage.Contains(otherCard)}]");
 			return otherCard is not null && cardsThatDealtDamage.Contains(otherCard);
 		}
 
-		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override System.Collections.IEnumerator OnOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
-			CardSlot toLeft = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
-			CardSlot toRight = Singleton<BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
-			Singleton<ViewManager>.Instance.SwitchToView(View.Board, false, false);
-			yield return new WaitForSeconds(0.25f);
+			DiskCardGame.CardSlot toLeft = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
+			DiskCardGame.CardSlot toRight = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
+			Singleton<DiskCardGame.ViewManager>.Instance.SwitchToView(DiskCardGame.View.Board, false, false);
+			yield return new UnityEngine.WaitForSeconds(0.25f);
 
-			var pSlots = Singleton<BoardManager>.Instance.GetSlots(true);
+			var pSlots = Singleton<DiskCardGame.BoardManager>.Instance.GetSlots(true);
 
 			for (var i = 0; i < pSlots.Count; i++)
 			{
 				// turn 2
-				// O O X O O 
+				// O O X O O
 				// s 1 2 3 4, turns
 
 				// turn 3
@@ -57,10 +50,10 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 		}
 
 		public override bool RespondsToOtherCardDie(
-			PlayableCard card,
-			CardSlot deathSlot,
+			DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot,
 			bool fromCombat,
-			PlayableCard killer
+			DiskCardGame.PlayableCard killer
 		)
 		{
 			if (cardsThatDealtDamage.Contains(card))
@@ -82,15 +75,15 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 		/// <param name="fromCombat">Did it die from combat or sacrifice/bomb/etc</param>
 		/// <param name="killer">Who, if applicable, killed the {card}.</param>
 		/// <returns></returns>
-		public override IEnumerator OnOtherCardDie(
-			PlayableCard card,
-			CardSlot deathSlot,
+		public override System.Collections.IEnumerator OnOtherCardDie(
+			DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot,
 			bool fromCombat,
-			PlayableCard killer
+			DiskCardGame.PlayableCard killer
 		)
 		{
 			HarmonyInitAll.Log.LogInfo($"-> Switching back to default portrait");
-			yield return new WaitForSeconds(0.5f);
+			yield return new UnityEngine.WaitForSeconds(0.5f);
 			yield return base.PreSuccessfulTriggerSequence();
 			base.Card.SwitchToDefaultPortrait();
 			base.Card.RemoveTemporaryMod(this.mod, true);
@@ -98,34 +91,35 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 			yield break;
 		}
 
-		public override bool RespondsToTakeDamage(PlayableCard source) { return true; }
+		public override bool RespondsToTakeDamage(DiskCardGame.PlayableCard source) { return true; }
 
-		public override IEnumerator OnTakeDamage(PlayableCard source)
+		public override System.Collections.IEnumerator OnTakeDamage(DiskCardGame.PlayableCard source)
 		{
 			cardsThatDealtDamage.Add(source);
 			yield return base.PreSuccessfulTriggerSequence();
 			base.Card.Anim.StrongNegationEffect();
 			base.Card.SwitchToAlternatePortrait();
 			base.Card.AddTemporaryMod(this.mod);
-			yield return new WaitForSeconds(0.55f);
+			yield return new UnityEngine.WaitForSeconds(0.55f);
 			yield return base.LearnAbility(0.4f);
 			yield break;
 		}
 
-		public static NewAbility InitAbility()
+		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
 			const string rulebookName = "The Sight";
-			string rulebookDescription =
-				"It will not stop until all that have seen its face perish. And that includes anything that gets in the way.";
-			AbilityInfo info = SigilUtils.CreateInfoWithDefaultSettings(rulebookName, rulebookDescription);
+			const string rulebookDescription = "It will not stop until all that have seen its face perish. " +
+			                                   "And that includes anything that gets in the way.";
+			DiskCardGame.AbilityInfo info =
+				SigilADay_julianperge.SigilUtils.CreateInfoWithDefaultSettings(rulebookName, rulebookDescription);
 
 			// get and load artwork
-			var defaultTex = CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
+			var defaultTex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
 
 			// set ability to behavior class
-			NewAbility theSightAbility = new NewAbility(info, typeof(TheSightAbility), defaultTex,
-				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			APIPlugin.NewAbility theSightAbility = new APIPlugin.NewAbility(info, typeof(TheSightAbility), defaultTex,
+				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = theSightAbility.ability;
 
 			return theSightAbility;

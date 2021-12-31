@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllTarotCards.The_Emperor_And_Empress
+﻿namespace AddAllTarotCards.The_Emperor_And_Empress
 {
 	public static class Cards_Emperor_Empress
 	{
@@ -12,30 +7,30 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 
 		public static void InitCards()
 		{
-			NewSpecialAbility ability = SpecialAbility_Emperor_Empress.InitAbility();
+			APIPlugin.NewSpecialAbility ability = SpecialAbility_Emperor_Empress.InitAbility();
 
-			Texture2D defaultTextureEmperor = CardUtils.getAndloadImageAsTexture("card_emperor.png");
-			Texture2D defaultTextureEmpress = CardUtils.getAndloadImageAsTexture("card_empress.png");
+			UnityEngine.Texture2D defaultTextureEmperor = APIPlugin.CardUtils.getAndloadImageAsTexture("card_emperor.png");
+			UnityEngine.Texture2D defaultTextureEmpress = APIPlugin.CardUtils.getAndloadImageAsTexture("card_empress.png");
 
 			var displayNameEmperor = "The Emperor";
 			var displayNameEmpress = "The Empress";
 
 			var desc = "The Empress and the Emperor. Relatively weak by themselves, but strong together.";
 
-			var sId = new List<SpecialAbilityIdentifier>() { ability.id };
+			var sId = new System.Collections.Generic.List<APIPlugin.SpecialAbilityIdentifier>() { ability.id };
 
 			// emperor
-			NewCard.Add(Name_Emperor, displayNameEmperor, 2, 2,
-				CardUtils.getRareCardMetadata, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name_Emperor, displayNameEmperor, 2, 2,
+				APIPlugin.CardUtils.getRareCardMetadata, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 2, defaultTex: defaultTextureEmperor,
-				appearanceBehaviour: CardUtils.getRareAppearance, onePerDeck: true
+				appearanceBehaviour: APIPlugin.CardUtils.getRareAppearance, onePerDeck: true
 			);
 
 			// empress
-			NewCard.Add(Name_Empress, displayNameEmpress, 2, 2,
-				CardUtils.getRareCardMetadata, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name_Empress, displayNameEmpress, 2, 2,
+				APIPlugin.CardUtils.getRareCardMetadata, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 2, defaultTex: defaultTextureEmpress,
-				appearanceBehaviour: CardUtils.getRareAppearance,
+				appearanceBehaviour: APIPlugin.CardUtils.getRareAppearance,
 				specialAbilitiesIdsParam: sId, onePerDeck: true
 			);
 		}

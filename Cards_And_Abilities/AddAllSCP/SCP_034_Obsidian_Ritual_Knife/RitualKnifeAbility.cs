@@ -1,36 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
+﻿namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 {
-	public class RitualKnifeAbility : AbilityBehaviour
+	public class RitualKnifeAbility : DiskCardGame.AbilityBehaviour
 	{
-		public static Ability ability;
+		public static DiskCardGame.Ability ability;
 
-		public override Ability Ability { get { return ability; } }
+		public override DiskCardGame.Ability Ability { get { return ability; } }
 
-		private PlayableCard foeInOpposingSlot;
+		private DiskCardGame.PlayableCard foeInOpposingSlot;
 		private bool isTransformed;
 		private int turnsTaken = 0;
 		private int turnsToStayTransformed = 1;
 
-		public override bool RespondsToDealDamage(int amount, PlayableCard target)
+		public override bool RespondsToDealDamage(int amount, DiskCardGame.PlayableCard target)
 		{
-			bool doesTargetHaveValidTraits = !target.Info.traits.Exists(t => t is Trait.Terrain or Trait.Pelt or Trait.Giant);
+			bool doesTargetHaveValidTraits = !target.Info.traits.Exists(t =>
+				t is DiskCardGame.Trait.Terrain or DiskCardGame.Trait.Pelt or DiskCardGame.Trait.Giant);
 			return !isTransformed && doesTargetHaveValidTraits && !target.Dead;
 		}
 
-		public override IEnumerator OnDealDamage(int amount, PlayableCard target)
+		public override System.Collections.IEnumerator OnDealDamage(int amount, DiskCardGame.PlayableCard target)
 		{
 			foeInOpposingSlot = target;
 			turnsToStayTransformed = amount;
 			isTransformed = true;
 			yield return TransformToCard(target.name);
-			var modInfo = new CardModificationInfo();
-			modInfo.abilities = new List<Ability>() { Ability.Evolve };
+			var modInfo = new DiskCardGame.CardModificationInfo
+			{
+				abilities = new System.Collections.Generic.List<DiskCardGame.Ability>() { DiskCardGame.Ability.Evolve }
+			};
 			base.Card.AddTemporaryMod(modInfo);
 			yield break;
 		}
@@ -40,7 +37,7 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 			return playerTurnEnd && foeInOpposingSlot is not null;
 		}
 
-		public override IEnumerator OnTurnEnd(bool playerTurnEnd)
+		public override System.Collections.IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
 			if (++turnsTaken == turnsToStayTransformed)
 			{
@@ -52,10 +49,10 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 		}
 
 		public override bool RespondsToOtherCardDie(
-			PlayableCard card,
-			CardSlot deathSlot,
+			DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot,
 			bool fromCombat,
-			PlayableCard killer
+			DiskCardGame.PlayableCard killer
 		)
 		{
 			if (foeInOpposingSlot is not null)
@@ -74,62 +71,62 @@ namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
 		/// <param name="fromCombat">Did it die from combat or sacrifice/bomb/etc</param>
 		/// <param name="killer">Who, if applicable, killed the {card}.</param>
 		/// <returns></returns>
-		public override IEnumerator OnOtherCardDie(
-			PlayableCard card,
-			CardSlot deathSlot,
+		public override System.Collections.IEnumerator OnOtherCardDie(
+			DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot,
 			bool fromCombat,
-			PlayableCard killer
+			DiskCardGame.PlayableCard killer
 		)
 		{
 			HarmonyInitAll.Log.LogInfo($"-> Switching back to default knife, card {card.name} is dead");
-			yield return new WaitForSeconds(0.5f);
+			yield return new UnityEngine.WaitForSeconds(0.5f);
 			yield return base.PreSuccessfulTriggerSequence();
 			yield return TransformToCard(SCP_034_Obsidian_Ritual_Knife.Card.Name);
 			yield return base.LearnAbility(0.5f);
 			yield break;
 		}
 
-		public IEnumerator TransformToCard(string cardToTransformTo)
+		private System.Collections.IEnumerator TransformToCard(string cardToTransformTo)
 		{
 			HarmonyInitAll.Log.LogInfo($"Transforming into [{cardToTransformTo}]");
-			CardInfo cardByName = CardLoader.GetCardByName(cardToTransformTo);
+			DiskCardGame.CardInfo cardByName = DiskCardGame.CardLoader.GetCardByName(cardToTransformTo);
 
-			CardModificationInfo statsMod = GetTransformStatInfo(cardByName);
+			DiskCardGame.CardModificationInfo statsMod = GetTransformStatInfo(cardByName);
 			statsMod.nameReplacement = base.Card.Info.DisplayedNameEnglish;
 			cardByName.Mods.Add(statsMod);
 
-			CardModificationInfo cardModificationInfo2 = new CardModificationInfo(Ability.Transformer);
-			cardModificationInfo2.nonCopyable = true;
+			DiskCardGame.CardModificationInfo cardModificationInfo2 =
+				new DiskCardGame.CardModificationInfo(DiskCardGame.Ability.Transformer) { nonCopyable = true };
 			cardByName.Mods.Add(cardModificationInfo2);
-			cardByName.evolveParams = new EvolveParams();
-			cardByName.evolveParams.evolution = base.Card.Info;
-			cardByName.evolveParams.turnsToEvolve = 1;
+			cardByName.evolveParams = new DiskCardGame.EvolveParams { evolution = base.Card.Info, turnsToEvolve = 1 };
 
 			yield return base.Card.TransformIntoCard(cardByName, null);
 		}
 
-		protected CardModificationInfo GetTransformStatInfo(CardInfo card)
+		protected DiskCardGame.CardModificationInfo GetTransformStatInfo(DiskCardGame.CardInfo card)
 		{
-			return new CardModificationInfo
+			return new DiskCardGame.CardModificationInfo
 			{
 				attackAdjustment = card.Attack, healthAdjustment = card.Health, nonCopyable = true
 			};
 		}
 
-		protected internal static NewAbility InitAbility()
+		protected internal static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
-			var rulebookName = "Physical Copy";
-			var description =
-				"For the amount of damage done to a card, transform into the card attacked for that amount of turns. Revert if original card dies.";
-			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
+			const string rulebookName = "Physical Copy";
+			const string description =
+				"For the amount of damage done to a card, transform into the card attacked for that amount of turns. " +
+				"Revert if original card dies.";
+			DiskCardGame.AbilityInfo info =
+				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D tex = CardUtils.getAndloadImageAsTexture("scp_034_sigil_small.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_034_sigil_small.png");
 
 			// set ability to behavior class
-			NewAbility knifeAbility = new NewAbility(info, typeof(RitualKnifeAbility), tex,
-				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
+			APIPlugin.NewAbility knifeAbility = new APIPlugin.NewAbility(info, typeof(RitualKnifeAbility), tex,
+				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
 			);
 			ability = knifeAbility.ability;
 

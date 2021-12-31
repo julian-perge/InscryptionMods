@@ -1,14 +1,9 @@
-﻿using BepInEx;
-using BepInEx.Logging;
-using DiskCardGame;
-using HarmonyLib;
-
-namespace AddAllSCP
+﻿namespace AddAllSCP
 {
-	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	[BepInDependency(CyantistInscryptionAPI, BepInDependency.DependencyFlags.HardDependency)]
-	[BepInDependency(SigilADay_julianPerge, BepInDependency.DependencyFlags.HardDependency)]
-	public class HarmonyInitAll : BaseUnityPlugin
+	[BepInEx.BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+	[BepInEx.BepInDependency(CyantistInscryptionAPI, BepInEx.BepInDependency.DependencyFlags.HardDependency)]
+	[BepInEx.BepInDependency(SigilADay_julianPerge, BepInEx.BepInDependency.DependencyFlags.HardDependency)]
+	public class HarmonyInitAll : BepInEx.BaseUnityPlugin
 	{
 		public const string CyantistInscryptionAPI = "cyantist.inscryption.api";
 		public const string SigilADay_julianPerge = "julianperge.inscryption.sigiladay";
@@ -17,7 +12,7 @@ namespace AddAllSCP
 		public const string PluginName = "SCP_Universe";
 		public const string PluginVersion = "0.1.0";
 
-		internal static ManualLogSource Log;
+		internal static BepInEx.Logging.ManualLogSource Log;
 
 		void Awake()
 		{
@@ -48,27 +43,27 @@ namespace AddAllSCP
 
 			// SCP_999_Tickle_Monster.Card.InitCard();
 
-			var harmony = new Harmony(PluginGuid);
+			var harmony = new HarmonyLib.Harmony(PluginGuid);
 			harmony.PatchAll();
 		}
 
 		// add this to your deck by scrolling upwards/pressing w key when at the map
-		[HarmonyPatch(typeof(DeckReviewSequencer), "OnEnterDeckView")]
+		[HarmonyLib.HarmonyPatch(typeof(DiskCardGame.DeckReviewSequencer), "OnEnterDeckView")]
 		public class AddCardsToDeckPatch
 		{
 			private static bool allowSettingDeck = true;
 
-			[HarmonyPrefix]
+			[HarmonyLib.HarmonyPrefix]
 			public static void AddCards()
 			{
 				if (allowSettingDeck)
 				{
 					SaveManager.SaveFile.CurrentDeck.Cards.Clear();
 
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("scp_096_stage1"));
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Stinkbug_Talking"));
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Stinkbug_Talking"));
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Stinkbug_Talking"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(DiskCardGame.CardLoader.GetCardByName("scp_096_stage1"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(DiskCardGame.CardLoader.GetCardByName("Stinkbug_Talking"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(DiskCardGame.CardLoader.GetCardByName("Stinkbug_Talking"));
+					SaveManager.SaveFile.CurrentDeck.Cards.Add(DiskCardGame.CardLoader.GetCardByName("Stinkbug_Talking"));
 					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName(SCP_034_Obsidian_Ritual_Knife.Card.Name));
 					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName(SCP_035_Porcelain_Mask.Card.Name));
 					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName(SCP_049_Plague_Doctor.Card.Name));

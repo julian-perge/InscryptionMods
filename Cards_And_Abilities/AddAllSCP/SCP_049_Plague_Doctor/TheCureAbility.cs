@@ -1,23 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
+﻿using Enumerable = System.Linq.Enumerable;
 
 namespace AddAllSCP.SCP_049_Plague_Doctor
 {
-	public class TheCureAbility : AbilityBehaviour
+	public class TheCureAbility : DiskCardGame.AbilityBehaviour
 	{
-		public override Ability Ability { get { return ability; } }
+		public override DiskCardGame.Ability Ability { get { return ability; } }
 
-		public static Ability ability;
+		public static DiskCardGame.Ability ability;
 
-		public override bool RespondsToOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override bool RespondsToOtherCardDie(DiskCardGame.PlayableCard card, DiskCardGame.CardSlot deathSlot,
+			bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			// can't rez non-living things. Moon causes bugs.
-			if (card.Info.traits.Exists(t => t is Trait.Terrain or Trait.Pelt or Trait.Giant))
+			if (card.Info.traits.Exists(trait =>
+				trait is DiskCardGame.Trait.Terrain or DiskCardGame.Trait.Pelt or DiskCardGame.Trait.Giant))
 			{
 				return false;
 			}
@@ -28,28 +25,31 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 			return (fromCombat && isBaseCardValid && isValidCardDeath) || IsPlagueDoctorDeath(card);
 		}
 
-		private bool IsPlagueDoctorDeath(PlayableCard card)
+		private bool IsPlagueDoctorDeath(DiskCardGame.PlayableCard card)
 		{
 			return card is not null && card.name.Contains("SCP_049_PlagueDoctor");
 		}
 
-		private bool IsPlagueDoctorCuredCard(PlayableCard card)
+		private bool IsPlagueDoctorCuredCard(DiskCardGame.PlayableCard card)
 		{
 			return card.name.Contains("\"Cured\"");
 		}
 
-		public override IEnumerator OnOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override System.Collections.IEnumerator OnOtherCardDie(DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot,
+			bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
-			List<CardSlot> slots = Singleton<BoardManager>.Instance.GetSlots(true);
+			System.Collections.Generic.List<DiskCardGame.CardSlot> slots =
+				Singleton<DiskCardGame.BoardManager>.Instance.GetSlots(true);
 			HarmonyInitAll.Log.LogDebug(
 				$"[TheCure] Card is null {card is null} deathslot card is null {deathSlot is null} Killer {killer.name}");
 			if (IsPlagueDoctorDeath(card))
 			{
 				HarmonyInitAll.Log.LogDebug("-> Is Plague Doctor death card is true");
 				// loop through player slots and only check for cards with "Cured" in the name
-				foreach (var slot in slots.Where(slot => slot is not null && IsPlagueDoctorCuredCard(slot.Card)))
+				foreach (var slot in Enumerable.Where(slots, slot => slot is not null && IsPlagueDoctorCuredCard(slot.Card)))
 				{
 					yield return slot.Card.Die(false, null, true);
 				}
@@ -59,45 +59,48 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 				string nameOfCard = card.Info.name;
 				HarmonyInitAll.Log.LogDebug($"-> Is Plague Doctor death card was false, checking card name is {nameOfCard}");
 				// if not Plague Doctor death, set to 1/1 and spawn on an open slot on your side of the field
-				var filteredSlots = slots.Where(slot => slot is not null && slot.Card is null);
-				HarmonyInitAll.Log.LogDebug($"-> Number of filtered slots [{filteredSlots.Count()}]");
-				foreach (var slot in slots.Where(slot => slot is not null && slot.Card is null))
+				var filteredSlots = Enumerable.Where(slots, slot => slot is not null && slot.Card is null);
+				HarmonyInitAll.Log.LogDebug($"-> Number of filtered slots [{Enumerable.Count(filteredSlots)}]");
+				foreach (var slot in Enumerable.Where(slots, slot => slot is not null && slot.Card is null))
 				{
-					CardInfo cardByName = CardLoader.GetCardByName(nameOfCard);
-					CardModificationInfo cardModificationInfo = new CardModificationInfo();
-					cardModificationInfo.attackAdjustment = -cardByName.Attack + 1;
-					cardModificationInfo.healthAdjustment = -cardByName.Health + 1;
-					cardModificationInfo.bloodCostAdjustment = -cardByName.BloodCost;
-					cardModificationInfo.bonesCostAdjustment = -cardByName.BonesCost;
-					cardModificationInfo.energyCostAdjustment = -cardByName.EnergyCost;
-					cardModificationInfo.nullifyGemsCost = true;
-					cardModificationInfo.nameReplacement = nameOfCard + " \"Cured\"";
+					DiskCardGame.CardInfo cardByName = DiskCardGame.CardLoader.GetCardByName(nameOfCard);
+					DiskCardGame.CardModificationInfo cardModificationInfo = new DiskCardGame.CardModificationInfo
+					{
+						attackAdjustment = -cardByName.Attack + 1,
+						healthAdjustment = -cardByName.Health + 1,
+						bloodCostAdjustment = -cardByName.BloodCost,
+						bonesCostAdjustment = -cardByName.BonesCost,
+						energyCostAdjustment = -cardByName.EnergyCost,
+						nullifyGemsCost = true,
+						nameReplacement = nameOfCard + " \"Cured\""
+					};
 					cardByName.Mods.Add(cardModificationInfo);
-					yield return Singleton<BoardManager>.Instance.CreateCardInSlot(cardByName, slot, 0.1f, true);
+					yield return Singleton<DiskCardGame.BoardManager>.Instance.CreateCardInSlot(cardByName, slot, 0.1f, true);
 					break;
 				}
 			}
 
-			yield return new WaitForSeconds(0.1f);
+			yield return new UnityEngine.WaitForSeconds(0.1f);
 			yield return base.LearnAbility(0.5f);
 			yield break;
 		}
 
-		public static NewAbility InitAbility()
+		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
-			var rulebookName = "The Cure";
-			var description =
+			const string rulebookName = "The Cure";
+			const string description =
 				"Any card that dies from combat, spawn a 1/1 \"Cured\" version of the card in an open slot on your side.";
-			AbilityInfo info = AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
+			DiskCardGame.AbilityInfo info =
+				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			Texture2D sigilTex =
-				CardUtils.getAndloadImageAsTexture("double_death_tweak.png");
+			UnityEngine.Texture2D sigilTex =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("double_death_tweak.png");
 
 			// set ability to behavior class
-			NewAbility theCureAbility = new NewAbility(info, typeof(TheCureAbility), sigilTex,
-				AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+			APIPlugin.NewAbility theCureAbility = new APIPlugin.NewAbility(info, typeof(TheCureAbility), sigilTex,
+				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = theCureAbility.ability;
 
 			return theCureAbility;

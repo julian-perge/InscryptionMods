@@ -1,51 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-using static AddAllTarotCards.HarmonyInit;
+﻿using static AddAllTarotCards.HarmonyInit;
 
 namespace AddAllTarotCards.The_Emperor_And_Empress
 {
-	public class SpecialAbility_Emperor_Empress : SpecialCardBehaviour
+	public class SpecialAbility_Emperor_Empress : DiskCardGame.SpecialCardBehaviour
 	{
-		public static NewSpecialAbility _SpecialAbility;
+		public static APIPlugin.NewSpecialAbility _SpecialAbility;
 
 		private bool modsHaveBeenApplied;
-		private CardSlot slotWithEmperor;
+		private DiskCardGame.CardSlot slotWithEmperor;
 
-		private CardModificationInfo ReignOfPowerMods
+		private DiskCardGame.CardModificationInfo ReignOfPowerMods
 		{
 			get
 			{
 				return new()
 				{
-					abilities = new List<Ability>() { Ability.BuffNeighbours, Ability.DebuffEnemy },
+					abilities = new System.Collections.Generic.List<DiskCardGame.Ability>()
+					{
+						DiskCardGame.Ability.BuffNeighbours, DiskCardGame.Ability.DebuffEnemy
+					},
 					attackAdjustment = 1,
 					healthAdjustment = 2
 				};
 			}
 		}
 
-		private bool IsCardEmperor(PlayableCard playableCard)
+		private bool IsCardEmperor(DiskCardGame.PlayableCard playableCard)
 		{
 			return playableCard.Info.name.Equals("TheEmperor");
 		}
 
-		private CardSlot GetEmperorCardSlotIfExists()
+		private DiskCardGame.CardSlot GetEmperorCardSlotIfExists()
 		{
-			return Singleton<BoardManager>
+			return Singleton<DiskCardGame.BoardManager>
 				.Instance
 				.GetSlots(true)
 				.Find(slot => slot && slot.Card && slot != base.PlayableCard.Slot && IsCardEmperor(slot.Card));
 		}
 
-		public override bool RespondsToDie(bool wasSacrifice, PlayableCard killer)
+		public override bool RespondsToDie(bool wasSacrifice, DiskCardGame.PlayableCard killer)
 		{
 			return true;
 		}
 
-		public override IEnumerator OnDie(bool wasSacrifice, PlayableCard killer)
+		public override System.Collections.IEnumerator OnDie(bool wasSacrifice, DiskCardGame.PlayableCard killer)
 		{
 			if (slotWithEmperor)
 			{
@@ -56,15 +54,17 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 			yield break;
 		}
 
-		public override bool RespondsToOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override bool RespondsToOtherCardDie(DiskCardGame.PlayableCard card, DiskCardGame.CardSlot deathSlot,
+			bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			// only respond to another card dying if mods have been applied because that means the duo is on the board
 			return modsHaveBeenApplied && deathSlot == slotWithEmperor;
 		}
 
-		public override IEnumerator OnOtherCardDie(PlayableCard card, CardSlot deathSlot, bool fromCombat,
-			PlayableCard killer)
+		public override System.Collections.IEnumerator OnOtherCardDie(DiskCardGame.PlayableCard card,
+			DiskCardGame.CardSlot deathSlot, bool fromCombat,
+			DiskCardGame.PlayableCard killer)
 		{
 			Log.LogDebug($"[OnOtherCardDie] Removing [Reign of Power] mods from [{base.PlayableCard.name}]");
 			base.PlayableCard.RemoveTemporaryMod(ReignOfPowerMods, true);
@@ -76,7 +76,7 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 			return true;
 		}
 
-		public override IEnumerator OnPlayFromHand()
+		public override System.Collections.IEnumerator OnPlayFromHand()
 		{
 			var _slotWithEmperor = GetEmperorCardSlotIfExists();
 			if (_slotWithEmperor)
@@ -88,13 +88,13 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 			yield break;
 		}
 
-		public override bool RespondsToOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override bool RespondsToOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
 			// if the modifications have been applied already, we stop checking
 			return !modsHaveBeenApplied && otherCard.Slot.IsPlayerSlot;
 		}
 
-		public override IEnumerator OnOtherCardAssignedToSlot(PlayableCard otherCard)
+		public override System.Collections.IEnumerator OnOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
 			if (IsCardEmperor(otherCard))
 			{
@@ -106,7 +106,7 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 			yield break;
 		}
 
-		private void MakeReignOfPowerActive(PlayableCard otherCard)
+		private void MakeReignOfPowerActive(DiskCardGame.PlayableCard otherCard)
 		{
 			slotWithEmperor = otherCard.Slot;
 			base.PlayableCard.AddTemporaryMod(ReignOfPowerMods);
@@ -114,23 +114,23 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 			modsHaveBeenApplied = true;
 		}
 
-		public static NewSpecialAbility InitAbility()
+		public static APIPlugin.NewSpecialAbility InitAbility()
 		{
 			string name = "ReignOfPower";
 			string desc =
 				"When both the Empress and the Emperor exist on the board, they become 3/4 cards with Unkillable and Leader";
 
 			// setup ability
-			StatIconInfo info = ScriptableObject.CreateInstance<StatIconInfo>();
+			DiskCardGame.StatIconInfo info = UnityEngine.ScriptableObject.CreateInstance<DiskCardGame.StatIconInfo>();
 			info.appliesToAttack = false; // icon will replace both attack and health numbers until played
 			info.appliesToHealth = false;
 			info.rulebookName = name;
 			info.rulebookDescription = desc;
 
-			var sId = SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
+			var sId = APIPlugin.SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// set ability to behavior class
-			var newAbility = new NewSpecialAbility(typeof(SpecialAbility_Emperor_Empress), sId, info);
+			var newAbility = new APIPlugin.NewSpecialAbility(typeof(SpecialAbility_Emperor_Empress), sId, info);
 			_SpecialAbility = newAbility; // this is so we can use it in the HarmonyInit class
 
 			return newAbility;

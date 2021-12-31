@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using APIPlugin;
-using DiskCardGame;
-using UnityEngine;
-
-namespace AddAllSCP.SCP_348_Thinking_Of_You
+﻿namespace AddAllSCP.SCP_348_Thinking_Of_You
 {
 	public static class Card
 	{
@@ -11,19 +6,20 @@ namespace AddAllSCP.SCP_348_Thinking_Of_You
 
 		public static void InitCard()
 		{
-			NewAbility ability = ThinkingOfYouAbility.InitAbility();
-			List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
+			APIPlugin.NewAbility ability = ThinkingOfYouAbility.InitAbility();
+			System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
+				APIPlugin.CardUtils.getNormalCardMetadata;
 
-			Texture2D defaultTexture =
-				CardUtils.getAndloadImageAsTexture("scp_348_small.png");
+			UnityEngine.Texture2D defaultTexture =
+				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_348_small.png");
 
-			var displayName = "Thinking Of You";
-			var desc =
+			const string displayName = "Thinking Of You";
+			const string desc =
 				"Those who eat from SCP-348 several times often express a feeling of contentment, stating that though they are eating by themselves, they do not feel lonely.";
-			var abIds = new List<AbilityIdentifier>() { ability.id };
+			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			NewCard.Add(Name, displayName, 0, 1,
-				metaCategories, CardComplexity.Simple, CardTemple.Nature,
+			APIPlugin.NewCard.Add(Name, displayName, 0, 1,
+				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
 				desc, bloodCost: 1, defaultTex: defaultTexture, abilityIdsParam: abIds
 			);
 		}
