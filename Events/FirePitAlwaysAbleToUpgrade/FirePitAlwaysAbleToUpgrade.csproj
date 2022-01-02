@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="$(SolutionDir)/Dependencies.props"/>
+	<Import Project="$(SolutionDir)/Dependencies.props" />
 
 	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="FirePitAlwaysAbleToUpgrade.dll"/>
-		<None Remove="FirePitAlwaysAbleToUpgrade.zip"/>
+		<None Remove="FirePitAlwaysAbleToUpgrade.dll" />
+		<None Remove="FirePitAlwaysAbleToUpgrade.zip" />
 	</ItemGroup>
 </Project>
