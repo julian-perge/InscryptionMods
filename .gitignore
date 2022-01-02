@@ -8,6 +8,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+
+*.zip
 .cache/
 .output/
 
