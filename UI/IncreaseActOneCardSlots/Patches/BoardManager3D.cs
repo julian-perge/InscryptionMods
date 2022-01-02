@@ -87,8 +87,10 @@
 		}
 
 		private static T CreateSlot<T>(
-			string name, UnityEngine.Transform parent, UnityEngine.Vector3 newPosition,
-			DiskCardGame.HighlightedInteractable prefab)
+			string name, UnityEngine.Transform parent,
+			UnityEngine.Vector3 newPosition,
+			DiskCardGame.HighlightedInteractable prefab
+		)
 			where T : DiskCardGame.HighlightedInteractable
 		{
 			Plugin.Log.LogDebug($"Creating slot {name}");
