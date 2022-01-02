@@ -1,20 +1,7 @@
-<Project InitialTargets="ValidateGamePath;ValidateBepInEx">
-	<Import Project="$(MSBuildThisFileDirectory)/GameFolder.props" Condition="Exists('$(MSBuildThisFileDirectory)/GameFolder.props')"/>
-
-	<!-- GameFolder.props Validation -->
-	<Target Name="ValidateGamePath">
-		<Error Text="The GameFolder property must be set to the game folder of Inscryption. Look at the README.md under 'Building this Project' for more information" Condition="'$(GameFolder)' == '' or !Exists('$(GameFolder)')" Code="VAL01"/>
-	</Target>
-
-	<!-- BepInEx Validation -->
-	<Target Name="ValidateBepInEx">
-		<Error Text="BepInEx must be installed for Inscryption (at $(ModFolder))" Condition="!Exists('$(ModFolder)/BepInEx')" Code="VAL02"/>
-	</Target>
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<!-- General properties -->
 	<PropertyGroup>
-		<BIELibsFolder>$(ModFolder)/BepInEx/core</BIELibsFolder>
-		<ManagedFolder>$(GameFolder)/Inscryption_Data/Managed</ManagedFolder>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<LangVersion>9.0</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -25,13 +12,17 @@
 		<PackageReference Include="BepInEx.Analyzers" Version="1.0.7" PrivateAssets="all"/>
 		<PackageReference Include="BepInEx.Core" Version="5.4.16"/>
 		<PackageReference Include="BepInEx.PluginInfoProps" Version="1.1.0"/>
+		<PackageReference Include="Inscryption.GameLibs" Version="1.2.0-r.1"/>
+		<PackageReference Include="Lib.Harmony" Version="2.2.0"/>
 		<PackageReference Include="UnityEngine.Modules" Version="2019.4.24" IncludeAssets="compile"/>
 	</ItemGroup>
 
-	<!-- Game dependencies -->
-	<ItemGroup>
-		<Reference Include="$(BIELibsFolder)/Assembly-CSharp.stripped.dll"/>
-		<Reference Include="$(ManagedFolder)/Sirenix.Serialization.dll"/>
-<!--		<Reference Remove="$(ManagedFolder)/Assembly-CSharp.dll"/>-->
-	</ItemGroup>
+	<Target Name="CopyDLLs" AfterTargets="Build">
+		<Message Text="Executing CopyDLLs task" Importance="High"/>
+
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\r2modman\Inscryption\profiles\Default\BepInEx\plugins\"/>
+
+		<Message Text="Copied build files" Importance="High"/>
+	</Target>
+
 </Project>
