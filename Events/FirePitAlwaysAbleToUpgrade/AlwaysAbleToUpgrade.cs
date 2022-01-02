@@ -27,9 +27,16 @@ namespace FirePitAlwaysAbleToUpgrade
 			{
 				var opcode = codeInstruction.opcode;
 				var operand = codeInstruction.operand;
-				if (opcode == OpCodes.Ldc_R4 && operand.Equals(0.225f))
+				if (opcode == OpCodes.Ldc_R4)
 				{
-					codeInstruction.operand = 0f;
+					if (operand.Equals(0.225f))
+					{
+						codeInstruction.operand = 0f;
+					}
+					else if (operand.Equals(0.5f))
+					{
+						codeInstruction.operand = 1f;
+					}
 				}
 
 				yield return codeInstruction;
