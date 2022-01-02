@@ -12,7 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DB42608-EE47-4AB5-977B-A7FEC157664C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		GameFolder.props = GameFolder.props
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeShopsAct2And3", "Events\FreeShopsAct2And3\FreeShopsAct2And3.csproj", "{972A5967-F41F-4CB6-BDEA-85621BFF803E}"
