@@ -8,6 +8,11 @@
 *.user
 *.userosscache
 *.sln.docstates
+.cache/
+.output/
+
+.run/Install Inscription.run.xml
+.run/Install Inscription (Kaycee).run.xml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
