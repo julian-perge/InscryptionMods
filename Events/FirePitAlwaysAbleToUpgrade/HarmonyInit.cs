@@ -8,7 +8,7 @@ namespace FirePitAlwaysAbleToUpgrade
 	{
 		private const string PluginGuid = "julianperge.inscryption.act1.firePitAlwaysAbleToUpgrade";
 		private const string PluginName = "FirePitAlwaysAbleToUpgrade";
-		private const string PluginVersion = "1.2.0";
+		private const string PluginVersion = "1.3.0";
 
 		void Awake()
 		{
