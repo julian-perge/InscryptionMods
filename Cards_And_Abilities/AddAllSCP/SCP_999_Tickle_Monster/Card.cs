@@ -15,7 +15,7 @@
 				};
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_999_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_999_small.png");
 
 			const string displayName = "Tickle Monster";
 			const string desc =

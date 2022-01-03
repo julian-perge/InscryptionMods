@@ -116,8 +116,8 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 
 		public static APIPlugin.NewSpecialAbility InitAbility()
 		{
-			string name = "ReignOfPower";
-			string desc =
+			const string name = "ReignOfPower";
+			const string desc =
 				"When both the Empress and the Emperor exist on the board, they become 3/4 cards with Unkillable and Leader";
 
 			// setup ability

@@ -52,11 +52,11 @@
 
 			// get and load artwork
 			UnityEngine.Texture2D sigilTex =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_pond_ability_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_354_blood_pond_ability_small.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility bloodPondAbility = new APIPlugin.NewAbility(info, typeof(BloodPondAbility), sigilTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = bloodPondAbility.ability;
 
 			return bloodPondAbility;

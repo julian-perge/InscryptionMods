@@ -91,13 +91,13 @@ namespace AddAllTarotCards.The_Hanged_Man
 		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
-			string name = "Martyr";
-			string desc = "When another friendly card would take damage, a card with this sigil receives it instead";
+			const string name = "Martyr";
+			const string desc = "When another friendly card would take damage, a card with this sigil receives it instead";
 			DiskCardGame.AbilityInfo info = APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
-			var abIds = APIPlugin.AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
+			var abIds = APIPlugin.AbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// get art
-			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_martyr.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.LoadImageAndGetTexture("ability_martyr.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(Ability_TheHangedMan), tex, abIds);

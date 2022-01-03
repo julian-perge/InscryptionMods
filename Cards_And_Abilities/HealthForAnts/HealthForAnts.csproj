@@ -1,28 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="$(SolutionDir)/Dependencies.props"/>
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>9.0</LangVersion>
-	</PropertyGroup>
-
-	<ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
-		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
-	</ItemGroup>
-
 	<ItemGroup>
-		<Reference Include="API, Version=1.12.1.0">
+		<Reference Include="API">
 			<HintPath>C:\DEVELOPER\InscryptionMods\lib\API.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
-
-	<Target Name="CopyDLLs" AfterTargets="Build">
-		<Message Text="Executing CopyDLLs task" Importance="High"/>
-
-		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll;" DestinationFolder="$(ModFolder)\BepInEx\plugins\"/>
-
-		<Message Text="Copied build files" Importance="High"/>
-	</Target>
 
 </Project>

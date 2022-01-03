@@ -144,13 +144,13 @@ namespace AddAllTarotCards.The_Magician
 		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
-			string name = "Silence";
-			string desc = "A card bearing this sigil removes the sigils of the card in front of it";
+			const string name = "Silence";
+			const string desc = "A card bearing this sigil removes the sigils of the card in front of it";
 			DiskCardGame.AbilityInfo info = APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
-			var abIds = APIPlugin.AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
+			var abIds = APIPlugin.AbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// get art
-			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_silence.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.LoadImageAndGetTexture("ability_silence.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(Ability_TheMagician), tex, abIds);

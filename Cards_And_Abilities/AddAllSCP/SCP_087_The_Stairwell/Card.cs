@@ -12,7 +12,7 @@
 				APIPlugin.CardUtils.getNormalCardMetadata;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_087_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_087_small.png");
 
 			const string displayName = "The Stairwell";
 			const string desc =

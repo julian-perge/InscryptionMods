@@ -45,8 +45,8 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 
 		public static APIPlugin.NewSpecialAbility InitAbility()
 		{
-			string name = "Wheel of Fortune";
-			string desc =
+			const string name = "Wheel of Fortune";
+			const string desc =
 				"When this card enters your hand, its power and health become two random non-zero numbers that add up to 7.";
 
 			// setup ability
@@ -57,7 +57,7 @@ namespace AddAllTarotCards.Wheel_Of_Fortune
 			info.rulebookName = name;
 			info.rulebookDescription = desc;
 
-			info.iconGraphic = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_wof_atk.png");
+			info.iconGraphic = APIPlugin.CardUtils.LoadImageAndGetTexture("ability_wof_atk.png");
 			var sId = APIPlugin.SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// set ability to behavior class

@@ -13,10 +13,10 @@
 				APIPlugin.CardUtils.getRareAppearance;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_096_hide_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_096_hide_small.png");
 
 			UnityEngine.Texture2D altTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_096_attack_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_096_attack_small.png");
 
 			const string displayName = "Shy Guy";
 			const string desc = "SCP-096 - Shy Guy. He may seem harmless, but no one has ever seen his face and survived.";
@@ -39,7 +39,7 @@
 				APIPlugin.CardUtils.getRareAppearance;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("SCP_096_STAGE1.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("SCP_096_STAGE1.png");
 
 			const string name = "scp_096_stage1";
 			const string displayName = "SCP-096 (Dormant)";
@@ -59,7 +59,7 @@
 				APIPlugin.CardUtils.getRareAppearance;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("SCP_096_STAGE2.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("SCP_096_STAGE2.png");
 
 			const string name = "scp_096_stage2";
 			const string displayName = "SCP-096 (Erupting)";
@@ -80,7 +80,7 @@
 				APIPlugin.CardUtils.getRareAppearance;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("SCP_096_STAGE3.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("SCP_096_STAGE3.png");
 
 			const string name = "scp_096_stage3";
 			const string displayName = "SCP-096 (Active)";

@@ -73,12 +73,12 @@
 
 			// get and load artwork
 			UnityEngine.Texture2D sigilTex =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_348_sigil_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_348_sigil_small.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(
 				info, typeof(ThinkingOfYouAbility), sigilTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName)
 			);
 			ability = newAbility.ability;
 

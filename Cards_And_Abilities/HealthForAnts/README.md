@@ -36,7 +36,7 @@ public class AntsTest : BaseUnityPlugin
     void Awake()
     {
     		// this will load the file into the texture for you
-        Texture2D defaultTex = CardUtils.getAndloadImageAsTexture("dome_ant.png");
+        Texture2D defaultTex = CardUtils.LoadImageAndGetTexture("dome_ant.png");
 
         List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
 

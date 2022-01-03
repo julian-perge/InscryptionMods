@@ -8,10 +8,10 @@
 		{
 			APIPlugin.NewAbility ability = Ability_TheMagician.InitAbility();
 
-			UnityEngine.Texture2D defaultTexture = APIPlugin.CardUtils.getAndloadImageAsTexture("card_the_magician.png");
+			UnityEngine.Texture2D defaultTexture = APIPlugin.CardUtils.LoadImageAndGetTexture("card_the_magician.png");
 
-			var displayName = "The Magician";
-			var desc = "The Magician. It causes its opponent's abilities to... disappear!";
+			const string displayName = "The Magician";
+			const string desc = "The Magician. It causes its opponent's abilities to... disappear!";
 			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
 			APIPlugin.NewCard.Add(Name, displayName, 2, 2,

@@ -1,4 +1,4 @@
-﻿using Enumerable = System.Linq.Enumerable;
+﻿using System.Linq;
 
 namespace AddAllSCP.SCP_049_Plague_Doctor
 {
@@ -96,11 +96,11 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 
 			// get and load artwork
 			UnityEngine.Texture2D sigilTex =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("double_death_tweak.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("double_death_tweak.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility theCureAbility = new APIPlugin.NewAbility(info, typeof(TheCureAbility), sigilTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = theCureAbility.ability;
 
 			return theCureAbility;

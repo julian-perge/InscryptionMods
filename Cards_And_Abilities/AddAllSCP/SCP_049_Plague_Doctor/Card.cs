@@ -11,7 +11,7 @@
 				APIPlugin.CardUtils.getNormalCardMetadata;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_049_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_049_small.png");
 
 			const string displayName = "Plague Doctor";
 			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };

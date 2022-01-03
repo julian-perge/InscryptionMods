@@ -115,11 +115,11 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 				SigilADay_julianperge.SigilUtils.CreateInfoWithDefaultSettings(rulebookName, rulebookDescription);
 
 			// get and load artwork
-			var defaultTex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
+			var defaultTex = APIPlugin.CardUtils.LoadImageAndGetTexture("scp_096_ability_small.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility theSightAbility = new APIPlugin.NewAbility(info, typeof(TheSightAbility), defaultTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = theSightAbility.ability;
 
 			return theSightAbility;

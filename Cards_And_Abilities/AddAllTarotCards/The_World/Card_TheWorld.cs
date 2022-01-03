@@ -8,11 +8,10 @@
 		{
 			APIPlugin.NewAbility ability = AddAllTarotCards.The_Hanged_Man.Ability_TheHangedMan.InitAbility();
 
-			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("card_the_world.png");
+			UnityEngine.Texture2D defaultTexture = APIPlugin.CardUtils.LoadImageAndGetTexture("card_the_world.png");
 
-			var displayName = "The World";
-			var desc = "The World. Other beings yield before it.";
+			const string displayName = "The World";
+			const string desc = "The World. Other beings yield before it.";
 			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
 			APIPlugin.NewCard.Add(Name, displayName, 7, 5,

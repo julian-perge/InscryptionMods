@@ -9,7 +9,7 @@
 			APIPlugin.NewSpecialAbility ability = SpecialAbility_WheelOfFortune.InitAbility();
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("card_wof.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("card_wof.png");
 
 			var displayName = "Wheel of Fortune";
 			var desc = "The Wheel of Fortune. Its power and health are up to chance.";

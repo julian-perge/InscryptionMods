@@ -9,13 +9,13 @@
 		{
 			APIPlugin.NewSpecialAbility ability = SpecialAbility_Emperor_Empress.InitAbility();
 
-			UnityEngine.Texture2D defaultTextureEmperor = APIPlugin.CardUtils.getAndloadImageAsTexture("card_emperor.png");
-			UnityEngine.Texture2D defaultTextureEmpress = APIPlugin.CardUtils.getAndloadImageAsTexture("card_empress.png");
+			UnityEngine.Texture2D defaultTextureEmperor = APIPlugin.CardUtils.LoadImageAndGetTexture("card_emperor.png");
+			UnityEngine.Texture2D defaultTextureEmpress = APIPlugin.CardUtils.LoadImageAndGetTexture("card_empress.png");
 
-			var displayNameEmperor = "The Emperor";
-			var displayNameEmpress = "The Empress";
+			const string displayNameEmperor = "The Emperor";
+			const string displayNameEmpress = "The Empress";
 
-			var desc = "The Empress and the Emperor. Relatively weak by themselves, but strong together.";
+			const string desc = "The Empress and the Emperor. Relatively weak by themselves, but strong together.";
 
 			var sId = new System.Collections.Generic.List<APIPlugin.SpecialAbilityIdentifier>() { ability.id };
 

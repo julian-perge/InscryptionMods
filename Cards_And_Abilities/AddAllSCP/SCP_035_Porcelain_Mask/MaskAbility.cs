@@ -42,11 +42,11 @@
 				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_035_sigil.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.LoadImageAndGetTexture("scp_035_sigil.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility maskAbility = new APIPlugin.NewAbility(info, typeof(MaskAbility), tex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName)
 			);
 			MaskAbility.ability = maskAbility.ability;
 

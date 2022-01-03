@@ -34,11 +34,11 @@
 				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, rulebookDescription);
 
 			// get and load artwork
-			var defaultTex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_096_ability_small.png");
+			var defaultTex = APIPlugin.CardUtils.LoadImageAndGetTexture("scp_096_ability_small.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(SCP096_Ability2), defaultTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = newAbility.ability;
 
 			return newAbility;

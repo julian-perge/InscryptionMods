@@ -19,7 +19,7 @@
 				}; // this makes it not sacrificable
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_035_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_035_small.png");
 
 			const string displayName = "Porcelain Mask";
 			const string desc =

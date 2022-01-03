@@ -53,11 +53,11 @@
 
 			// get and load artwork
 			UnityEngine.Texture2D sigilTex =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_087_ability.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_087_ability.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility theStairwellAbility = new APIPlugin.NewAbility(info, typeof(TheStairwellAbility), sigilTex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName));
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName));
 			ability = theStairwellAbility.ability;
 
 			return theStairwellAbility;

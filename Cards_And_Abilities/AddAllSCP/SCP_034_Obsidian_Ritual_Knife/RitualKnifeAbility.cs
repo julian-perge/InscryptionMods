@@ -122,11 +122,11 @@
 				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
 			// get and load artwork
-			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("scp_034_sigil_small.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.LoadImageAndGetTexture("scp_034_sigil_small.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility knifeAbility = new APIPlugin.NewAbility(info, typeof(RitualKnifeAbility), tex,
-				APIPlugin.AbilityIdentifier.GetAbilityIdentifier(HarmonyInitAll.PluginGuid, info.rulebookName)
+				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName)
 			);
 			ability = knifeAbility.ability;
 

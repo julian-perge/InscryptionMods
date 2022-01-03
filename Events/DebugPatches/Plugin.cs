@@ -41,7 +41,7 @@ namespace DebugPatches
 			harmony.PatchAll();
 		}
 
-		private bool toggleEncounterMenu = true;
+		private bool toggleEncounterMenu = false;
 
 		private void OnGUI()
 		{
@@ -57,7 +57,7 @@ namespace DebugPatches
 
 			int selectedButton = UnityEngine.GUI.SelectionGrid(
 				new UnityEngine.Rect(25, 300, 300, 300),
-				0,
+				-1,
 				names,
 				2
 			);

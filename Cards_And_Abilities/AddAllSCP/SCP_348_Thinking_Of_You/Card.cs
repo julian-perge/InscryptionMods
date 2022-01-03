@@ -11,7 +11,7 @@
 				APIPlugin.CardUtils.getNormalCardMetadata;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_348_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_348_small.png");
 
 			const string displayName = "Thinking Of You";
 			const string desc =

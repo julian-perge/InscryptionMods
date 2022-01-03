@@ -20,7 +20,7 @@
 				APIPlugin.CardUtils.getNormalCardMetadata;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_354_small.png");
 
 			const string displayName = "Blood Pond";
 			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
@@ -39,9 +39,9 @@
 				new System.Collections.Generic.List<DiskCardGame.Ability> { DiskCardGame.Ability.Brittle };
 
 			UnityEngine.Texture2D defaultTextureCreature =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_creature_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_354_blood_creature_small.png");
 			UnityEngine.Texture2D defaultTextureEntity =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_354_blood_entity_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_354_blood_entity_small.png");
 
 			const string displayNameCreature = "Blood Creature";
 			const string desc = "Spawned from the Blood Pond.";

@@ -12,7 +12,7 @@
 				APIPlugin.CardUtils.getNormalCardMetadata;
 
 			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.getAndloadImageAsTexture("scp_034_small.png");
+				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_034_small.png");
 
 			const string displayName = "Ritual Knife";
 			const string desc =

@@ -24,13 +24,14 @@ namespace AddAllTarotCards.The_World
 		public static APIPlugin.NewAbility InitAbility()
 		{
 			// setup ability
-			string name = "Yield";
-			string desc = "A card bearing this sigil is the only card on the board that attacks, skipping the enemy's turn";
+			const string name = "Yield";
+			const string desc =
+				"A card bearing this sigil is the only card on the board that attacks, skipping the enemy's turn";
 			DiskCardGame.AbilityInfo info = APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(name, desc);
-			var abIds = APIPlugin.AbilityIdentifier.GetAbilityIdentifier(PluginGuid, info.rulebookName);
+			var abIds = APIPlugin.AbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
 			// get art
-			UnityEngine.Texture2D tex = APIPlugin.CardUtils.getAndloadImageAsTexture("ability_yield.png");
+			UnityEngine.Texture2D tex = APIPlugin.CardUtils.LoadImageAndGetTexture("ability_yield.png");
 
 			// set ability to behavior class
 			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(info, typeof(Ability_TheWorld), tex, abIds);
