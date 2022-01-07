@@ -87,9 +87,11 @@
 
 				UnityEngine.Vector3 localScale = cardBase.localScale;
 				cardBase.localScale = new UnityEngine.Vector3(5.75f, localScale.y, localScale.z);
+				Plugin.Log.LogDebug($"Successfully set new scaling for the moon");
 
 				UnityEngine.Vector3 localPosition = cardBase.localPosition;
 				cardBase.localPosition = new UnityEngine.Vector3(-2.25f, localPosition.y, localPosition.z);
+				Plugin.Log.LogDebug($"Successfully set new localPosition for the moon");
 			}
 		}
 
@@ -102,6 +104,7 @@
 			{
 				Plugin.Log.LogDebug($"Setting new position for TableRuleBook");
 				__instance.transform.localPosition = new UnityEngine.Vector3(-4.69f, 0f, -4f);
+				Plugin.Log.LogDebug($"Successfully set new position for TableRuleBook");
 			}
 		}
 
@@ -111,6 +114,7 @@
 		{
 			Plugin.Log.LogDebug($"Setting new position for CandleHolder");
 			__instance.transform.localPosition = new UnityEngine.Vector3(6f, -0.006000042f, 1.1f);
+			Plugin.Log.LogDebug($"Successfully set new position for CandleHolder");
 		}
 	}
 }
