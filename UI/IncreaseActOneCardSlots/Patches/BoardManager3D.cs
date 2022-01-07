@@ -45,10 +45,6 @@
 					OpponentQueueSlotPrefab
 				);
 
-				/// opposing slots
-				playerSlot5.opposingSlot = opponentSlot5;
-				opponentSlot5.opposingSlot = playerSlot5;
-
 				/// now add each slot to the respective list
 				AddSlotsToBoardInstance(__instance, playerSlot5, opponentSlot5, opponentQueueSlot5);
 			}
@@ -61,6 +57,9 @@
 			DiskCardGame.HighlightedInteractable opponentQueueSlot5
 		)
 		{
+			playerSlot5.opposingSlot = opponentSlot5;
+			opponentSlot5.opposingSlot = playerSlot5;
+
 			Plugin.Log.LogDebug($"Adding player slot 5 to BoardManager3D field");
 			__instance.playerSlots.Add(playerSlot5);
 

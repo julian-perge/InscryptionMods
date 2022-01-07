@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using APIPlugin;
 using BepInEx;
 using BepInEx.Logging;
@@ -10,7 +9,7 @@ using UnityEngine;
 namespace SummonerCard
 {
 	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	[BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
+	// [BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
 	// [BepInDependency("julianperge.inscryption.sigiladay", BepInDependency.DependencyFlags.HardDependency)]
 	public class Plugin : BaseUnityPlugin
 	{
@@ -24,13 +23,22 @@ namespace SummonerCard
 		{
 			Log = base.Logger;
 
-			AddCard();
+			Log.LogInfo("~NATURE~");
+			PrintingCardUtils.PrintAllCardInfo(CardTemple.Nature);
+			Log.LogInfo("~TECH~");
+			PrintingCardUtils.PrintAllCardInfo(CardTemple.Tech);
+			Log.LogInfo("~UNDEAD~");
+			PrintingCardUtils.PrintAllCardInfo(CardTemple.Undead);
+			Log.LogInfo("~WIZARD~");
+			PrintingCardUtils.PrintAllCardInfo(CardTemple.Wizard);
+
+			// AddTalkingCard();
 
 			var harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
 		}
 
-		void AddCard()
+		private static void AddTalkingCard()
 		{
 			var animatedBehaviour = new List<CardAppearanceBehaviour.Appearance>()
 			{
@@ -42,116 +50,93 @@ namespace SummonerCard
 				SpecialTriggeredAbility.TalkingCardChooser
 			};
 
+			NewTribe tribeRose = NewTribe.Add("tribeicon_rose.png", "Rose");
+			var tribes = new List<Tribe>() { tribeRose.tribe };
+
 			const string talkingCardName = "TalkingCardTest";
 
 			NewTalkingCard.Add<TalkingCardTest>(talkingCardName);
 
-			GameObject animatedPortraitObj = NewTalkingCard.CreateTalkingCardAnimation(
-				facePng: "testingcard_character_face.png",
-				eyesOpenPng: "talkingcard_eyes_open1.png", eyesClosedPng: "talkingcard_eyes_closed1.png",
-				mouthOpenPng: "talkingcard_mouth_open1.png", mouthClosedPng: "talkingcard_mouth_closed1.png");
+			Sprite mouthClosedSprite = ImageUtils.CreateSpriteFromPng(
+				"sprite_man_mouth_closed.png", new Vector2(0.7f, 0.75f), 125f
+			);
+
+			Sprite mouthOpenSprite =
+				ImageUtils.CreateSpriteFromPng("sprite_man_mouth_open.png", new Vector2(0.65f, 0.6f), 125f);
+
+			var emotionSprites = NewTalkingCard.CreateSpritesForEmotion(
+				faceSprite: ImageUtils.CreateSpriteFromPng("sprite_inscryption_face.png", new Vector2(0.5f, 0f)),
+				eyesOpenSprite: ImageUtils.CreateSpriteFromPng("sprite_man_eyes_open.png", new Vector2(0.55f, 0.55f)),
+				eyesClosedSprite: ImageUtils.CreateSpriteFromPng("sprite_man_eyes_closed.png", new Vector2(0.55f, 0.55f)),
+				eyesOpenEmissionSprite: ImageUtils.CreateSpriteFromPng("sprite_man_eyes_emis_2.png", new Vector2(0.55f, 0.55f)),
+				eyesClosedEmissionSprite: ImageUtils.CreateSpriteFromPng("sprite_man_eyes_emis_2.png",
+					new Vector2(0.55f, 0.55f)),
+				mouthOpenSprite: mouthOpenSprite,
+				mouthClosedSprite: mouthClosedSprite
+			);
 
 			NewCard.Add(
 				talkingCardName, "Talking Card Test", 1, 1,
-				CardUtils.getNormalCardMetadata, CardComplexity.Simple, CardTemple.Nature,
+				CardUtils.getNormalCardMetadata, CardComplexity.Simple, CardTemple.Nature, tribes: tribes,
 				appearanceBehaviour: animatedBehaviour, specialAbilities: specialTriggeredAbilities,
-				animatedPortrait: animatedPortraitObj
+				animatedPortrait: NewTalkingCard.CreateTalkingCardAnimation(emotionSprites)
 			);
 		}
 
 		public class TalkingCardTest : StoatTalkingCard
 		{
-		}
+			// Static method for easy access
+			public static DialogueEvent.Speaker Speaker => (DialogueEvent.Speaker)100;
 
-		[HarmonyPatch(typeof(DialogueDataUtil.DialogueData), nameof(DialogueDataUtil.DialogueData.GetEvent))]
-		public class DialogueDataUtilPatching
-		{
-			static void Prefix(DialogueDataUtil.DialogueData __instance, string id)
-			{
-				Log.LogDebug($"[DialogueDataUtil.DialogueData] " +
-				             $"Id is [{id}] " +
-				             $"id exists in events [{__instance.events.Find((DialogueEvent x) => String.Equals(x.id, id, StringComparison.InvariantCultureIgnoreCase))}]");
-			}
-		}
+			// Only important for multi-speaker dialogs
+			public override DialogueEvent.Speaker SpeakerType => Speaker;
 
-		[HarmonyPatch(typeof(PlayerHand3D), nameof(PlayerHand3D.MoveCardAboveHand))]
-		public class PlayerHand3DPatching
-		{
-			static void Prefix(PlayableCard card)
-			{
-				Log.LogDebug($"MoveCardAboveHand called with card [{card.Info.name}]");
-			}
-		}
+			private static readonly Dictionary<string, DialogueEvent> Events = new Dictionary<string, DialogueEvent>();
 
-		[HarmonyPatch(typeof(DiskCardGame.TalkingCard), nameof(DiskCardGame.TalkingCard.OnDrawn))]
-		public class TalkingCardDebuggingPatch
-		{
-			static void Prefix(TalkingCard __instance)
+			public static Dictionary<string, DialogueEvent> GetDictionary()
 			{
-				bool existsInCurrentSpeakers =
-					Singleton<TalkingCardDialogueHandler>.Instance.CurrentSpeakers.Contains(__instance);
-				if (existsInCurrentSpeakers)
+				if (Events.Count != 0)
 				{
-					Log.LogDebug($"Instance exists in CurrentSpeakers");
+					return Events;
 				}
 
-				bool specialSequencerIsBoss = Singleton<TurnManager>.Instance.SpecialSequencer is BossBattleSequencer;
-				bool isNotSpecialTrailerBuild = !ScriptDefines.SPECIAL_TRAILER_BUILD;
+				Events.Add("TalkingEightBearsDrawn",
+					DialogueUtils.CreateDialogue("TalkingEightBearsDrawn", Speaker, "*Bear Noises*"));
 
-				if (specialSequencerIsBoss && isNotSpecialTrailerBuild)
-				{
-					Log.LogDebug($"SpecialSequencer is BossBattleSequencer and isNotSpecialTrailerBuild. " +
-					             $"OnDrawnSpecialOppDialogueIds contains boss type? [{__instance.OnDrawnSpecialOpponentDialogueIds.ContainsKey(((BossBattleSequencer)Singleton<TurnManager>.Instance.SpecialSequencer).BossType)}]");
-				}
+				Events.Add("TalkingEightBearsDrawn2",
+					DialogueUtils.CreateDialogue("TalkingEightBearsDrawn2", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsPlayed",
+					DialogueUtils.CreateDialogue("TalkingEightBearsPlayed", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsAttacked",
+					DialogueUtils.CreateDialogue("TalkingEightBearsAttacked", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsPositiveSelectable",
+					DialogueUtils.CreateDialogue("TalkingEightBearsPositiveSelectable", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsNegativeSelectable",
+					DialogueUtils.CreateDialogue("TalkingEightBearsNegativeSelectable", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsSacrificed",
+					DialogueUtils.CreateDialogue("TalkingEightBearsSacrificed", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsMerged",
+					DialogueUtils.CreateDialogue("TalkingEightBearsMerged", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsRemoved",
+					DialogueUtils.CreateDialogue("TalkingEightBearsRemoved", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsDeckTrial",
+					DialogueUtils.CreateDialogue("TalkingEightBearsDeckTrial", Speaker, "*Bear Noises*"));
+
+				Events.Add("TalkingEightBearsDiscovered",
+					DialogueUtils.CreateDialogue("TalkingEightBearsDiscovered", Speaker, "*Bear Noises*"));
+
+				return Events;
 			}
 		}
 
-		// [HarmonyPatch(typeof(CardDisplayer3D), "UpdateTribeIcon")]
-		// public class Displayer
-		// {
-		// 	[HarmonyPrefix]
-		// 	public static bool PrefixIcons(CardInfo info, CardDisplayer3D __instance)
-		// 	{
-		// 		if (info is not null)
-		// 			Log.LogDebug($"[UpdateTribeIcon] Prefix - CardInfo [{info.name}]");
-		// 		if (__instance.tribeIconRenderers is not null)
-		// 		{
-		// 			Log.LogDebug(
-		// 				$"[UpdateTribeIcon] Current TribeIcons [{string.Join(", ", __instance.tribeIconRenderers.Select(rend => rend.sprite).ToList())}]");
-		// 		}
-		//
-		// 		List<Tribe> tribes = Enum.GetValues(typeof(Tribe)).Cast<Tribe>().ToList();
-		// 		foreach (var tribe in tribes.Where(tribe => info.IsOfTribe(tribe)))
-		// 		{
-		// 			foreach (SpriteRenderer spriteRenderer in __instance.tribeIconRenderers)
-		// 			{
-		// 				SpriteRenderer spriteRenderer2 = spriteRenderer;
-		// 					// string str = "Art/Cards/TribeIcons/tribeicon_";
-		// 					// Tribe tribe = (Tribe)i;
-		// 					Texture2D texture = new Texture2D(2, 2);
-		// 					texture.LoadImage(File.ReadAllBytes(Directory.GetFiles(Paths.PluginPath, "YisusLeshyDecalColorFull.png", SearchOption.AllDirectories)[0]));
-		// 					Sprite test = Sprite.Create(texture, new Rect(0f,0f, 109f, 149f), CardUtils.DefaultVector2);
-		// 					spriteRenderer2.sprite = test;
-		// 					break;
-		// 			}
-		// 		}
-		//
-		//
-		// 		return false;
-		// 	}
-		//
-		// 	[HarmonyPostfix]
-		// 	public static void PostfixIcons(CardInfo info, CardDisplayer3D __instance)
-		// 	{
-		// 		if (info is not null)
-		// 			Log.LogDebug($"[UpdateTribeIcon] Postfix - CardInfo [{info.name}]");
-		// 		if (__instance.tribeIconRenderers is not null)
-		// 		{
-		// 			Log.LogDebug(
-		// 				$"[UpdateTribeIcon] Current TribeIcons [{string.Join(", ", __instance.tribeIconRenderers.Select(rend => rend.sprite).ToList())}]");
-		// 		}
-		// 	}
-		// }
 
 		// add this to your deck by scrolling upwards/pressing w key when at the map
 		[HarmonyPatch(typeof(DeckReviewSequencer), "OnEnterDeckView")]
@@ -167,13 +152,31 @@ namespace SummonerCard
 					// CardInfo card = CardLoader.GetCardByName("TalkingCard");
 					// Log.LogDebug($"[Summoner] Card [{card.name}] has abilities [{string.Join(",", card.abilities)}]");
 
-					SaveManager.SaveFile.CurrentDeck.Cards.Clear();
+					// SaveManager.SaveFile.CurrentDeck.Cards.Clear();
 
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
+					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
+					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
 					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("TalkingCardTest"));
 				}
 			}
 		}
 	}
 }
+
+
+//
+//
+// 		return false;
+// 	}
+//
+// 	[HarmonyPostfix]
+// 	public static void PostfixIcons(CardInfo info, CardDisplayer3D __instance)
+// 	{
+// 		if (info is not null)
+// 			Log.LogDebug($"[UpdateTribeIcon] Postfix - CardInfo [{info.name}]");
+// 		if (__instance.tribeIconRenderers is not null)
+// 		{
+// 			Log.LogDebug(
+// 				$"[UpdateTribeIcon] Current TribeIcons [{string.Join(", ", __instance.tribeIconRenderers.Select(rend => rend.sprite).ToList())}]");
+// 		}
+// }
