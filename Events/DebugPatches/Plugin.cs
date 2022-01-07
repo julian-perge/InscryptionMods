@@ -62,7 +62,7 @@ namespace DebugPatches
 				2
 			);
 
-			if (selectedButton > 0)
+			if (selectedButton >= 0)
 			{
 				DiskCardGame.EncounterBlueprintData encounter = resourceList[selectedButton];
 				// the asset names have P1 or P2 at the end,
