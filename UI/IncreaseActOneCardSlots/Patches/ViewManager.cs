@@ -15,9 +15,6 @@ namespace IncreaseActOneCardSlots.Patches
 				case View.BoardCentered:
 					__result.fov = 60f;
 					break;
-				case View.Default:
-					__result.fov = 70f;
-					break;
 			}
 		}
 	}
