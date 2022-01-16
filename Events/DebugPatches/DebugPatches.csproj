@@ -4,7 +4,7 @@
 	<Target Name="CopyDLLs" AfterTargets="Build">
 		<Message Text="Executing CopyDLLs task" Importance="High"/>
 
-		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll;" DestinationFolder="C:\r2modman\Inscryption\profiles\Default\BepInEx\plugins\"/>
+		<Copy SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\inscryption-mods\Inscryption\profiles\Default\BepInEx\plugins\" />
 
 		<Message Text="Copied build files" Importance="High"/>
 	</Target>
