@@ -7,7 +7,7 @@ namespace IncreaseActOneCardSlots.Patches
 	public class ViewManager
 	{
 		[HarmonyPostfix, HarmonyPatch(nameof(DiskCardGame.ViewManager.GetViewInfo))]
-		public static void ChangeFieldOfViewAfter(ref ViewInfo __result, View view)
+		public static void ChangeFieldOfViewAfter(ref ViewInfo __result, ref View view)
 		{
 			switch (view)
 			{
