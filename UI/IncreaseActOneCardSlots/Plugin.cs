@@ -5,7 +5,7 @@
 	{
 		public const string PluginGuid = "julianperge.inscryption.act1.increaseCardSlots";
 		public const string PluginName = "IncreaseActOneCardSlots";
-		private const string PluginVersion = "1.2.0";
+		private const string PluginVersion = "1.3.0";
 
 		internal static BepInEx.Logging.ManualLogSource Log;
 
