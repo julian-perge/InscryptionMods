@@ -18,7 +18,8 @@ namespace DebugPatches
 
 		internal static ManualLogSource Log;
 
-		private List<DiskCardGame.EncounterBlueprintData> resourceList;
+		private List<DiskCardGame.EncounterBlueprintData> resourceList => UnityEngine.Resources
+			.LoadAll<DiskCardGame.EncounterBlueprintData>("Data/EncounterBlueprints/Part1").ToList();
 
 		private Dictionary<String, DiskCardGame.Opponent.Type> BossTypesByName = new()
 		{
@@ -33,9 +34,6 @@ namespace DebugPatches
 		private void Awake()
 		{
 			Log = base.Logger;
-
-			resourceList = UnityEngine.Resources
-				.LoadAll<DiskCardGame.EncounterBlueprintData>("Data/EncounterBlueprints/Part1").ToList();
 
 			var harmony = new Harmony(PluginGuid);
 			harmony.PatchAll();
@@ -135,6 +133,28 @@ namespace DebugPatches
 				)
 				.SetOpcodeAndAdvance(OpCodes.Ldc_I4_1)
 				.InstructionEnumeration();
+		}
+	}
+
+	[HarmonyPatch]
+	public class DisableAchievementHandlers
+	{
+		[HarmonyPrefix, HarmonyPatch(typeof(AchievementManager), nameof(AchievementManager.InitializePlatformHandler))]
+		public static bool DisableAchievementManager()
+		{
+			return false;
+		}
+
+		[HarmonyPrefix, HarmonyPatch(typeof(GogGalaxyManager), nameof(GogGalaxyManager.Awake))]
+		public static bool DisableManagerGog()
+		{
+			return false;
+		}
+
+		[HarmonyPrefix, HarmonyPatch(typeof(SteamManager), nameof(SteamManager.Initialized), MethodType.Getter)]
+		public static bool DisableSteamManager()
+		{
+			return false;
 		}
 	}
 }
