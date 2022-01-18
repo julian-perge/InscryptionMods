@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="$(SolutionDir)/Dependencies.props"/>
+	<Import Project="$(SolutionDir)/Directory.Build.props"/>
 
 	<Target Name="CopyDLLs" AfterTargets="Build">
 		<Message Text="Executing CopyDLLs task" Importance="High"/>

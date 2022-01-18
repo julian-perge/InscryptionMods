@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="$(SolutionDir)/Dependencies.props" />
+	<Import Project="$(SolutionDir)/Directory.Build.props" />
 
 	<ItemGroup>
 		<Reference Include="API">
