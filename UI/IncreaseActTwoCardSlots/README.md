@@ -15,6 +15,10 @@
 
 ## Changelog
 
+### 0.1.1
+
+- Project updated to net6.
+
 ### 0.1.0
 
 - Initial release.

@@ -1,6 +1,6 @@
 {
 	"name": "IncreaseActTwoCardSlots",
-	"version_number": "0.1.0",
+	"version_number": "0.1.1",
 	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/UI/IncreaseActTwoCardSlots",
 	"description": "(Beta) Increases Act 2 card slots from 4 to 5.",
 	"dependencies": [

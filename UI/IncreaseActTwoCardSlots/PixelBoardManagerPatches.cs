@@ -16,10 +16,10 @@ public class CardBattleNPCPatches
 	private static readonly PixelQueuedCardSlot PrefabOpponentQueueCardSlot =
 		ResourceBank.Get<PixelQueuedCardSlot>("Prefabs/GBCCardBattle/PixelOpponentQueueSlot");
 
+	private const float NewXPosition = 1.08f;
+
 	[HarmonyPostfix, HarmonyPatch(nameof(TurnManager.SetupPhase))]
-	public static void AddingSlotsAfterLoad(
-		TurnManager __instance, EncounterData encounterData
-	)
+	public static void AddingSlotsAfterLoad(TurnManager __instance, EncounterData encounterData)
 	{
 		// Log.LogDebug($"Loading card battle");
 		// SceneLoader.Load("GBC_CardBattle");
@@ -38,7 +38,7 @@ public class CardBattleNPCPatches
 			Transform playerSlots = pixelBoardManager.transform.GetChild(1);
 			PixelCardSlot playerSlot5 = UnityEngine.Object.Instantiate(
 				playerSlots.GetChild(3).gameObject,
-				new Vector3(1.08f, -0.162f, 0f),
+				new Vector3(NewXPosition, -0.162f, 0f),
 				Quaternion.identity,
 				playerSlots.transform
 			).GetComponent<PixelCardSlot>();
@@ -106,7 +106,7 @@ public class CardBattleNPCPatches
 
 		PixelCardSlot opponentSlot5 = UnityEngine.Object.Instantiate(
 			opponentSlots.GetChild(3).gameObject,
-			new Vector3(1.08f, 0.48f, 0f),
+			new Vector3(NewXPosition, 0.48f, 0f),
 			Quaternion.identity,
 			opponentSlots.transform
 		).GetComponent<PixelCardSlot>();
@@ -115,7 +115,7 @@ public class CardBattleNPCPatches
 
 		PixelCardSlot opponentQueueSlot5 = UnityEngine.Object.Instantiate(
 			opponentSlots.GetChild(4),
-			new Vector3(1.08f, 0.931f, 0f),
+			new Vector3(NewXPosition, 0.931f, 0f),
 			Quaternion.identity,
 			opponentSlots.transform
 		).GetComponent<PixelQueuedCardSlot>();

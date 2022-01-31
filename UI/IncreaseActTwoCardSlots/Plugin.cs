@@ -5,7 +5,7 @@ public class Plugin : BepInEx.BaseUnityPlugin
 {
 	public const string PluginGuid = "julianperge.inscryption.act2.increaseCardSlots";
 	public const string PluginName = "IncreaseActTwoCardSlots";
-	private const string PluginVersion = "0.1.0";
+	private const string PluginVersion = "0.1.1";
 
 	internal static BepInEx.Logging.ManualLogSource Log;
 
