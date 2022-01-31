@@ -49,8 +49,8 @@
 		{
 			yield return base.PreSuccessfulTriggerSequence();
 
-			DiskCardGame.CardSlot toLeft = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
-			DiskCardGame.CardSlot toRight = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
+			DiskCardGame.CardSlot toLeft = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, true);
+			DiskCardGame.CardSlot toRight = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, false);
 
 			doLogicOnCardSlot(toLeft);
 			doLogicOnCardSlot(toRight);

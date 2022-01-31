@@ -19,12 +19,12 @@ namespace AddAllSCP.SCP_096_Shy_Guy
 
 		public override System.Collections.IEnumerator OnOtherCardAssignedToSlot(DiskCardGame.PlayableCard otherCard)
 		{
-			DiskCardGame.CardSlot toLeft = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, true);
-			DiskCardGame.CardSlot toRight = Singleton<DiskCardGame.BoardManager>.Instance.GetAdjacent(base.Card.Slot, false);
+			DiskCardGame.CardSlot toLeft = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, true);
+			DiskCardGame.CardSlot toRight = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, false);
 			Singleton<DiskCardGame.ViewManager>.Instance.SwitchToView(DiskCardGame.View.Board, false, false);
 			yield return new UnityEngine.WaitForSeconds(0.25f);
 
-			var pSlots = Singleton<DiskCardGame.BoardManager>.Instance.GetSlots(true);
+			var pSlots = DiskCardGame.BoardManager.Instance.GetSlots(true);
 
 			for (var i = 0; i < pSlots.Count; i++)
 			{

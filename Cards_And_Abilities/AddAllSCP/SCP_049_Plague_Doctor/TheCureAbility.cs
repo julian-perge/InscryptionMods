@@ -42,7 +42,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 		{
 			yield return base.PreSuccessfulTriggerSequence();
 			System.Collections.Generic.List<DiskCardGame.CardSlot> slots =
-				Singleton<DiskCardGame.BoardManager>.Instance.GetSlots(true);
+				DiskCardGame.BoardManager.Instance.GetSlots(true);
 			HarmonyInitAll.Log.LogDebug(
 				$"[TheCure] Card is null {card is null} deathslot card is null {deathSlot is null} Killer {killer.name}");
 			if (IsPlagueDoctorDeath(card))
@@ -75,7 +75,7 @@ namespace AddAllSCP.SCP_049_Plague_Doctor
 						nameReplacement = nameOfCard + " \"Cured\""
 					};
 					cardByName.Mods.Add(cardModificationInfo);
-					yield return Singleton<DiskCardGame.BoardManager>.Instance.CreateCardInSlot(cardByName, slot, 0.1f, true);
+					yield return DiskCardGame.BoardManager.Instance.CreateCardInSlot(cardByName, slot, 0.1f, true);
 					break;
 				}
 			}
