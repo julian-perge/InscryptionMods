@@ -1,8 +1,8 @@
 {
 	"name": "IncreaseActOneCardSlots",
-	"version_number": "1.3.0",
+	"version_number": "1.4.0",
 	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/UI/IncreaseActOneCardSlots",
-	"description": "Increases Act 1 card slots from 4 to 5. Corrects size of moon in Part 1 finale. Moves items around to avoid overlapping.",
+	"description": "Increases Act 1 card slots from 4 to 5. Now works in Grimora's finale! Corrects size of moon in Part 1 finale. Moves items around to avoid overlapping.",
 	"dependencies": [
 		"BepInEx-BepInExPack_Inscryption-5.4.1701"
 	]
