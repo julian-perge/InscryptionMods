@@ -71,21 +71,22 @@ public class ModifyLocalPositionsOfTableObjects
 			}
 		}
 
-		[HarmonyLib.HarmonyPostfix,
-		 HarmonyLib.HarmonyPatch(
-			 typeof(DiskCardGame.BoardManager3D),
-			 nameof(DiskCardGame.BoardManager3D.TransitionAndResolveCreatedCard)
-		 )
-		]
-		public static void ChangeScaleOfMoonCardToFitAcrossAllSlots(
-			DiskCardGame.PlayableCard card, DiskCardGame.CardSlot slot, float transitionLength, bool resolveTriggers = true
-		)
+	[HarmonyLib.HarmonyPostfix,
+	 HarmonyLib.HarmonyPatch(
+		 typeof(DiskCardGame.BoardManager3D),
+		 nameof(DiskCardGame.BoardManager3D.TransitionAndResolveCreatedCard)
+	 )
+	]
+	public static void ChangeScaleOfMoonCardToFitAcrossAllSlots(
+		DiskCardGame.PlayableCard card, DiskCardGame.CardSlot slot, float transitionLength, bool resolveTriggers = true
+	)
+	{
+		if (card.Info.HasTrait(DiskCardGame.Trait.Giant)
+		    && card.Info.specialAbilities.Exists(a => a == SpecialTriggeredAbility.GiantMoon))
 		{
-			if (card.Info.HasTrait(DiskCardGame.Trait.Giant))
-			{
-				Plugin.Log.LogDebug($"Setting new scaling and position of the moon");
-				// Card -> Quad -> CardBase
-				UnityEngine.Transform cardBase = card.transform.GetChild(0).GetChild(0);
+			Plugin.Log.LogDebug($"Setting new scaling and position of the moon");
+			// Card -> Quad -> CardBase
+			UnityEngine.Transform cardBase = card.transform.GetChild(0).GetChild(0);
 
 				UnityEngine.Vector3 localScale = cardBase.localScale;
 				cardBase.localScale = new UnityEngine.Vector3(5.75f, localScale.y, localScale.z);
