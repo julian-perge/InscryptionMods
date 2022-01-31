@@ -111,9 +111,11 @@ public class ModifyLocalPositionsOfTableObjects
 			}
 		}
 
-		[HarmonyLib.HarmonyPrefix,
-		 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.CandleHolder), nameof(DiskCardGame.CandleHolder.Awake))]
-		public static void ChangeCandleHolderLocalPosition(DiskCardGame.CandleHolder __instance)
+	[HarmonyLib.HarmonyPrefix,
+	 HarmonyLib.HarmonyPatch(typeof(DiskCardGame.CandleHolder), nameof(DiskCardGame.CandleHolder.Awake))]
+	public static void ChangeCandleHolderLocalPosition(DiskCardGame.CandleHolder __instance)
+	{
+		if (SaveManager.SaveFile.IsPart1)
 		{
 			Plugin.Log.LogDebug($"Setting new position for CandleHolder");
 			__instance.transform.localPosition = new UnityEngine.Vector3(6f, -0.006000042f, 1.1f);
