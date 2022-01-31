@@ -22,6 +22,14 @@
 
 ## Changelog
 
+### 1.4.0
+
+- Changed x position from 3.4 to 3.35.
+- Fixed exception of unable to find card board that occurs if you enter Grimora's finale.
+  - This means that Grimora's finale now has 5 slots!
+  - Also means this mod is compatible with [Grimora's Mod!](https://inscryption.thunderstore.io/package/Arackulele/GrimoraMod/)
+- Updated project to net6.
+
 ### 1.3.0
 
 - Added patch for TraderTrapper boss to now queue all 5 slots and not just 4 anymore.
