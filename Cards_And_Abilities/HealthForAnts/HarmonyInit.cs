@@ -3,27 +3,26 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 
-namespace HealthForAnts
+namespace HealthForAnts;
+
+[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+[BepInDependency("cyantist.inscryption.api")]
+public class HarmonyInit : BaseUnityPlugin
 {
-	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	[BepInDependency("cyantist.inscryption.api")]
-	public class HarmonyInit : BaseUnityPlugin
+	public const string PluginGuid = "julianperge.inscryption.specialAbilities.healthForAnts";
+	private const string PluginName = "HealthForAnts";
+	private const string PluginVersion = "1.1";
+	internal static ManualLogSource Log;
+	public static NewSpecialAbility antHealthSpecialAbility;
+
+	void Awake()
 	{
-		public const string PluginGuid = "julianperge.inscryption.specialAbilities.healthForAnts";
-		private const string PluginName = "HealthForAnts";
-		private const string PluginVersion = "1.1";
-		internal static ManualLogSource Log;
-		public static NewSpecialAbility antHealthSpecialAbility;
+		Log = base.Logger;
 
-		void Awake()
-		{
-			Log = base.Logger;
+		var newSpecialAbility = HealthForAnts.InitStatIconAndAbility();
+		antHealthSpecialAbility = newSpecialAbility;
 
-			var newSpecialAbility = HealthForAnts.InitStatIconAndAbility();
-			antHealthSpecialAbility = newSpecialAbility;
-
-			Harmony harmony = new Harmony(PluginGuid);
-			harmony.PatchAll();
-		}
+		Harmony harmony = new Harmony(PluginGuid);
+		harmony.PatchAll();
 	}
 }
