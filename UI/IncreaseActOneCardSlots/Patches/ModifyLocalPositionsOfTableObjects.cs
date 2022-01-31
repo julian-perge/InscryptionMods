@@ -1,9 +1,11 @@
-﻿namespace IncreaseActOneCardSlots.Patches
+﻿using DiskCardGame;
+
+namespace IncreaseActOneCardSlots.Patches;
+
+[HarmonyLib.HarmonyPatch]
+public class ModifyLocalPositionsOfTableObjects
 {
-	[HarmonyLib.HarmonyPatch]
-	public class ModifyLocalPositionsOfTableObjects
-	{
-		// KnivesTableEffects(Clone)/RightSide/RepeatingConveyorKnives, change z-axis to 4.5
+	// KnivesTableEffects(Clone)/RightSide/RepeatingConveyorKnives, change z-axis to 4.5
 
 		[HarmonyLib.HarmonyPatch(
 				typeof(DiskCardGame.Part1BossOpponent),

@@ -1,10 +1,13 @@
-﻿namespace IncreaseActOneCardSlots.Patches
+﻿using DiskCardGame;
+using UnityEngine;
+
+namespace IncreaseActOneCardSlots.Patches;
+
+[HarmonyLib.HarmonyPatch(typeof(DiskCardGame.BoardManager3D))]
+public class BoardManager3DPatch
 {
-	[HarmonyLib.HarmonyPatch(typeof(DiskCardGame.BoardManager3D))]
-	public class BoardManager3DPatch
-	{
-		private static readonly DiskCardGame.CardSlot CardSlotPrefab =
-			ResourceBank.Get<DiskCardGame.CardSlot>("Prefabs/Cards/CardSlot");
+	private static readonly DiskCardGame.CardSlot ActOneCardSlotPrefab =
+		ResourceBank.Get<DiskCardGame.CardSlot>("Prefabs/Cards/CardSlot");
 
 		private static readonly DiskCardGame.HighlightedInteractable OpponentQueueSlotPrefab =
 			ResourceBank.Get<DiskCardGame.HighlightedInteractable>("Prefabs/Cards/QueueSlot");
