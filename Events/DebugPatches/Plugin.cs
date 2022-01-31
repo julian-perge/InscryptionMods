@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using UnityEngine.SceneManagement;
 
 namespace DebugPatches
 {
@@ -43,6 +44,8 @@ namespace DebugPatches
 
 		private void OnGUI()
 		{
+			if (SceneManager.GetActiveScene().name != "Part1_Cabin") return;
+
 			string[] names = resourceList.Select(res => res.name).ToArray();
 
 			toggleEncounterMenu = UnityEngine.GUI.Toggle(
@@ -115,7 +118,7 @@ namespace DebugPatches
 		}
 	}
 
-	[HarmonyPatch(typeof(DiskCardGame.Part1FinaleSceneSequencer), nameof(DiskCardGame.Part1FinaleSceneSequencer.Start))]
+	// [HarmonyPatch(typeof(DiskCardGame.Part1FinaleSceneSequencer), nameof(DiskCardGame.Part1FinaleSceneSequencer.Start))]
 	public class Part1FinaleSceneSequencerDebugTransitionPatch
 	{
 		[HarmonyTranspiler]
