@@ -17,7 +17,7 @@
 		public override System.Collections.IEnumerator OnTurnEnd(bool playerTurnEnd)
 		{
 			yield return base.PreSuccessfulTriggerSequence();
-			System.Collections.Generic.List<DiskCardGame.CardSlot> slots = Singleton<DiskCardGame.BoardManager>.Instance
+			System.Collections.Generic.List<DiskCardGame.CardSlot> slots = DiskCardGame.BoardManager.Instance
 				.GetSlots(true)
 				.FindAll(slot => slot is not null && slot.Card is null);
 			// if no available slots, list will be empty and won't loop
@@ -30,7 +30,7 @@
 						: DiskCardGame.CardLoader.GetCardByName("SCP_354_BloodEntity");
 
 				HarmonyInitAll.Log.LogDebug($"-> Spawning a [{bloodCardToSpawn.name}]");
-				yield return Singleton<DiskCardGame.BoardManager>.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
+				yield return DiskCardGame.BoardManager.Instance.CreateCardInSlot(bloodCardToSpawn, slot, 0.1f, true);
 				break; // only spawn one, then break out of loop and end resolve.
 			}
 
