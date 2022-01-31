@@ -3,7 +3,7 @@
 	<!-- General properties -->
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>10</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
