@@ -1,88 +1,87 @@
-﻿namespace AddAllSCP.SCP_348_Thinking_Of_You
+﻿namespace AddAllSCP.SCP_348_Thinking_Of_You;
+
+public class ThinkingOfYouAbility : DiskCardGame.AbilityBehaviour
 {
-	public class ThinkingOfYouAbility : DiskCardGame.AbilityBehaviour
+	public static DiskCardGame.Ability ability;
+
+	public override DiskCardGame.Ability Ability { get { return ability; } }
+
+	private readonly System.Collections.Generic.Dictionary<DiskCardGame.PlayableCard, int> cardsWithTimesHealed = new();
+
+	private static bool CardCanBeHealed(DiskCardGame.PlayableCard card)
 	{
-		public static DiskCardGame.Ability ability;
+		return !card.Dead && card.Health < card.MaxHealth;
+	}
 
-		public override DiskCardGame.Ability Ability { get { return ability; } }
+	private static bool CardCannotBeHealed(DiskCardGame.PlayableCard card)
+	{
+		return !CardCanBeHealed(card);
+	}
 
-		private readonly System.Collections.Generic.Dictionary<DiskCardGame.PlayableCard, int> cardsWithTimesHealed = new();
+	public override bool RespondsToTurnEnd(bool playerTurnEnd)
+	{
+		return playerTurnEnd;
+	}
 
-		private static bool CardCanBeHealed(DiskCardGame.PlayableCard card)
+	public void doLogicOnCardSlot(DiskCardGame.CardSlot slot)
+	{
+		if (slot == null || CardCannotBeHealed(slot.Card))
 		{
-			return !card.Dead && card.Health < card.MaxHealth;
+			return;
 		}
 
-		private static bool CardCannotBeHealed(DiskCardGame.PlayableCard card)
+		DiskCardGame.PlayableCard card = slot.Card;
+
+		if (cardsWithTimesHealed.TryGetValue(card, out int total) && total < 3)
 		{
-			return !CardCanBeHealed(card);
+			HarmonyInitAll.Log.LogInfo($"Healing [{card.name}. Has been healed [{total}] so far.");
+			card.HealDamage(1);
+			cardsWithTimesHealed[card] = ++total;
 		}
-
-		public override bool RespondsToTurnEnd(bool playerTurnEnd)
+		else
 		{
-			return playerTurnEnd;
+			HarmonyInitAll.Log.LogInfo($"Adding [{card.name} to dictionary.");
+			cardsWithTimesHealed.Add(card, 0);
 		}
+	}
 
-		public void doLogicOnCardSlot(DiskCardGame.CardSlot slot)
-		{
-			if (slot == null || CardCannotBeHealed(slot.Card))
-			{
-				return;
-			}
+	public override System.Collections.IEnumerator OnTurnEnd(bool playerTurnEnd)
+	{
+		yield return base.PreSuccessfulTriggerSequence();
 
-			DiskCardGame.PlayableCard card = slot.Card;
+		DiskCardGame.CardSlot toLeft = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, true);
+		DiskCardGame.CardSlot toRight = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, false);
 
-			if (cardsWithTimesHealed.TryGetValue(card, out int total) && total < 3)
-			{
-				HarmonyInitAll.Log.LogInfo($"Healing [{card.name}. Has been healed [{total}] so far.");
-				card.HealDamage(1);
-				cardsWithTimesHealed[card] = ++total;
-			}
-			else
-			{
-				HarmonyInitAll.Log.LogInfo($"Adding [{card.name} to dictionary.");
-				cardsWithTimesHealed.Add(card, 0);
-			}
-		}
+		doLogicOnCardSlot(toLeft);
+		doLogicOnCardSlot(toRight);
 
-		public override System.Collections.IEnumerator OnTurnEnd(bool playerTurnEnd)
-		{
-			yield return base.PreSuccessfulTriggerSequence();
+		yield return new UnityEngine.WaitForSeconds(0.1f);
+		yield return base.LearnAbility(0.5f);
+		yield break;
+	}
 
-			DiskCardGame.CardSlot toLeft = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, true);
-			DiskCardGame.CardSlot toRight = DiskCardGame.BoardManager.Instance.GetAdjacent(base.Card.Slot, false);
+	protected internal static APIPlugin.NewAbility InitAbility()
+	{
+		const string rulebookName = "Home Cooking";
+		const string description =
+			"Heal neighbor cards by 1 each turn up to 3 times while neighbor card is not at max health. " +
+			"Does not increase health more than the total of the card.";
 
-			doLogicOnCardSlot(toLeft);
-			doLogicOnCardSlot(toRight);
+		// setup ability
+		DiskCardGame.AbilityInfo info =
+			APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
 
-			yield return new UnityEngine.WaitForSeconds(0.1f);
-			yield return base.LearnAbility(0.5f);
-			yield break;
-		}
+		// get and load artwork
+		UnityEngine.Texture2D sigilTex =
+			APIPlugin.CardUtils.getAndloadImageAsTexture("scp_348_sigil_small.png");
 
-		protected internal static APIPlugin.NewAbility InitAbility()
-		{
-			const string rulebookName = "Home Cooking";
-			const string description =
-				"Heal neighbor cards by 1 each turn up to 3 times while neighbor card is not at max health. " +
-				"Does not increase health more than the total of the card.";
+		// set ability to behavior class
+		APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(
+			info, typeof(ThinkingOfYouAbility), sigilTex,
+			APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName)
+		);
+		ability = newAbility.ability;
 
-			// setup ability
-			DiskCardGame.AbilityInfo info =
-				APIPlugin.AbilityInfoUtils.CreateInfoWithDefaultSettings(rulebookName, description);
-
-			// get and load artwork
-			UnityEngine.Texture2D sigilTex =
-				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_348_sigil_small.png");
-
-			// set ability to behavior class
-			APIPlugin.NewAbility newAbility = new APIPlugin.NewAbility(
-				info, typeof(ThinkingOfYouAbility), sigilTex,
-				APIPlugin.AbilityIdentifier.GetID(HarmonyInitAll.PluginGuid, info.rulebookName)
-			);
-			ability = newAbility.ability;
-
-			return newAbility;
-		}
+		return newAbility;
 	}
 }

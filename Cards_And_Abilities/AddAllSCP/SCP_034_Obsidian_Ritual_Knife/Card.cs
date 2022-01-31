@@ -1,29 +1,28 @@
-﻿namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife
+﻿namespace AddAllSCP.SCP_034_Obsidian_Ritual_Knife;
+
+public static class Card
 {
-	public static class Card
+	public const string Name = "SCP_034_ObsidianRitualKnife";
+
+	public static void InitCard()
 	{
-		public const string Name = "SCP_034_ObsidianRitualKnife";
+		System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
+			APIPlugin.CardUtils.getNormalCardMetadata;
 
-		public static void InitCard()
-		{
-			APIPlugin.NewAbility ability = RitualKnifeAbility.InitAbility();
+		UnityEngine.Texture2D defaultTexture =
+			APIPlugin.CardUtils.getAndloadImageAsTexture("scp_034_small.png");
 
-			System.Collections.Generic.List<DiskCardGame.CardMetaCategory> metaCategories =
-				APIPlugin.CardUtils.getNormalCardMetadata;
+		const string displayName = "Ritual Knife";
+		const string desc =
+			"SCP-034 is a primitive knife constructed out of pure obsidian. " +
+			"Tests reveal that SCP-034 is approximately 1000 years old.";
 
-			UnityEngine.Texture2D defaultTexture =
-				APIPlugin.CardUtils.LoadImageAndGetTexture("scp_034_small.png");
+		APIPlugin.NewAbility ability = RitualKnifeAbility.InitAbility();
+		var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
 
-			const string displayName = "Ritual Knife";
-			const string desc =
-				"SCP-034 is a primitive knife constructed out of pure obsidian. " +
-				"Tests reveal that SCP-034 is approximately 1000 years old.";
-			var abIds = new System.Collections.Generic.List<APIPlugin.AbilityIdentifier>() { ability.id };
-
-			APIPlugin.NewCard.Add(Name, displayName, 1, 1,
-				metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
-				desc, bloodCost: 1, defaultTex: defaultTexture, abilityIdsParam: abIds
-			);
-		}
+		APIPlugin.NewCard.Add(Name, displayName, 1, 1,
+			metaCategories, DiskCardGame.CardComplexity.Simple, CardTemple.Nature,
+			desc, bloodCost: 1, defaultTex: defaultTexture, abilityIdsParam: abIds
+		);
 	}
 }

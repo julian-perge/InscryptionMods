@@ -1,23 +1,22 @@
 ﻿using BepInEx;
 using HarmonyLib;
 
-namespace FirePitAlwaysAbleToUpgrade
+namespace FirePitAlwaysAbleToUpgrade;
+
+[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+public class Plugin : BaseUnityPlugin
 {
-	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	public class Plugin : BaseUnityPlugin
+	private const string PluginGuid = "julianperge.inscryption.act1.firePitAlwaysAbleToUpgrade";
+	private const string PluginName = "FirePitAlwaysAbleToUpgrade";
+	private const string PluginVersion = "1.3.0";
+
+	internal static BepInEx.Logging.ManualLogSource Log;
+
+	void Awake()
 	{
-		private const string PluginGuid = "julianperge.inscryption.act1.firePitAlwaysAbleToUpgrade";
-		private const string PluginName = "FirePitAlwaysAbleToUpgrade";
-		private const string PluginVersion = "1.3.0";
+		Log = base.Logger;
 
-		internal static BepInEx.Logging.ManualLogSource Log;
-
-		void Awake()
-		{
-			Log = base.Logger;
-
-			var harmony = new Harmony(PluginGuid);
-			harmony.PatchAll();
-		}
+		var harmony = new Harmony(PluginGuid);
+		harmony.PatchAll();
 	}
 }

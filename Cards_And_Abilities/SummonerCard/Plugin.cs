@@ -6,37 +6,37 @@ using DiskCardGame;
 using HarmonyLib;
 using UnityEngine;
 
-namespace SummonerCard
+namespace SummonerCard;
+
+[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+// [BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
+// [BepInDependency("julianperge.inscryption.sigiladay", BepInDependency.DependencyFlags.HardDependency)]
+public class Plugin : BaseUnityPlugin
 {
-	[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
-	// [BepInDependency("cyantist.inscryption.api", BepInDependency.DependencyFlags.HardDependency)]
-	// [BepInDependency("julianperge.inscryption.sigiladay", BepInDependency.DependencyFlags.HardDependency)]
-	public class Plugin : BaseUnityPlugin
+	public const string PluginGuid = "julian.inscryption.cards.testing";
+	private const string PluginName = "TestingDeck";
+	private const string PluginVersion = "1.0.0";
+
+	internal static ManualLogSource Log;
+
+	void Awake()
 	{
-		public const string PluginGuid = "julian.inscryption.cards.testing";
-		private const string PluginName = "TestingDeck";
-		private const string PluginVersion = "1.0.0";
+		Log = base.Logger;
 
-		internal static ManualLogSource Log;
+		Log.LogInfo("~NATURE~");
+		PrintingCardUtils.PrintAllCardInfo(CardTemple.Nature);
+		Log.LogInfo("~TECH~");
+		PrintingCardUtils.PrintAllCardInfo(CardTemple.Tech);
+		Log.LogInfo("~UNDEAD~");
+		PrintingCardUtils.PrintAllCardInfo(CardTemple.Undead);
+		Log.LogInfo("~WIZARD~");
+		PrintingCardUtils.PrintAllCardInfo(CardTemple.Wizard);
 
-		void Awake()
-		{
-			Log = base.Logger;
+		// AddTalkingCard();
 
-			Log.LogInfo("~NATURE~");
-			PrintingCardUtils.PrintAllCardInfo(CardTemple.Nature);
-			Log.LogInfo("~TECH~");
-			PrintingCardUtils.PrintAllCardInfo(CardTemple.Tech);
-			Log.LogInfo("~UNDEAD~");
-			PrintingCardUtils.PrintAllCardInfo(CardTemple.Undead);
-			Log.LogInfo("~WIZARD~");
-			PrintingCardUtils.PrintAllCardInfo(CardTemple.Wizard);
-
-			// AddTalkingCard();
-
-			var harmony = new Harmony(PluginGuid);
-			harmony.PatchAll();
-		}
+		var harmony = new Harmony(PluginGuid);
+		harmony.PatchAll();
+	}
 
 		private static void AddTalkingCard()
 		{
@@ -138,26 +138,25 @@ namespace SummonerCard
 		}
 
 
-		// add this to your deck by scrolling upwards/pressing w key when at the map
-		[HarmonyPatch(typeof(DeckReviewSequencer), "OnEnterDeckView")]
-		public class AddCardsToDeckPatch
+	// add this to your deck by scrolling upwards/pressing w key when at the map
+	[HarmonyPatch(typeof(DeckReviewSequencer), "OnEnterDeckView")]
+	public class AddCardsToDeckPatch
+	{
+		private static bool allowSettingDeck = true;
+
+		[HarmonyPrefix]
+		public static void AddCardsToDeck()
 		{
-			private static bool allowSettingDeck = true;
-
-			[HarmonyPrefix]
-			public static void AddCardsToDeck()
+			if (allowSettingDeck)
 			{
-				if (allowSettingDeck)
-				{
-					// CardInfo card = CardLoader.GetCardByName("TalkingCard");
-					// Log.LogDebug($"[Summoner] Card [{card.name}] has abilities [{string.Join(",", card.abilities)}]");
+				// CardInfo card = CardLoader.GetCardByName("TalkingCard");
+				// Log.LogDebug($"[Summoner] Card [{card.name}] has abilities [{string.Join(",", card.abilities)}]");
 
-					// SaveManager.SaveFile.CurrentDeck.Cards.Clear();
+				// SaveManager.SaveFile.CurrentDeck.Cards.Clear();
 
-					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
-					// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
-					SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("TalkingCardTest"));
-				}
+				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
+				// SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("Geck"));
+				SaveManager.SaveFile.CurrentDeck.Cards.Add(CardLoader.GetCardByName("TalkingCardTest"));
 			}
 		}
 	}
