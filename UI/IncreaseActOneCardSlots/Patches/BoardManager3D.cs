@@ -15,6 +15,8 @@ public class BoardManager3DPatch
 	private static readonly DiskCardGame.HighlightedInteractable OpponentQueueSlotPrefab =
 		ResourceBank.Get<DiskCardGame.HighlightedInteractable>("Prefabs/Cards/QueueSlot");
 
+	private const float NewXPosition = 3.35f;
+
 	private static CardSlot GetMainCardSlotPrefab()
 	{
 		if (SaveManager.SaveFile.IsGrimora)
@@ -59,7 +61,7 @@ public class BoardManager3DPatch
 			DiskCardGame.CardSlot playerSlot5 = CreateSlot<DiskCardGame.CardSlot>(
 				"PlayerCardSlot5",
 				playerSlots.transform,
-				new UnityEngine.Vector3(3.4f, 0f, 0f),
+				new UnityEngine.Vector3(NewXPosition, 0f, 0f),
 				prefabToUse
 			);
 
@@ -68,7 +70,7 @@ public class BoardManager3DPatch
 			DiskCardGame.CardSlot opponentSlot5 = CreateSlot<DiskCardGame.CardSlot>(
 				"OpponentCardSlot5",
 				oppSlots.transform,
-				new UnityEngine.Vector3(3.4f, 0f, 0f),
+				new UnityEngine.Vector3(NewXPosition, 0f, 0f),
 				prefabToUse
 			);
 			if (SaveManager.SaveFile.IsPart1)
@@ -82,7 +84,7 @@ public class BoardManager3DPatch
 			DiskCardGame.HighlightedInteractable opponentQueueSlot5 = CreateSlot<DiskCardGame.HighlightedInteractable>(
 				"OpponentQueueSlot5",
 				oppSlots.transform,
-				new UnityEngine.Vector3(3.4f, 0f, 2.01f),
+				new UnityEngine.Vector3(NewXPosition, 0f, 2.01f),
 				GetQueueSlotPrefab(oppSlots)
 			);
 
