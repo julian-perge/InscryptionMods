@@ -32,7 +32,7 @@ namespace AddAllTarotCards.The_Emperor_And_Empress
 
 		private DiskCardGame.CardSlot GetEmperorCardSlotIfExists()
 		{
-			return Singleton<DiskCardGame.BoardManager>
+			return DiskCardGame.BoardManager
 				.Instance
 				.GetSlots(true)
 				.Find(slot => slot && slot.Card && slot != base.PlayableCard.Slot && IsCardEmperor(slot.Card));
