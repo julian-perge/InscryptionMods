@@ -12,8 +12,8 @@ namespace HealthForAnts
 		public override int[] GetStatValues()
 		{
 			System.Collections.Generic.List<DiskCardGame.CardSlot> list = base.PlayableCard.Slot.IsPlayerSlot
-				? Singleton<DiskCardGame.BoardManager>.Instance.PlayerSlotsCopy
-				: Singleton<DiskCardGame.BoardManager>.Instance.OpponentSlotsCopy;
+				? DiskCardGame.BoardManager.Instance.PlayerSlotsCopy
+				: DiskCardGame.BoardManager.Instance.OpponentSlotsCopy;
 
 			int numToAddToHealth = Enumerable.Count(Enumerable.Where(list, slot => slot.Card is not null),
 				cardSlot => cardSlot.Card.Info.HasTrait(DiskCardGame.Trait.Ant));
