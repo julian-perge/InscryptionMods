@@ -5,7 +5,7 @@ namespace AddAllTarotCards.The_World;
 public class Ability_TheWorld : DiskCardGame.AbilityBehaviour
 {
 	public static DiskCardGame.Ability ability;
-	public override DiskCardGame.Ability Ability { get { return ability; } }
+	public override DiskCardGame.Ability Ability => ability;
 
 	public override bool RespondsToResolveOnBoard()
 	{

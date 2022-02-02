@@ -6,7 +6,7 @@ public class Ability_TheMagician : DiskCardGame.AbilityBehaviour
 {
 	public static DiskCardGame.Ability ability;
 
-	public override DiskCardGame.Ability Ability { get { return ability; } }
+	public override DiskCardGame.Ability Ability => ability;
 
 	private DiskCardGame.PlayableCard originalOpposingSlotPlayableCard;
 

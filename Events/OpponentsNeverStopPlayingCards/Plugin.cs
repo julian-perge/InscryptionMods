@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using DiskCardGame;
 using HarmonyLib;
 
 namespace OpponentsNeverStopPlayingCards;
@@ -24,22 +24,22 @@ public partial class Plugin : BaseUnityPlugin
 	}
 }
 
-[HarmonyPatch(typeof(DiskCardGame.Opponent), nameof(DiskCardGame.Opponent.QueueNewCards))]
+[HarmonyPatch(typeof(Opponent), nameof(Opponent.QueueNewCards))]
 public class OpponentQueueNewCardsPatch
 {
 	[HarmonyPrefix]
-	static void ResetNumberOfTurnsTaken(DiskCardGame.Opponent __instance, bool doTween = true, bool changeView = true)
+	private static void ResetNumberOfTurnsTaken(Opponent __instance, bool doTween = true, bool changeView = true)
 	{
 		// FinaleWizardBattleOpponent has different logic, so we don't want to change it
-		if (__instance is DiskCardGame.FinaleWizardBattleOpponent) { return; }
+		if (__instance is FinaleWizardBattleOpponent) { return; }
 
-		PropertyInfo f_numTurnsTaken = AccessTools.Property(typeof(DiskCardGame.Opponent), "NumTurnsTaken");
-		PropertyInfo f_turnPlan = AccessTools.Property(typeof(DiskCardGame.Opponent), "TurnPlan");
+		PropertyInfo f_numTurnsTaken = AccessTools.Property(typeof(Opponent), "NumTurnsTaken");
+		PropertyInfo f_turnPlan = AccessTools.Property(typeof(Opponent), "TurnPlan");
 
 		int numTurnsTaken = (int)f_numTurnsTaken.GetValue(__instance);
 		Plugin.Log.LogDebug($"NumTurnsTaken for Opponent is [{numTurnsTaken}]");
 
-		int turnPlanCount = ((List<List<DiskCardGame.CardInfo>>)f_turnPlan.GetValue(__instance)).Count;
+		int turnPlanCount = ((List<List<CardInfo>>)f_turnPlan.GetValue(__instance)).Count;
 		Plugin.Log.LogDebug($"TurnPlanCount for Opponent is [{turnPlanCount}]");
 
 		if (numTurnsTaken >= turnPlanCount)
@@ -47,9 +47,9 @@ public class OpponentQueueNewCardsPatch
 			Plugin.Log.LogDebug(
 				$"NumTurnsTaken [{numTurnsTaken}] is greater than or equal to turn plan count [{turnPlanCount}]. Resetting NumTurnsTaken back to zero");
 			f_numTurnsTaken.SetValue(__instance, 0);
-			__instance.StartCoroutine(Singleton<DiskCardGame.TextDisplayer>
-				.Instance
-				.ShowThenClear("Oh? Looks like I need to get some more cards to play...", 3f)
+			__instance.StartCoroutine(
+				TextDisplayer.Instance
+					.ShowThenClear("Oh? Looks like I need to get some more cards to play...", 3f)
 			);
 		}
 	}

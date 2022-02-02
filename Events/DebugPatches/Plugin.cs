@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Reflection.Emit;
 using BepInEx;
 using BepInEx.Logging;
+using DiskCardGame;
 using HarmonyLib;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace DebugPatches;
@@ -19,17 +18,17 @@ public class Plugin : BaseUnityPlugin
 
 	internal static ManualLogSource Log;
 
-	private List<DiskCardGame.EncounterBlueprintData> resourceList => UnityEngine.Resources
-		.LoadAll<DiskCardGame.EncounterBlueprintData>("Data/EncounterBlueprints/Part1").ToList();
+	private List<EncounterBlueprintData> resourceList => Resources
+		.LoadAll<EncounterBlueprintData>("Data/EncounterBlueprints/Part1").ToList();
 
-	private Dictionary<String, DiskCardGame.Opponent.Type> BossTypesByName = new()
+	private Dictionary<String, Opponent.Type> BossTypesByName = new()
 	{
-		{ "AnglerBossP1", DiskCardGame.Opponent.Type.AnglerBoss },
-		{ "AnglerBossP2", DiskCardGame.Opponent.Type.AnglerBoss },
-		{ "LeshyBossP1", DiskCardGame.Opponent.Type.LeshyBoss },
-		{ "ProspectorBossP1", DiskCardGame.Opponent.Type.ProspectorBoss },
-		{ "ProspectorBossP2", DiskCardGame.Opponent.Type.ProspectorBoss },
-		{ "TrapperTraderBossP1", DiskCardGame.Opponent.Type.TrapperTraderBoss },
+		{ "AnglerBossP1", Opponent.Type.AnglerBoss },
+		{ "AnglerBossP2", Opponent.Type.AnglerBoss },
+		{ "LeshyBossP1", Opponent.Type.LeshyBoss },
+		{ "ProspectorBossP1", Opponent.Type.ProspectorBoss },
+		{ "ProspectorBossP2", Opponent.Type.ProspectorBoss },
+		{ "TrapperTraderBossP1", Opponent.Type.TrapperTraderBoss },
 	};
 
 	private void Awake()
@@ -48,16 +47,16 @@ public class Plugin : BaseUnityPlugin
 
 		string[] names = resourceList.Select(res => res.name).ToArray();
 
-		toggleEncounterMenu = UnityEngine.GUI.Toggle(
-			new UnityEngine.Rect(20, 280, 200, 20),
+		toggleEncounterMenu = GUI.Toggle(
+			new Rect(20, 280, 200, 20),
 			toggleEncounterMenu,
 			"Encounter Menu"
 		);
 
 		if (!toggleEncounterMenu) return;
 
-		int selectedButton = UnityEngine.GUI.SelectionGrid(
-			new UnityEngine.Rect(25, 300, 300, 300),
+		int selectedButton = GUI.SelectionGrid(
+			new Rect(25, 300, 300, 300),
 			-1,
 			names,
 			2
@@ -65,26 +64,26 @@ public class Plugin : BaseUnityPlugin
 
 		if (selectedButton >= 0)
 		{
-			DiskCardGame.EncounterBlueprintData encounter = resourceList[selectedButton];
+			EncounterBlueprintData encounter = resourceList[selectedButton];
 			// the asset names have P1 or P2 at the end,
 			//	so we'll remove it so that we can correctly get a boss if a boss was selected
 			string scrubbedName = encounter.name.Replace("P1", "").Replace("P2", "");
 
-			DiskCardGame.CardBattleNodeData node = new DiskCardGame.CardBattleNodeData()
+			CardBattleNodeData node = new CardBattleNodeData()
 			{
-				difficulty = DiskCardGame.RunState.Run.regionTier * 6 + 3 / 3 - 1, blueprint = resourceList[selectedButton]
+				difficulty = RunState.Run.regionTier * 6 + 3 / 3 - 1, blueprint = resourceList[selectedButton]
 			};
 
-			if (Enum.TryParse(scrubbedName, true, out DiskCardGame.Opponent.Type bossType))
+			if (Enum.TryParse(scrubbedName, true, out Opponent.Type bossType))
 			{
-				node = new DiskCardGame.BossBattleNodeData();
-				((DiskCardGame.BossBattleNodeData)node).specialBattleId =
-					DiskCardGame.BossBattleSequencer.GetSequencerIdForBoss(bossType);
-				((DiskCardGame.BossBattleNodeData)node).bossType = bossType;
+				node = new BossBattleNodeData();
+				((BossBattleNodeData)node).specialBattleId =
+					BossBattleSequencer.GetSequencerIdForBoss(bossType);
+				((BossBattleNodeData)node).bossType = bossType;
 			}
 
-			DiskCardGame.Opponent opponent = Singleton<DiskCardGame.TurnManager>.Instance.Opponent;
-			if (opponent is not null && !Singleton<DiskCardGame.TurnManager>.Instance.GameIsOver())
+			Opponent opponent = Singleton<TurnManager>.Instance.Opponent;
+			if (opponent is not null && !Singleton<TurnManager>.Instance.GameIsOver())
 			{
 				Log.LogDebug($"Setting NumLives to zero");
 				opponent.NumLives = 1;
@@ -96,10 +95,10 @@ public class Plugin : BaseUnityPlugin
 
 			Log.LogDebug($"Transitioning to encounter [{resourceList[selectedButton].name}]");
 			CustomCoroutine.WaitOnConditionThenExecute(
-				() => Singleton<DiskCardGame.GameFlowManager>.Instance.CanTransitionToFirstPerson(), delegate
+				() => Singleton<GameFlowManager>.Instance.CanTransitionToFirstPerson(), delegate
 				{
 					Log.LogDebug($"-> No longer in transitioning state, transitioning to new encounter");
-					Singleton<DiskCardGame.GameFlowManager>.Instance.TransitionToGameState(DiskCardGame.GameState.CardBattle,
+					Singleton<GameFlowManager>.Instance.TransitionToGameState(GameState.CardBattle,
 						node);
 				});
 		}
