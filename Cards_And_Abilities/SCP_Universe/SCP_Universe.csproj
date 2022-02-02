@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>SCP_Universe</AssemblyName>
+		<RootNamespace>SCP_Universe</RootNamespace>
+	</PropertyGroup>
+	<Import Project="$(SolutionDir)/Directory.Build.props" />
+
+	<Target Name="ZipFiles" AfterTargets="Build">
+		<Exec Command="7z a -tzip $(ProjectName).zip .\AssetBundles $(TargetDir)$(ProjectName).dll" />
+	</Target>
+
+	<ItemGroup>
+		<Reference Include="API">
+			<HintPath>..\..\lib\API.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+</Project>

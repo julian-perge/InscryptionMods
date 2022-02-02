@@ -2,9 +2,13 @@
 
 	<!-- General properties -->
 	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
-		<LangVersion>10</LangVersion>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<IsPackable>false</IsPackable>
+		<LangVersion>10</LangVersion>
+		<Nullable>disable</Nullable>
+		<TargetFramework>net472</TargetFramework>
 	</PropertyGroup>
 
 	<!-- BepInEx dependencies -->
@@ -16,12 +20,21 @@
 	</ItemGroup>
 
 	<Target Name="CopyDLLs" AfterTargets="Build">
-		<Message Text="Executing CopyDLLs task" Importance="High"/>
+		<Message Text="Executing CopyDLLs task" Importance="High" />
 
-		<Copy Condition="Exists('C:\inscryption-mods\')" SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\inscryption-mods\Inscryption\profiles\Default\BepInEx\plugins\" />
-		<Copy Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Inscryption\')" SourceFiles="$(TargetDir)$(ProjectName).dll" DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Inscryption\BepInEx\plugins\" />
+		<!--		<Copy Condition="Exists('C:\inscryption-mods\')" -->
+		<!--					SourceFiles="$(TargetDir)$(ProjectName).dll" -->
+		<!--					DestinationFolder="C:\inscryption-mods\Inscryption\profiles\Default\BepInEx\plugins\GrimoraMod" />-->
 
-		<Message Text="Copied build files" Importance="High"/>
+		<Copy Condition="Exists('C:\inscryption-mods\')"
+					SourceFiles="$(TargetDir)$(ProjectName).dll"
+					DestinationFolder="C:\inscryption-mods\Inscryption\profiles\Default\BepInEx\scripts\" />
+
+		<Copy Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Inscryption\')"
+					SourceFiles="$(TargetDir)$(ProjectName).dll"
+					DestinationFolder="C:\Program Files (x86)\Steam\steamapps\common\Inscryption\BepInEx\plugins\" />
+
+		<Message Text="Copied build files" Importance="High" />
 	</Target>
 
 </Project>

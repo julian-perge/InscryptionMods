@@ -1,0 +1,10 @@
+{
+	"name": "SCP_Universe",
+	"version_number": "0.0.1",
+	"website_url": "https://github.com/julian-perge/InscryptionMods",
+	"description": "[Alpha] Cards from the SCP Universe. Some are still being worked on. EXPECT BUGS! NOT TESTED WITH KAYCEE'S MOD!",
+	"dependencies": [
+		"BepInEx-BepInExPack_Inscryption-5.4.1701",
+		"API_dev-API-1.13.0"
+	]
+}

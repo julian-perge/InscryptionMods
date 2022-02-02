@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthForAnts", "Cards_And_
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SCP_Universe", "SCP_Universe", "{0C8A6530-9CFC-48D3-8F7A-74C9E77955E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddAllSCP", "Cards_And_Abilities\AddAllSCP\AddAllSCP.csproj", "{55E33D72-DC92-4810-8857-0E66F9FDECF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCP_Universe", "Cards_And_Abilities\SCP_Universe\SCP_Universe.csproj", "{55E33D72-DC92-4810-8857-0E66F9FDECF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaveStartingBones", "Events\HaveStartingBones\HaveStartingBones.csproj", "{BF8C5953-2C80-460B-A1B8-B8FECA627573}"
 EndProject
