@@ -8,4 +8,8 @@
 		</Reference>
 	</ItemGroup>
 
+	<Target Name="ZipFiles" AfterTargets="Build">
+		<Exec Command="7z a -tzip $(MSBuildProjectName).zip .\README.md .\manifest.json .\icon.png $(TargetDir)$(ProjectName).dll"/>
+	</Target>
+
 </Project>
