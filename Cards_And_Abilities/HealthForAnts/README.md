@@ -1,11 +1,9 @@
-## Installation
-
-***Warning:*** Incompatible with thunderstore mod loader
+# Installation
 
 To install this plugin you first need to install BepInEx as a mod loader for Inscryption. A guide to do this can be
 found [here](https://docs.bepinex.dev/articles/user_guide/installation/index.html#where-to-download-bepinex)
 
-You will also need version 1.11+ of the [InscryptionAPI](https://github.com/ScottWilson0903/InscryptionAPI) plugin.
+You will also need version 2.0.1+ of the [InscryptionAPI](https://github.com/ScottWilson0903/InscryptionAPI) plugin.
 
 To install this mod, you simply need to put the **HealthForAnts.dll** file in the same folder that the **InscryptionAPI
 plugin** exists.
@@ -18,7 +16,7 @@ HealthForAnts.dll. [Example here](https://github.com/julian-perge/InscryptionMod
 Once you've done that, create a class file and add these lines of code at the top. This will load the HealthForAnts
 ability and all the necessary abilities before your card gets loaded:
 
-```
+```c#
 [BepInDependency("cyantist.inscryption.api")]
 [BepInDependency("julianperge.inscryption.cards.healthForAnts")]
 public class NameOfYourClass : BaseUnityPlugin {
@@ -28,37 +26,35 @@ public class NameOfYourClass : BaseUnityPlugin {
 
 Next, creating a custom Ant card will look something like this:
 
-```
+```c#
 [BepInDependency("cyantist.inscryption.api")]
 [BepInDependency("julianperge.inscryption.cards.healthForAnts")]
 public class AntsTest : BaseUnityPlugin
 {
-    void Awake()
-    {
-    		// this will load the file into the texture for you
-        Texture2D defaultTex = CardUtils.LoadImageAndGetTexture("dome_ant.png");
+  void Awake()
+ {
+  const string name = "DomeAnt";
+  const string displayedName = "Dome Ant";
+  const string descryption = "Loves to guard his friends";
 
-        List<CardMetaCategory> metaCategories = CardUtils.getNormalCardMetadata;
+  CardInfo info = InscryptionAPI.Card.CardManager.New(
+     name,
+     displayedName,
+     0,
+     1,
+     descryption
+    )
+    .AddSpecialAbilities(HealthForAnts.FullSpecial.Id)
+    .AddTraits(Trait.Ant)
+    .AddTribes(Tribe.Insect)
+    .SetCost(1)
+    .SetDefaultPart1Card()
+    .SetEvolve("AntQueen", 1)
+    .SetPortrait("dome_ant.png")
+   ;
 
-        string name = "DomeAnt";
-        string displayedName = "Dome Ant";
-        string descryption = "Loves to guard his friends";
-
-        EvolveParams evolveParams = new() { turnsToEvolve = 1, evolution = CardLoader.GetCardByName("AntQueen") };
-        List<Tribe> tribes = new() { Tribe.Insect };
-        List<Trait> traits = new() { Trait.Ant };
-
-        var antHealthAbility = HealthForAnts.HarmonyInit.antHealthSpecialAbility;
-        var sAbIds = new List<SpecialAbilityIdentifier>() { antHealthAbility.id };
-
-        NewCard.Add(
-            name, metaCategories, CardComplexity.Advanced, CardTemple.Nature,
-            displayedName, 0, 1, descryption,
-            evolveParams: evolveParams, cost: 1, tex: defaultTex,
-            specialStatIcon: antHealthAbility.statIconInfo.iconType, specialAbilitiesIdsParam: sAbIds,
-            tribes: tribes, traits: traits
-        );
-    }
+  info.specialStatIcon = HealthForAnts.FullStatIcon.Id;
+  }
 }
 ```
 
@@ -87,7 +83,7 @@ Enabled = true
 
 in **Inscryption/BepInEx/Config/BepInEx.cfg**
 
-___
+---
 
 If you want help debugging you can find me on [Inscryption modding discord](https://discord.gg/QrJEF5Denm) as
 xXxStoner420BongMasterxXx.

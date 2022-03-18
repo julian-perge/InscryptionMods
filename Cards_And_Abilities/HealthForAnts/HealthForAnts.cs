@@ -1,34 +1,29 @@
-using System.Collections.Generic;
-using System.Linq;
-using APIPlugin;
 using DiskCardGame;
+using InscryptionAPI.Card;
 using UnityEngine;
-using static HealthForAnts.HarmonyInit;
+using static HealthForAnts.HealthForAntsPlugin;
 
 namespace HealthForAnts;
 
 public class HealthForAnts : VariableStatBehaviour
 {
-	private static SpecialStatIcon specialStatIcon;
+	public static SpecialTriggeredAbilityManager.FullSpecialTriggeredAbility FullSpecial;
+	public static StatIconManager.FullStatIcon FullStatIcon;
 
-	public override SpecialStatIcon IconType => specialStatIcon;
+	public override SpecialStatIcon IconType => FullStatIcon.Id;
 
 	public override int[] GetStatValues()
 	{
-		List<CardSlot> list = base.PlayableCard.Slot.IsPlayerSlot
-			? BoardManager.Instance.PlayerSlotsCopy
-			: BoardManager.Instance.OpponentSlotsCopy;
-
-		int numToAddToHealth = Enumerable.Count(Enumerable.Where(list, slot => slot.Card is not null),
-			cardSlot => cardSlot.Card.Info.HasTrait(Trait.Ant));
-		// Log.LogDebug($"[DomeAnt] GetStatValues called with DomeAnt. Adding [{num}] Health.");
+		int numToAddToHealth = BoardManager.Instance.GetSlots(!base.PlayableCard.OpponentCard)
+			.Where(slot => slot.Card)
+			.Count(cardSlot => cardSlot.Card.Info.HasTrait(Trait.Ant));
 
 		int[] array = new int[2];
 		array[1] = numToAddToHealth;
 		return array;
 	}
 
-	public static NewSpecialAbility InitStatIconAndAbility()
+	public static StatIconManager.FullStatIcon InitStatIconAndAbility()
 	{
 		StatIconInfo info = ScriptableObject.CreateInstance<StatIconInfo>();
 		info.appliesToAttack = false;
@@ -37,11 +32,10 @@ public class HealthForAnts : VariableStatBehaviour
 		info.rulebookDescription =
 			"The value represented with this sigil will be equal to the number of Ants that the owner has on their side of the table.";
 		info.iconGraphic = StatIconInfo.GetIconInfo(SpecialStatIcon.Ants).iconGraphic;
-		var sId = SpecialAbilityIdentifier.GetID(PluginGuid, info.rulebookName);
 
-		var healthForAntsAbility = new NewSpecialAbility(typeof(HealthForAnts), sId, info);
-		specialStatIcon = healthForAntsAbility.statIconInfo.iconType;
+		FullStatIcon = StatIconManager.Add(PluginGuid, info, typeof(HealthForAnts));
+		FullSpecial = SpecialTriggeredAbilityManager.Add(PluginGuid, info.rulebookName, typeof(HealthForAnts));
 
-		return healthForAntsAbility;
+		return FullStatIcon;
 	}
 }

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Import Project="$(SolutionDir)/Directory.Build.props"/>
+	<Import Project="$(SolutionDir)/Directory.Build.props" />
 
 	<ItemGroup>
-		<Reference Include="API">
-			<HintPath>C:\DEVELOPER\InscryptionMods\lib\API.dll</HintPath>
+		<Reference Include="InscryptionAPI">
+			<HintPath>..\..\lib\InscryptionAPI.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
