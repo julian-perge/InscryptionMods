@@ -11,7 +11,7 @@ public class HealthForAntsPlugin : BaseUnityPlugin
 {
 	public const string PluginGuid = "julianperge.inscryption.specialAbilities.healthForAnts";
 	private const string PluginName = "HealthForAnts";
-	private const string PluginVersion = "1.1.0";
+	private const string PluginVersion = "1.0.2";
 	internal static ManualLogSource Log;
 
 	public static SpecialTriggeredAbility AntHealthSpecialTriggeredAbility;

@@ -1,8 +1,8 @@
 {
 	"name": "HealthForAnts",
-	"version_number": "1.1",
+	"version_number": "1.0.2",
 	"website_url": "https://github.com/julian-perge/InscryptionMods/tree/main/Cards_And_Abilities/HealthForAnts",
-	"description": "This is a plugin made for Incryption to create custom Ant cards for the health stat instead of the attack stat. THIS DOES NOT ADD ANY ANT CARDS!",
+	"description": "KAYCEE'S MOD SUPPORT! Create custom Ant cards for the health stat instead of the attack stat. THIS DOES NOT ADD ANY ANT CARDS!",
 	"dependencies": [
 		"API_dev-API-2.0.1"
 	]
